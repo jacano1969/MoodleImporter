@@ -48,7 +48,6 @@ class MultipleChoiceItem extends Item
      */
     public function ToXMLElement()
     {
-        var_dump($this->SingleSelection);
         $shuffleAnswersValue = $this->ShuffleAnswers ? 1 : 0;
         $singleValue = $this->SingleSelection ? "true" : "false";
         
@@ -74,6 +73,41 @@ MC_XML;
         }
         
         return $xmlElement;
+    }
+    
+    /**
+     * If the $IsEnabled parameter is set to true, this method applies the Team
+     * based learning scoring rubric to this object. Specifically, single 
+     * selection is disabled, and all incorrect answer choices are set to negative
+     * penalty percentages, based on the total number of options in the item. 
+     * 
+     * If the $IsEnabled parameter is set to false, a normal scoring template is
+     * applied. Specifically, single selection is enabled, and all incorrect
+     * options are reset to a value of 0.
+     * 
+     * @param bool $IsEnabled 
+     * @return void
+     */
+    public function ApplyTBLTemplate($IsEnabled)
+    {
+        // Set SingleSelection to the oppositie of what $IsEnabled is
+        $this->SingleSelection = !$IsEnabled;
+        
+        $numOptions = count($this->Options);
+        var_dump($this->Options);
+        // Go through all the associated Options and reset their values to 
+        // reflect the TBL template.
+        foreach ($this->Options as $option)
+        {
+            if ($IsEnabled && $option->Value != 100)
+            {
+                $option->Value = -(100 / ($numOptions - 1));
+            }
+            else if (!$IsEnabled && $option->Value != 100)
+            {
+                $option->Value = 0;
+            }
+        }
     }
 }
 

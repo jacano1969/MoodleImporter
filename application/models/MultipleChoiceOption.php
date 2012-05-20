@@ -19,7 +19,7 @@ class MultipleChoiceOption {
      * Represents the percent value associated with this particular item.
      * Normally, this value is either 100 or 0, but the values may differ, when
      * the Team-Based Learning template is applied.
-     * @var int 
+     * @var float 
      */
     public $Value = 0;
     
