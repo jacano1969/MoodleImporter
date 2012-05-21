@@ -63,32 +63,51 @@ QUIZ_TEST;
         $this->assertTrue(xml_is_equal(new \SimpleXMLElement($output), new \SimpleXMLElement($quiz->ToXMLString())));
     }
     
-    public function testGetQuizFromHTMLTrueFalse()
+    public function testGetQuizFromHTMLSimpleTrueFalse()
     {
         $inputHTML = <<<HTML_QUIZ
-        <h2>Question Name</h2>
+        <h2>TF false Question</h2>
+        What is the answer to the following?
+        <ul>
+            <li>false</li>
+        </ul>
+HTML_QUIZ;
+        $quiz = Quiz::GetQuizFromHTML($inputHTML);
+        $this->assertEquals(1, count($quiz->Items));
+        $this->assertEquals(false, $quiz->Items[0]->CorrectAnswer);
+        $this->assertEquals("TF false Question", $quiz->Items[0]->Name);
+        $this->assertEquals("What is the answer to the following?", $quiz->Items[0]->Text);
+    }
+        
+    public function testGetQuizFromHTMLComplexTrueFalse()
+    {
+        $inputHTML = <<<HTML_QUIZ
+        <h2>TF w/list in text</h2>
         What is the answer to the following sub-questions?
         <ul>
             <li>Question 1</li>
             <li>Question 2</li>
         </ul>
         <ul>
-            <li>truthfulness</li>
+            <li>truth</li>
         </ul>
-        <h2>Question Name 2</h2>
-        What is the answer to the following sub-questions?
-        <ul>
-            <li>false</li>
-        </ul>
-        <h2>Question Name 2</h2>
-        What is the answer to the following sub-questions?
-        <ol>
-            <li>question 1</li>
-            <li>question 2</li>
-        </ol>
+HTML_QUIZ;
+        
+        $quiz = Quiz::GetQuizFromHTML($inputHTML);
+        $this->assertEquals(1, count($quiz->Items));
+        $this->assertEquals(true, $quiz->Items[0]->CorrectAnswer);
+        $this->assertEquals("TF w/list in text", $quiz->Items[0]->Name);
+        $this->assertEquals("What is the answer to the following sub-questions?<ul><li>Question 1</li><li>Question 2</li></ul>", $quiz->Items[0]->Text);
+    }
+    
+    public function testGetQuizFromHTMLSimpleMC()
+    {
+        $inputHTML = <<<HTML_QUIZ
+        <h2>MC w/list in text</h2>
+        What is the answer to the following questions?
         <ol>
             <li>option 1</li>
-            <li>option 2</li>
+            <li><strong>option 2</strong></li>
             <li>option 3</li>
             <li>option 4</li>
         </ol>
@@ -97,8 +116,51 @@ HTML_QUIZ;
         
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
-        
+        $this->assertEquals("MC w/list in text", $quiz->Items[0]->Name);
+        $this->assertEquals("What is the answer to the following questions?", $quiz->Items[0]->Text);
+        $this->assertEquals(4, count($quiz->Items[0]->Options));
+        $this->assertEquals(0, $quiz->Items[0]->Options[0]->Value);
+        $this->assertEquals(100, $quiz->Items[0]->Options[1]->Value);
+        $this->assertEquals(0, $quiz->Items[0]->Options[2]->Value);
+        $this->assertEquals(0, $quiz->Items[0]->Options[3]->Value);
     }
+    
+    public function testGetQuizFromHTMLMultipleItems()
+    {
+        $inputHTML = <<<HTML_QUIZ
+        <h2>TF w/list in text</h2>
+        What is the answer to the following sub-questions?
+        <ul>
+            <li>Question 1</li>
+            <li>Question 2</li>
+        </ul>
+        <ul>
+            <li>truth</li>
+        </ul>
+        <h2>TF false Question</h2>
+        What is the answer to the following sub-questions?
+        <ul>
+            <li>false</li>
+        </ul>
+        <h2>MC w/list in text</h2>
+        What is the answer to the following sub-questions?
+        <ol>
+            <li>question 1</li>
+            <li>question 2</li>
+        </ol>
+        <ol>
+            <li>option 1</li>
+            <li><strong>option 2</strong></li>
+            <li>option 3</li>
+            <li>option 4</li>
+        </ol>
+        
+HTML_QUIZ;
+        
+        $quiz = Quiz::GetQuizFromHTML($inputHTML);
+        $this->assertEquals(3, count($quiz->Items));
+
+        }
 }
 
 ?>

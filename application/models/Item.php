@@ -19,7 +19,7 @@ abstract class Item {
      * question text, and it is typically NOT shown to the student. 
      * @var string 
      */
-    public $Name;
+    public $Name = "";
     
     /**
      * Specifies the actual text of the question that should be displayed to 
@@ -27,14 +27,14 @@ abstract class Item {
      * of HTML code.
      * @var string 
      */
-    public $Text;
+    public $Text = "";
     
     /**
      * Specifies the default value to assign to this item. Note that this value
      * may be overriden by the Quiz object.
      * @var int 
      */
-    public $PointValue;
+    public $PointValue = 1;
     
     // Methods
     /**

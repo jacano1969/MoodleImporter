@@ -149,28 +149,5 @@ function sxml_append(\SimpleXMLElement $to, \SimpleXMLElement $from) {
     $toDom->appendChild($toDom->ownerDocument->importNode($fromDom, true));
 }
 
-/**
- * Returns the contents of a string between two delimiters
- * 
- * @param string $string
- * @param string $start
- * @param string $end
- * @return string
- */
-function extract_string($string, $start, $end)
-{
-    $startPos = stripos($string, $start) + strlen($start);
-    $endPos = stripos($string, $end, $startPos);
-    $str = substr($string, $startPos, $endPos - $startPos);
-    return $str;
-}
-
-function extract_string_to_last($string, $start, $end)
-{
-    $startPos = stripos($string, $start) + strlen($start);
-    $endPos = strripos($string, $end, $startPos);
-    $str = substr($string, $startPos, $endPos - $startPos);
-    return $str;
-}
 
 ?>
