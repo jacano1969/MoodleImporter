@@ -94,6 +94,7 @@ MC_XML;
         $this->SingleSelection = !$IsEnabled;
         
         $numOptions = count($this->Options);
+        
         // Go through all the associated Options and reset their values to 
         // reflect the TBL template.
         foreach ($this->Options as $option)

@@ -62,6 +62,43 @@ QUIZ_TEST;
         
         $this->assertTrue(xml_is_equal(new \SimpleXMLElement($output), new \SimpleXMLElement($quiz->ToXMLString())));
     }
+    
+    public function testGetQuizFromHTMLTrueFalse()
+    {
+        $inputHTML = <<<HTML_QUIZ
+        <h2>Question Name</h2>
+        What is the answer to the following sub-questions?
+        <ul>
+            <li>Question 1</li>
+            <li>Question 2</li>
+        </ul>
+        <ul>
+            <li>truthfulness</li>
+        </ul>
+        <h2>Question Name 2</h2>
+        What is the answer to the following sub-questions?
+        <ul>
+            <li>false</li>
+        </ul>
+        <h2>Question Name 2</h2>
+        What is the answer to the following sub-questions?
+        <ol>
+            <li>question 1</li>
+            <li>question 2</li>
+        </ol>
+        <ol>
+            <li>option 1</li>
+            <li>option 2</li>
+            <li>option 3</li>
+            <li>option 4</li>
+        </ol>
+        
+HTML_QUIZ;
+        
+        $quiz = Quiz::GetQuizFromHTML($inputHTML);
+        $this->assertEquals(1, count($quiz->Items));
+        
+    }
 }
 
 ?>

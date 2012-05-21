@@ -3,7 +3,7 @@
   <html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
 			<!-- template designed by Marco Von Ballmoos -->
-			<title>Quiz</title>
+			<title>Quiz Class</title>
 			<link rel="stylesheet" href="../media/stylesheet.css" />
 			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
 		</head>
@@ -31,8 +31,25 @@
 	</tr>
 </table>
 	
-<div><a name=""></a><div class="ref-title-box"><h1 class="ref-title">Quiz</h1></div>
- <span><a name="intro"></a><h2 class="title">Quiz Class</h2><p>This is how the Quiz class works...</p></span></div>
+<div><a name=""></a><div class="ref-title-box"><h1 class="ref-title">Quiz Class</h1></div>
+ <span><a name="intro"></a><h2 class="title">HTML Test Import Specification</h2><p><ol><li>The order in which questions are provided to the system will be preserved in the ?Review Question? view and in the output XML file.</li>
+    <li>Each question in the content to be imported (whether copied and pasted or uploaded in a document) will conform to the following specifications:</li>
+    <li>Each question will begin with an <pre>&lt;h2&gt;Question name OR N/A&lt;/h2&gt;</pre> format.</li>
+    <li>The question text will immediately follow the closing h2 tag.</li>
+    <li>The question text may contain any legitimate HTML tag, including, but not limited to, tables, paragraphs, and unordered and ordered lists.</li>
+    <li>Essay questions must end with an empty _____ tag</li>
+    <li>Multiple-choice and true/false questions must end with either an &quot;ol&quot; or &quot;ul&quot; tag.</li>
+    <li>Multiple-choice questions that end with an &quot;ol&quot; tag will disable shuffling of its answer choices</li>
+    <li>Multiple-choice questions that end with an &quot;ul&quot; tag will enable shuffling of its answer choices</li>
+    <li>Each possible answer choice to a multiple-choice question must appear within &quot;li&quot; tags inside the &quot;ol&quot; or &quot;ul&quot; set of tags.</li>
+    <li>Correct answers for multiple-choice questions will be embedded within a <pre>&lt;strong&gt;&lt;/strong&gt;</pre> set of tags.</li>
+    <li>Matching questions must end with a &quot;dl&quot; tag, with each term and its correct definition appearing in &quot;dt&quot; and &quot;dd&quot; tags, respectively.</li>
+    <li>True/false questions must enclose either a T (or true) or an F (or false) within an &quot;li&quot; set of tags to indicate the correct answer.</li>
+    <li>Only the correct answer is specified for true/false questions.</li>
+    <li>Questions will be given a name that is consistent with the following naming convention:
+        TTnnn ? [question name]
+    Where, TT is the question type (MC = Multiple choice, TF = true/false, ES = Essay, MT = Matching), nnn is the question number formatted to three digits (e.g., 001 for question #1), and [question name] is the contents of the h2 tag OR the first five words of question text, if the h2 tag contains ?N/A?.</li>
+    <li>4.	Questions will be numbered sequentially from the beginning of the file to the end, in the order in which the questions are submitted.</li></ol></p></span></div>
 
 	<table class="tutorial-nav-box">
 	<tr>
@@ -57,7 +74,7 @@
 </table>
 	
 	<p class="notes" id="credit">
-		Documentation generated on Sun, 20 May 2012 22:23:44 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
+		Documentation generated on Mon, 21 May 2012 00:54:24 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
 	</p>
 	</div></body>
 </html>

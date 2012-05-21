@@ -48,14 +48,62 @@ class Quiz {
      * This is a factory method used to create a Quiz object based on the contents
      * of the $htmlQuiz parameter. The $htmlQuiz parameter should conform to the 
      * import specifications located here:
-     * @link ...
-     * @todo fill in link 
-     * @param \SimpleXMLElement $htmlQuiz
-     * @return \SimpleXMLElement 
+     * @tutorial Quiz.cls
+     * @param string $htmlQuiz
+     * @return Quiz
      */
-    public static function GetQuizFromHTML(\SimpleXMLElement $htmlQuiz)
+    public static function GetQuizFromHTML($htmlQuiz)
     {
-        return new \SimpleXMLElement;
+        // First get rid of all unneeded whitespace not inside any tags
+        $quizString = preg_replace('~\s*(<([^>]*)>[^<]*</\2>|<[^>]*>)\s*~','$1',$htmlQuiz);
+        
+        // Then split the incoming string based on the <h2> tags that flag the 
+        // start of a question
+        $quizArray = explode('<h2>', $quizString);
+
+        // Explode has the side effect of creating a 0 entry for the <h2> tag
+        // itself, so we delete it from the array and re-normalize the indexes
+        unset($quizArray[0]);
+        $quizArray = array_values($quizArray);
+        
+        $quiz = new Quiz;
+
+        // Explode also removes the <h2> tag from each element, so we need to
+        // append it back in for each element, so that we can use regex properly
+        for ($i = 0; $i < count($quizArray); $i++)
+        {
+            $quizArray[$i] = '<h2>' . $quizArray[$i];
+    
+            // Find the content between <h2> and </h2>
+            $regexp = '/<h2>(.*)<\/h2>/Ui'; 
+            preg_match($regexp, $quizArray[$i], $questionName);
+
+            // Get the question text, which is all text between the closing
+            // </h2> tag and the last <ol> or <ul> tag.
+            $regexp = '/<\/h2>([.\S\s]*)<[ou]l>[.\S\s]*$/i';
+            preg_match($regexp, $quizArray[$i], $questionText);
+            
+            
+            // @todo Get matching options to work, which will be inside dt tags
+            // Get the answer options, which should be contained in <ol> or <ul>
+            // tags, but we have to get the last set of <ol> or <ul> tags,
+            // because the question text itself could contain them.
+            $regexp = '/[.\S\s]*((<[ou]l>)[.\S\s]*)$/i';
+            preg_match($regexp, $quizArray[$i], $questionAnswer);
+            
+            var_dump($questionAnswer[1]);
+
+        }
+        
+        
+        /** 
+         * @todo What if Essay question contains a bulleted or numbered list?
+         * 
+         */
+                
+        
+        
+        return $quiz;
     }
     
     /**

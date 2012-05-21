@@ -90,7 +90,7 @@ class MultipleChoiceItemTest extends \PHPUnit_Framework_TestCase {
     }
     
     
-        /**
+    /**
      * @covers MoodleImporter\MultipleChoiceItem::ApplyTBLTemplate 
      */
     public function testApplyTBLTemplate4Items()
@@ -104,7 +104,7 @@ class MultipleChoiceItemTest extends \PHPUnit_Framework_TestCase {
         $mcItem->AnswerNumbering = "abc";
  
         $option1 = new MultipleChoiceOption;
-        $option1->Text = "The correct answer";
+        $option1->Text = "Another distractor";
         $option1->Value = 0;
         
         $option2 = new MultipleChoiceOption;
@@ -112,7 +112,7 @@ class MultipleChoiceItemTest extends \PHPUnit_Framework_TestCase {
         $option2->Value = 0;
         
         $option3 = new MultipleChoiceOption;
-        $option3->Text = "Another distractor";
+        $option3->Text = "The correct answer";
         $option3->Value = 100;
         
         $option4 = new MultipleChoiceOption;
@@ -130,6 +130,46 @@ class MultipleChoiceItemTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(-33.333333333333, $mcItem->Options[3]->Value);
     }
     
+    
+        /**
+     * @covers MoodleImporter\MultipleChoiceItem::ApplyTBLTemplate 
+     */
+    public function testApplyTBLTemplateFalse()
+    {
+        $mcItem = new MultipleChoiceItem;
+        $mcItem->Name = "MC 001 - What is";
+        $mcItem->PointValue = 2;
+        $mcItem->ShuffleAnswers = true;
+        $mcItem->Text = "What is the answer to this question?";
+        $mcItem->SingleSelection = FALSE;
+        $mcItem->AnswerNumbering = "abc";
+ 
+        $option1 = new MultipleChoiceOption;
+        $option1->Text = "Another distractor";
+        $option1->Value = -33.333333333333;
+        
+        $option2 = new MultipleChoiceOption;
+        $option2->Text = "A distractor";
+        $option2->Value = -33.333333333333;
+        
+        $option3 = new MultipleChoiceOption;
+        $option3->Text = "The correct answer";
+        $option3->Value = 100;
+        
+        $option4 = new MultipleChoiceOption;
+        $option4->Text = "A distractor";
+        $option4->Value = -33.333333333333;
+        
+
+        $mcItem->Options = array($option1, $option2, $option3, $option4);
+        
+        $mcItem->ApplyTBLTemplate(false);
+        
+        $this->assertEquals(true, $mcItem->SingleSelection);
+        $this->assertEquals(0, $mcItem->Options[0]->Value);
+        $this->assertEquals(0, $mcItem->Options[1]->Value);
+        $this->assertEquals(0, $mcItem->Options[3]->Value);
+    }
     
     /**
      * @covers MoodleImporter\MultipleChoiceItem::ToXMLElement
