@@ -4,10 +4,11 @@ namespace MoodleImporter;
 
 /**
  * Represents a Moodle quiz
- *
+ * @package MoodleXMLImporter
  * @author John D. Delano
  */
 class Quiz {
+    
     /**
      * The category of the quiz, as it should appear in Moodle under the course
      * in which the quiz is imported.
@@ -42,6 +43,20 @@ class Quiz {
      */
     public $Items = array();
     
+    
+    /**
+     * This is a factory method used to create a Quiz object based on the contents
+     * of the $htmlQuiz parameter. The $htmlQuiz parameter should conform to the 
+     * import specifications located here:
+     * @link ...
+     * @todo fill in link 
+     * @param \SimpleXMLElement $htmlQuiz
+     * @return \SimpleXMLElement 
+     */
+    public static function GetQuizFromHTML(\SimpleXMLElement $htmlQuiz)
+    {
+        return new \SimpleXMLElement;
+    }
     
     /**
      * Generates the Moodle XML code that can be exported.

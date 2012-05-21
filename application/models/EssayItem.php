@@ -5,7 +5,7 @@ include_once 'Item.php';
 /**
  * This class represents an Essay item that can be associated with a Quiz
  * object.
- *
+ * @package MoodleXMLImporter
  * @author John D. Delano
  */
 class EssayItem extends Item

@@ -5,7 +5,7 @@ include_once 'Item.php';
 /**
  * This class represents a Multiple Choice item that can be associated with a Quiz
  * object.
- *
+ * @package MoodleXMLImporter
  * @author John D. Delano
  */
 class MultipleChoiceItem extends Item
@@ -94,7 +94,6 @@ MC_XML;
         $this->SingleSelection = !$IsEnabled;
         
         $numOptions = count($this->Options);
-        var_dump($this->Options);
         // Go through all the associated Options and reset their values to 
         // reflect the TBL template.
         foreach ($this->Options as $option)

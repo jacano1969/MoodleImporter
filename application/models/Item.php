@@ -6,6 +6,7 @@ namespace MoodleImporter;
  * The base class of all Item objects. This class is abstract, so it cannot be
  * instantiated. To add new question types, create a new, concrete class
  * based on this Item class, and implement the ToXMLElement method.
+ * @package MoodleXMLImporter
  * @abstract
  * @author John D. Delano
  */

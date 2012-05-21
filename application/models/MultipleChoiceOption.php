@@ -3,7 +3,7 @@
 namespace MoodleImporter;
 /**
  * This class represents one option for a MultipleChoiceItem.
- *
+ * @package MoodleXMLImporter
  * @author John D. Delano
  */
 class MultipleChoiceOption {

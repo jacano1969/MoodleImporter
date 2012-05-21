@@ -5,7 +5,7 @@ include_once 'Item.php';
 /**
  * This class represents a Matching item that can be associated with a Quiz
  * object.
- *
+ * @package MoodleXMLImporter
  * @author John D. Delano
  */
 class MatchingItem extends Item
@@ -14,7 +14,7 @@ class MatchingItem extends Item
      * Contains a list of options for the matching set. This is an associative
      * array that contains each term as the key and the term's associated
      * definition as the key's value.
-     * @var array($term => $definition) 
+     * @var array
      */
     public $Options = array();
     

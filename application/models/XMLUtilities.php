@@ -13,7 +13,7 @@ namespace MoodleImporter;
  * @param SimpleXMLElement $xml1
  * @param SimpleXMLEleemnt $xml2
  * @param bool $text_strict
- * 
+ * @package MoodleXMLImporter
  */
 function xml_is_equal(\SimpleXMLElement $xml1, \SimpleXMLElement $xml2, $text_strict = false) {
     // compare text content
