@@ -1,9 +1,12 @@
 <?php
 
 namespace MoodleImporter;
+if (!defined('APPPATH'))
+{
+    define('APPPATH', dirname(__FILE__) . '/../../../application');
+}
 
-require_once dirname(__FILE__) . '/../../../application/models/MatchingItem.php';
-include_once dirname(__FILE__) . '/../../../application/models/XMLUtilities.php';
+require_once APPPATH . '/models/Quiz.php';
 
 /**
  * Test class for MatchingItem.

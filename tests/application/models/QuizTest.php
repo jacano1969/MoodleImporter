@@ -1,9 +1,12 @@
 <?php
 
 namespace MoodleImporter;
+if (!defined('APPPATH'))
+{
+    define('APPPATH', dirname(__FILE__) . '/../../../application');
+}
 
-require_once dirname(__FILE__) . '/../../../application/models/Quiz.php';
-include_once dirname(__FILE__) . '/../../../application/models/XMLUtilities.php';
+require_once APPPATH . '/models/Quiz.php';
 
 /**
  * Test class for Quiz.
@@ -75,7 +78,7 @@ HTML_QUIZ;
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
         $this->assertEquals(false, $quiz->Items[0]->CorrectAnswer);
-        $this->assertEquals("TF false Question", $quiz->Items[0]->Name);
+        $this->assertEquals("TF 001 - TF false Question", $quiz->Items[0]->Name);
         $this->assertEquals("What is the answer to the following?", $quiz->Items[0]->Text);
     }
         
@@ -96,10 +99,31 @@ HTML_QUIZ;
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
         $this->assertEquals(true, $quiz->Items[0]->CorrectAnswer);
-        $this->assertEquals("TF w/list in text", $quiz->Items[0]->Name);
+        $this->assertEquals("TF 001 - TF w/list in text", $quiz->Items[0]->Name);
         $this->assertEquals("What is the answer to the following sub-questions?<ul><li>Question 1</li><li>Question 2</li></ul>", $quiz->Items[0]->Text);
     }
     
+    public function testGetQuizFromHTMLComplexTrueFalseNA()
+    {
+        $inputHTML = <<<HTML_QUIZ
+        <h2>N/A</h2>
+        What is the answer to the following sub-questions?
+        <ul>
+            <li>Question 1</li>
+            <li>Question 2</li>
+        </ul>
+        <ul>
+            <li>truth</li>
+        </ul>
+HTML_QUIZ;
+        
+        $quiz = Quiz::GetQuizFromHTML($inputHTML);
+        $this->assertEquals(1, count($quiz->Items));
+        $this->assertEquals(true, $quiz->Items[0]->CorrectAnswer);
+        $this->assertEquals("TF 001 - What is the answer to", $quiz->Items[0]->Name);
+        $this->assertEquals("What is the answer to the following sub-questions?<ul><li>Question 1</li><li>Question 2</li></ul>", $quiz->Items[0]->Text);
+    }
+
     public function testGetQuizFromHTMLSimpleMC()
     {
         $inputHTML = <<<HTML_QUIZ
@@ -116,15 +140,100 @@ HTML_QUIZ;
         
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
-        $this->assertEquals("MC w/list in text", $quiz->Items[0]->Name);
+        $this->assertEquals("MC 001 - MC w/list in text", $quiz->Items[0]->Name);
         $this->assertEquals("What is the answer to the following questions?", $quiz->Items[0]->Text);
         $this->assertEquals(4, count($quiz->Items[0]->Options));
         $this->assertEquals(0, $quiz->Items[0]->Options[0]->Value);
         $this->assertEquals(100, $quiz->Items[0]->Options[1]->Value);
         $this->assertEquals(0, $quiz->Items[0]->Options[2]->Value);
         $this->assertEquals(0, $quiz->Items[0]->Options[3]->Value);
+        $this->assertEquals(false, $quiz->Items[0]->ShuffleAnswers);
     }
     
+    public function testGetQuizFromHTMLSimpleMCShuffle()
+    {
+        $inputHTML = <<<HTML_QUIZ
+        <h2>MC w/list in text</h2>
+        What is the answer to the following questions?
+        <ul>
+            <li>option 1</li>
+            <li><strong>option 2</strong></li>
+            <li>option 3</li>
+            <li>option 4</li>
+        </ul>
+        
+HTML_QUIZ;
+        
+        $quiz = Quiz::GetQuizFromHTML($inputHTML);
+        $this->assertEquals(1, count($quiz->Items));
+        $this->assertEquals("MC 001 - MC w/list in text", $quiz->Items[0]->Name);
+        $this->assertEquals("What is the answer to the following questions?", $quiz->Items[0]->Text);
+        $this->assertEquals(4, count($quiz->Items[0]->Options));
+        $this->assertEquals(0, $quiz->Items[0]->Options[0]->Value);
+        $this->assertEquals(100, $quiz->Items[0]->Options[1]->Value);
+        $this->assertEquals(0, $quiz->Items[0]->Options[2]->Value);
+        $this->assertEquals(0, $quiz->Items[0]->Options[3]->Value);
+        $this->assertEquals(true, $quiz->Items[0]->ShuffleAnswers);
+    }
+
+    public function testGetQuizFromHTMLComplexMC()
+    {
+        $inputHTML = <<<HTML_QUIZ
+        <h2>MC w/list in text</h2>
+        What is the answer to the following questions?
+        <ul>
+            <li>question 1</li>
+            <li>question 2</li>
+        </ul>
+        <ol>
+            <li>option 1</li>
+            <li><strong>option 2</strong></li>
+            <li>option 3</li>
+            <li>option 4</li>
+        </ol>
+        
+HTML_QUIZ;
+        
+        $quiz = Quiz::GetQuizFromHTML($inputHTML);
+        $this->assertEquals(1, count($quiz->Items));
+        $this->assertEquals("MC 001 - MC w/list in text", $quiz->Items[0]->Name);
+        $this->assertEquals("What is the answer to the following questions?<ul><li>question 1</li><li>question 2</li></ul>", $quiz->Items[0]->Text);
+        $this->assertEquals(4, count($quiz->Items[0]->Options));
+        $this->assertEquals(0, $quiz->Items[0]->Options[0]->Value);
+        $this->assertEquals(100, $quiz->Items[0]->Options[1]->Value);
+        $this->assertEquals(0, $quiz->Items[0]->Options[2]->Value);
+        $this->assertEquals(0, $quiz->Items[0]->Options[3]->Value);
+    }
+
+        public function testGetQuizFromHTMLComplexMCNA()
+    {
+        $inputHTML = <<<HTML_QUIZ
+        <h2>N/A</h2>
+        What is?
+        <ul>
+            <li>question 1</li>
+            <li>question 2</li>
+        </ul>
+        <ol>
+            <li>option 1</li>
+            <li><strong>option 2</strong></li>
+            <li>option 3</li>
+            <li>option 4</li>
+        </ol>
+        
+HTML_QUIZ;
+        
+        $quiz = Quiz::GetQuizFromHTML($inputHTML);
+        $this->assertEquals(1, count($quiz->Items));
+        $this->assertEquals("MC 001 - What is? question 1 question", $quiz->Items[0]->Name);
+        $this->assertEquals("What is?<ul><li>question 1</li><li>question 2</li></ul>", $quiz->Items[0]->Text);
+        $this->assertEquals(4, count($quiz->Items[0]->Options));
+        $this->assertEquals(0, $quiz->Items[0]->Options[0]->Value);
+        $this->assertEquals(100, $quiz->Items[0]->Options[1]->Value);
+        $this->assertEquals(0, $quiz->Items[0]->Options[2]->Value);
+        $this->assertEquals(0, $quiz->Items[0]->Options[3]->Value);
+    }
+
     public function testGetQuizFromHTMLMultipleItems()
     {
         $inputHTML = <<<HTML_QUIZ
