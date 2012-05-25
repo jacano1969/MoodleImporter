@@ -32,6 +32,22 @@ class EssayItem extends Item
 ESSAY_XML;
        return new \SimpleXMLElement($xmlValue);
     }
+    
+    /**
+     * Converts the item represented by this object to a corresponding HTML
+     * representation that can be used for display on a web page.
+     * @return string 
+     * @todo Implement ToHTML()
+     */
+    public function ToHTML()
+    {
+        $htmlValue = <<<ESSAY_HTML
+        <p>Name: $this->Name</p>
+        <p>Question Text: $this->Text</p>
+ESSAY_HTML;
+        return $htmlValue;
+    }
+
 }
 
 ?>

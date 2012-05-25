@@ -29,7 +29,7 @@ class TrueFalseItem extends Item {
                     <text><![CDATA[$this->Name]]></text>
                 </name>
                 <questiontext format="html">
-                    <text>$this->Text</text>
+                    <text><![CDATA[$this->Text]]></text>
                 </questiontext>
                 <defaultgrade>
                     $this->PointValue
@@ -44,6 +44,25 @@ class TrueFalseItem extends Item {
 ESSAY_XML;
         return new \SimpleXMLElement($xmlValue);
     }
+    
+        /**
+     * Converts the item represented by this object to a corresponding HTML
+     * representation that can be used for display on a web page.
+     * @return string 
+     * @todo Implement ToHTML()
+     */
+    public function ToHTML()
+    {
+        $correctAnswer = $this->CorrectAnswer ? "TRUE" : "FALSE";
+        $htmlValue = <<<TF_HTML
+        <p>Name: $this->Name</p>
+        <p>Question Text: $this->Text</p>
+        <p><strong>$correctAnswer</strong></p>
+TF_HTML;
+        
+        return $htmlValue;
+    }
+
 }
 
 ?>

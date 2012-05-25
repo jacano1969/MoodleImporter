@@ -9,7 +9,7 @@ and open the template in the editor.
         <title></title>
     </head>
     <body>
-        <textarea><?php echo $quiz ?></textarea><br />
-        Success!
+        <textarea rows="40" cols="80"><?php echo $quiz->ToXMLString() ?></textarea>
+       
     </body>
 </html>

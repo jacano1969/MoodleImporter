@@ -83,6 +83,28 @@ ESSAY_XML;
         $this->assertTrue(xml_is_equal($expected, $trueFalseItem->ToXMLElement(),false));  
     }
 
+        /**
+    * 
+    * @covers MoodleImporter\TrueFalseItem::ToHTML
+    * 
+    */
+    public function testToHTML()
+    {
+        $tfItem = new TrueFalseItem;
+        $tfItem->Name = "TF 001 - What is";
+        $tfItem->PointValue = 2;
+        $tfItem->Text = 'What is';
+        $tfItem->CorrectAnswer = false;
+        $expected = <<<'TF_HTML'
+        <p>Name: TF 001 - What is</p>
+        <p>Question Text: What is</p>
+        <p><strong>FALSE</strong></p>
+TF_HTML;
+        
+        $this->assertTrue(html_is_equal($expected, $tfItem->ToHTML()));
+
+    }
+
 }
 
 ?>

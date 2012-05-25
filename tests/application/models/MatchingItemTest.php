@@ -34,18 +34,18 @@ class MatchingItemTest extends \PHPUnit_Framework_TestCase {
         </defaultgrade>
         <subquestion>
             <text>
-                Option 1
+                <![CDATA[Option 1]]>
             </text>
             <answer>
-                Definition 1
+                <![CDATA[Definition 1]]>
             </answer>
         </subquestion>
         <subquestion>
             <text>
-                Option 2
+                <![CDATA[Option 2]]>
             </text>
             <answer>
-                Definition 2
+                <![CDATA[Definition 2]]>
             </answer>
         </subquestion>
 

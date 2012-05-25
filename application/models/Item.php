@@ -14,6 +14,13 @@ abstract class Item {
     // Properties
     
     /**
+     * Unique ID value of this Item that is used to distinguish this item
+     * from other items within the same quiz. This not exported in the Moodle XML.
+     * @var string 
+     */
+    public $ID = "001";
+    
+    /**
      * Specifies the name of the item, which is shown in the list of Questions 
      * in Moodle, when viewing the question bank. This is not the same as the
      * question text, and it is typically NOT shown to the student. 
@@ -43,6 +50,13 @@ abstract class Item {
      * @abstract
      */
     public abstract function ToXMLElement();
+    
+    /**
+     * Converts the Item object to be displayed in HTML format.
+     * @return string
+     * @abstract 
+     */
+    public abstract function ToHTML();
       
 }
 

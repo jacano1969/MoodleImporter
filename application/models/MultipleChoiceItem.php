@@ -32,7 +32,7 @@ class MultipleChoiceItem extends Item
      * Allowed values are: "none", "abc", "ABCD", or "123"
      * @var string 
      */
-    public $AnswerNumbering = "abc";
+    public $AnswerNumbering = "ABCD";
     
     /**
      * Contains an array of MultipleChoiceOption objects.
@@ -48,7 +48,7 @@ class MultipleChoiceItem extends Item
      */
     public function ToXMLElement()
     {
-        $shuffleAnswersValue = $this->ShuffleAnswers ? 1 : 0;
+        $shuffleAnswersValue = ($this->ShuffleAnswers == false || $this->ShuffleAnswers == 0) ? 0 : 1;
         $singleValue = $this->SingleSelection ? "true" : "false";
         
         $xmlValue = <<<MC_XML
@@ -62,6 +62,7 @@ class MultipleChoiceItem extends Item
             <shuffleanswers>$shuffleAnswersValue</shuffleanswers>
             <single>$singleValue</single>
             <answernumbering>$this->AnswerNumbering</answernumbering>
+            <defaultgrade>$this->PointValue</defaultgrade>
         </question>
 MC_XML;
         
@@ -109,6 +110,26 @@ MC_XML;
             }
         }
     }
+    
+        /**
+     * Converts the item represented by this object to a corresponding HTML
+     * representation that can be used for display on a web page.
+     * @return string 
+     * @todo Implement ToHTML()
+     */
+    public function ToHTML()
+    {
+        $htmlValue = "<p>$this->Name</p><p>$this->Text</p><ol type=\"A\">";
+        
+        foreach ($this->Options as $option)
+        {
+            $htmlValue .= $option->ToHTML();
+        }
+        
+        $htmlValue .= '</ol>';
+        return $htmlValue;
+    }
+
 }
 
 ?>

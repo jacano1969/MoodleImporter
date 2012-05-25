@@ -39,10 +39,10 @@ MATCHING_XML;
             $xmlValue .= <<<MATCHING_XML
             <subquestion>
                 <text>
-                    $term
+                    <![CDATA[$term]]>
                 </text>
                 <answer>
-                    $definition
+                    <![CDATA[$definition]]>
                 </answer>
             </subquestion>
             
@@ -54,6 +54,17 @@ MATCHING_XML;
 MATCHING_XML;
         
        return new \SimpleXMLElement($xmlValue); 
+    }
+    
+    /**
+     * Converts the item represented by this object to a corresponding HTML
+     * representation that can be used for display on a web page.
+     * @return string 
+     * @todo Implement ToHTML()
+     */
+    public function ToHTML()
+    {
+        
     }
 }
 

@@ -20,26 +20,45 @@ class EssayItemTest extends \PHPUnit_Framework_TestCase {
      */
     public function testToXMLElement() 
     {
-       $essayItem = new EssayItem;
-       $essayItem->Name = "ES 001 - What is";
-       $essayItem->PointValue = 2;
-       $essayItem->Text = 'What is';
-       
-       $expected = <<<'ESSAY_XML'
-       <question type="essay">
-        <name>
-         <text><![CDATA[ES 001 - What is]]></text>
-        </name> 
-        <questiontext format="html">
-         <text>What is</text>
-        </questiontext>
-        <defaultgrade>2</defaultgrade>
-       </question>
+        $essayItem = new EssayItem;
+        $essayItem->Name = "ES 001 - What is";
+        $essayItem->PointValue = 2;
+        $essayItem->Text = 'What is';
+
+        $expected = <<<'ESSAY_XML'
+        <question type="essay">
+            <name>
+            <text><![CDATA[ES 001 - What is]]></text>
+            </name> 
+            <questiontext format="html">
+            <text><![CDATA[What is]]></text>
+            </questiontext>
+            <defaultgrade>2</defaultgrade>
+        </question>
 ESSAY_XML;
-       $expected = new \SimpleXMLElement($expected);
-       $this->assertTrue(xml_is_equal($expected, $essayItem->ToXMLElement(),false));  
+        $expected = new \SimpleXMLElement($expected);
+        $this->assertTrue(xml_is_equal($expected, $essayItem->ToXMLElement(),false));  
     }
 
+    /**
+    * 
+    * @covers MoodleImporter\EssayItem::ToHTML
+    * 
+    */
+    public function testToHTML()
+    {
+        $essayItem = new EssayItem;
+        $essayItem->Name = "ES 001 - What is";
+        $essayItem->PointValue = 2;
+        $essayItem->Text = 'What is';
+        $expected = <<<'ESSAY_HTML'
+        <p>Name: ES 001 - What is</p>
+        <p>Question Text: What is</p>
+ESSAY_HTML;
+        
+        $this->assertEquals($expected, $essayItem->ToHTML());
+
+    }
 }
 
 ?>

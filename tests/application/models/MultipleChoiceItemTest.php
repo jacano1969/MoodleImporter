@@ -222,10 +222,55 @@ class MultipleChoiceItemTest extends \PHPUnit_Framework_TestCase {
             <shuffleanswers>1</shuffleanswers>
             <single>true</single>
             <answernumbering>abc</answernumbering>
+            <defaultgrade>2</defaultgrade>
         </question>
 MC_XML;
         
         $this->assertTrue(xml_is_equal(new \SimpleXMLElement($expected), $mcItem->ToXMLElement()));
+    }
+
+    
+    /**
+    * 
+    * @covers MoodleImporter\MultipleChoiceItem::ToHTML
+    * 
+    */
+    public function testToHTML()
+    {
+        $mcItem = new MultipleChoiceItem;
+        $mcItem->Name = "MC 001 - What is";
+        $mcItem->PointValue = 2;
+        $mcItem->ShuffleAnswers = true;
+        $mcItem->Text = "What is the answer to this question?";
+        $mcItem->SingleSelection = true;
+        $mcItem->AnswerNumbering = "abc";
+        
+        $option1 = new MultipleChoiceOption;
+        $option1->Text = "The correct answer";
+        $option1->Value = 100;
+        
+        $option2 = new MultipleChoiceOption;
+        $option2->Text = "A distractor";
+        $option2->Value = 0;
+        
+        $option3 = new MultipleChoiceOption;
+        $option3->Text = "Another distractor";
+        $option3->Value = 0;
+
+        $mcItem->Options = array($option1, $option2, $option3);
+        
+        $expected = <<<'MC_HTML'
+        <p>MC 001 - What is</p>
+        <p>What is the answer to this question?</p>
+        <ol type="A">
+            <li><strong>The correct answer</strong></li>
+            <li>A distractor</li>
+            <li>Another distractor</li>
+        </ol>
+MC_HTML;
+        
+        $this->assertTrue(html_is_equal($expected, $mcItem->ToHTML()));
+
     }
 
 }

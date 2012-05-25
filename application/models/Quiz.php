@@ -123,8 +123,10 @@ class Quiz  {
                 if (stristr($options[0], 't') || stristr($options[0], 'f'))
                 {
                     $item = new TrueFalseItem();
+                    $item->ID = sprintf("%03d", $itemNumber + 1);
                     $item->CorrectAnswer = !stristr($options[0], 'f');
-                    $item->Name = sprintf("TF %03d - %s", $itemNumber + 1, $questionName[1]); 
+                    $item->Name = 'TF ' . $item->ID . ' - ' . $questionName[1];
+                    //$item->Name = sprintf("TF %03d - %s", $itemNumber + 1, $questionName[1]); 
                     $item->Text = $questionText[1];
                     $item->PointValue = 1;
                     $quiz->Items[] = $item;
@@ -133,7 +135,8 @@ class Quiz  {
             else  // Otherwise, it must be multiple choice.
             {
                 $item = new MultipleChoiceItem;
-                    $item->Name = sprintf("MC %03d - %s", $itemNumber + 1, $questionName[1]);
+                $item->ID = sprintf("%03d", $itemNumber + 1);
+                $item->Name = 'MC ' . $item->ID . ' - ' . $questionName[1];
                 $item->Text = $questionText[1];
                 $item->PointValue = 1;
                 

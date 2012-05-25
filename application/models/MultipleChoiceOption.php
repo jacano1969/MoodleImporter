@@ -32,11 +32,29 @@ class MultipleChoiceOption  {
     {
         $xmlValue = <<<OPTION_XML
         <answer fraction="$this->Value">
-            <text>$this->Text</text>
+            <text><![CDATA[$this->Text]]></text>
         </answer>
 OPTION_XML;
         return new \SimpleXMLElement($xmlValue);
     }
+    
+    /**
+     * Converts the item represented by this object to a corresponding HTML
+     * representation that can be used for display on a web page.
+     * @return string 
+     * @todo Implement ToHTML()
+     */
+    public function ToHTML()
+    {
+        $strongOpenTag = $this->Value == 100 ? "<strong>":"";
+        $strongCloseTag = $this->Value == 100 ? "</strong>" : "";
+        $htmlValue = <<<MCOPTION_HTML
+        <li>$strongOpenTag$this->Text$strongCloseTag</li>
+MCOPTION_HTML;
+        return $htmlValue;
+
+    }
+
 }
 
 ?>
