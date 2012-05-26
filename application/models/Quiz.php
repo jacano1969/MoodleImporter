@@ -50,6 +50,8 @@ class Quiz  {
      */
     public static function GetQuizFromHTML($htmlQuiz)
     {
+        $essayQuestion = false;
+        
         // First get rid of all unneeded whitespace not inside any tags
         $quizString = preg_replace('~\s*(<([^>]*)>[^<]*</\2>|<[^>]*>)\s*~','$1',$htmlQuiz);
         
@@ -77,10 +79,16 @@ class Quiz  {
             
             // Get the question text, which is all text between the closing
             // </h2> tag and the last <ol> or <ul> tag.
-            $regexp = '/<\/h2>([.\S\s]*)<[oud]l>[.\S\s]*$/i';
+            $regexp = '/<\/h2>([.\S\s]*)<[oud]l>[.\S\s]*(?<!(<br \/>))$/i';
             $questionText = null;
             preg_match($regexp, $quizArray[$itemNumber], $questionText);
-            if ($questionText == null) break;
+            if (sizeof($questionText) == 0) 
+            {
+                $regexp = '/<\/h2>([.\S\s]*)<br[\s]?\/>/Ui';
+                $questionText = null;
+                preg_match($regexp, $quizArray[$itemNumber], $questionText);
+                $essayQuestion = true;
+            }
             
             if ($questionName[1] == 'N/A')
             {
@@ -88,105 +96,115 @@ class Quiz  {
                 // first five words of the question's text
                 $questionName[1] = implode(" ", array_splice(preg_split( "/\s+/", preg_replace('/<[\/]?[^>]+>/i', " ", $questionText[1])), 0, 5));
             }
-            // @todo Get matching options to work, which will be inside dt tags
-            // @todo get N/A working for matching and essay question names
+            // @todo get N/A working for essay question names
             
-            // Get the answer options, which should be contained in <ol> or <ul>
-            // tags, but we have to get the last set of <ol> or <ul> tags,
-            // because the question text itself could contain them.
-            $regexp = '/[.\S\s]*((<[oud]l>)[.\S\s]*)$/i';
-            $questionAnswer = null;
-            preg_match($regexp, $quizArray[$itemNumber], $questionAnswer);
-            if ($questionAnswer == null) break;
-            
-            // Now separate out all the answer options, which will appear between
-            // <li> and </li> tags.
-            $regexp = '/<li>([.\S\s]*)<\/li>/Ui';
-            $options = null;
-            preg_match_all($regexp, $questionAnswer[1], $options);
-            if ($options == null) break;
-            if (sizeof($options[1]) == 0)
+            if ($essayQuestion)
             {
-                $regexp = '/<dt>([.\S\s]*)<\/dt><dd>([.\S\s]*)<\/dd>/Ui';
-                $options = null;
-                preg_match_all($regexp, $questionAnswer[1], $options);
-                $item = new MatchingItem();
+                $item = new EssayItem();
                 $item->ID = sprintf("%03d", $itemNumber + 1);
-                $item->Name = 'MT ' . $item->ID . ' - ' . $questionName[1];
+                $item->Name = 'ES ' . $item->ID . ' - ' . $questionName[1];
                 $item->Text = $questionText[1];
                 $item->PointValue = 1;
-                
-                for ($j = 0; $j < count($options[1]); $j++)
-                {
-                    $item->Options[$options[1][$j]] = $options[2][$j];
-                }
-                
                 $quiz->Items[] = $item;
             }
             else
             {
-                // preg_match_all creates a multidimensional array where the first 
-                // dimension contains the globally matched string in index 0 and
-                // an array of matched options in index 1. Since we don't care about
-                // the globally matched string, we delete it.
-                $options = $options[1];
-                // If there is only one answer, it could be a true/false or essay 
-                // item.
-                if (count($options) == 1)
+                // Get the answer options, which should be contained in <dl>, <ol> or <ul>
+                // tags, but we have to get the last set of <dl>, <ol> or <ul> tags,
+                // because the question text itself could contain them.
+                $regexp = '/[.\S\s]*((<[oud]l>)[.\S\s]*)<\/[oud]l>$/i';
+                $questionAnswer = null;
+                preg_match($regexp, $quizArray[$itemNumber], $questionAnswer);
+                if ($questionAnswer == null) break;
+
+                // Now separate out all the answer options, which will appear between
+                // <li> and </li> tags.
+                $regexp = '/<li>([.\S\s]*)<\/li>/Ui';
+                $options = null;
+                preg_match_all($regexp, $questionAnswer[1], $options);
+                if (sizeof($options[1]) == 0)
                 {
-                    if (stristr($options[0], 't') || stristr($options[0], 'f'))
-                    {
-                        $item = new TrueFalseItem();
-                        $item->ID = sprintf("%03d", $itemNumber + 1);
-                        $item->CorrectAnswer = !stristr($options[0], 'f');
-                        $item->Name = 'TF ' . $item->ID . ' - ' . $questionName[1];
-                        //$item->Name = sprintf("TF %03d - %s", $itemNumber + 1, $questionName[1]); 
-                        $item->Text = $questionText[1];
-                        $item->PointValue = 1;
-                        $quiz->Items[] = $item;
-                    }
-                }
-                else  // Otherwise, it must be multiple choice.
-                {
-                    $item = new MultipleChoiceItem;
+                    $regexp = '/<dt>([.\S\s]*)<\/dt><dd>([.\S\s]*)<\/dd>/Ui';
+                    $options = null;
+                    preg_match_all($regexp, $questionAnswer[1], $options);
+                    $item = new MatchingItem();
                     $item->ID = sprintf("%03d", $itemNumber + 1);
-                    $item->Name = 'MC ' . $item->ID . ' - ' . $questionName[1];
+                    $item->Name = 'MT ' . $item->ID . ' - ' . $questionName[1];
                     $item->Text = $questionText[1];
                     $item->PointValue = 1;
 
-                    // If the questionAnswer options contain an <ol> (ordered list),
-                    // then we do not want to shuffle answers; otherwise, we do.
-                    $item->ShuffleAnswers = !stristr($questionAnswer[1], '<ol>');
-
-                    // Loop through all the answer options and add them as 
-                    // MultipleChoiceOption objects to the list of Items in the quiz
-                    foreach ($options as $option)
+                    for ($j = 0; $j < count($options[1]); $j++)
                     {
-                        $mcOption = new MultipleChoiceOption;
-
-                        // See if this option is the correct one. Correct answers
-                        // should appear between <strong> and </strong>.
-                        $regexp = '/<strong>([.\S\s]*)<\/strong>/Ui'; 
-                        $numberFound = preg_match($regexp, $option, $filteredAnswer);
-
-                        // See if we found a correct answer:
-                        if ($numberFound > 0)
-                        {
-                            // Option is correct, so grab the filtered option
-                            // retrieved from preg_match
-                            $mcOption->Text = $filteredAnswer[1];
-                            $mcOption->Value = 100;
-                        }
-                        else
-                        {
-                            // Option is incorrect, so grab the unfiltered option
-                            $mcOption->Text = $option;
-                            $mcOption->Value = 0;
-                        }
-                        $item->Options[] = $mcOption;
+                        $item->Options[$options[1][$j]] = $options[2][$j];
                     }
-                    // Add the newly created item to the quiz's list of Items
+
                     $quiz->Items[] = $item;
+                }
+                else
+                {
+                    // preg_match_all creates a multidimensional array where the first 
+                    // dimension contains the globally matched string in index 0 and
+                    // an array of matched options in index 1. Since we don't care about
+                    // the globally matched string, we delete it.
+                    $options = $options[1];
+                    // If there is only one answer, it could be a true/false or essay 
+                    // item.
+                    if (count($options) == 1)
+                    {
+                        if (stristr($options[0], 't') || stristr($options[0], 'f'))
+                        {
+                            $item = new TrueFalseItem();
+                            $item->ID = sprintf("%03d", $itemNumber + 1);
+                            $item->CorrectAnswer = !stristr($options[0], 'f');
+                            $item->Name = 'TF ' . $item->ID . ' - ' . $questionName[1];
+                            //$item->Name = sprintf("TF %03d - %s", $itemNumber + 1, $questionName[1]); 
+                            $item->Text = $questionText[1];
+                            $item->PointValue = 1;
+                            $quiz->Items[] = $item;
+                        }
+                    }
+                    else  // Otherwise, it must be multiple choice.
+                    {
+                        $item = new MultipleChoiceItem;
+                        $item->ID = sprintf("%03d", $itemNumber + 1);
+                        $item->Name = 'MC ' . $item->ID . ' - ' . $questionName[1];
+                        $item->Text = $questionText[1];
+                        $item->PointValue = 1;
+
+                        // If the questionAnswer options contain an <ol> (ordered list),
+                        // then we do not want to shuffle answers; otherwise, we do.
+                        $item->ShuffleAnswers = !stristr($questionAnswer[1], '<ol>');
+
+                        // Loop through all the answer options and add them as 
+                        // MultipleChoiceOption objects to the list of Items in the quiz
+                        foreach ($options as $option)
+                        {
+                            $mcOption = new MultipleChoiceOption;
+
+                            // See if this option is the correct one. Correct answers
+                            // should appear between <strong> and </strong>.
+                            $regexp = '/<strong>([.\S\s]*)<\/strong>/Ui'; 
+                            $numberFound = preg_match($regexp, $option, $filteredAnswer);
+
+                            // See if we found a correct answer:
+                            if ($numberFound > 0)
+                            {
+                                // Option is correct, so grab the filtered option
+                                // retrieved from preg_match
+                                $mcOption->Text = $filteredAnswer[1];
+                                $mcOption->Value = 100;
+                            }
+                            else
+                            {
+                                // Option is incorrect, so grab the unfiltered option
+                                $mcOption->Text = $option;
+                                $mcOption->Value = 0;
+                            }
+                            $item->Options[] = $mcOption;
+                        }
+                        // Add the newly created item to the quiz's list of Items
+                        $quiz->Items[] = $item;
+                    }
                 }
             }
         }

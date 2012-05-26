@@ -66,6 +66,38 @@ QUIZ_TEST;
         $this->assertTrue(xml_is_equal(new \SimpleXMLElement($output), new \SimpleXMLElement($quiz->ToXMLString())));
     }
     
+        public function testToXMLStringEssayItemComplex() {
+        $essayItem = new EssayItem;
+        $essayItem->Name = "ES 001 - What is";
+        $essayItem->Text = "What is<ou><li>Subquestion 1</li><li>Subquestion 2</li></ou>";
+        $essayItem->PointValue = 2;
+        $quiz = new Quiz;
+        $quiz->Category = "Quiz #1";
+        $quiz->Items[] = $essayItem;
+        $output = <<<'QUIZ_TEST'
+        <quiz>
+            <question type="category">
+                <category>
+                    <text>$course$/Quiz #1</text>
+                </category>
+            </question>
+            <question type="essay">
+                <name>
+                    <text>ES 001 - What is</text>
+                </name>
+                <questiontext format="html">
+                    <text><![CDATA[What is<ou><li>Subquestion 1</li><li>Subquestion 2</li></ou>]]></text>
+                </questiontext>
+                <defaultgrade>2</defaultgrade>
+            </question>
+        </quiz>
+QUIZ_TEST;
+        
+        $this->assertTrue(xml_is_equal(new \SimpleXMLElement($output), new \SimpleXMLElement($quiz->ToXMLString())));
+    }
+
+    
+    
     public function testGetQuizFromHTMLSimpleTrueFalse()
     {
         $inputHTML = <<<HTML_QUIZ
@@ -254,6 +286,63 @@ HTML_QUIZ;
         $this->assertEquals('State starting with an A', $quiz->Items[0]->Options['Alabama']);
     }
     
+    public function testGetQuizFromHTMLMatchingItemComplex()
+    {
+        $inputHTML = <<<HTML_QUIZ
+        <h2>made up</h2>
+        <p>Match the following:</p>
+        <ol>
+            <li>Subquestion 1</li>
+            <li>Subquestion 2</li>
+        </ol>
+        <dl>
+            <dt>Alabama</dt><dd>State starting with an A</dd>
+            <dt>Colorado</dt><dd>State starting with a C</dd>
+            <dt>Michigan</dt><dd>State starting with a M</dd>
+            <dt>Ohio</dt><dd>State starting with an O</dd>
+            <dt>New York</dt><dd>State starting with a N</dd>
+            <dt>Wisconsin</dt><dd>State starting with a W</dd>
+        </dl>
+HTML_QUIZ;
+        
+        $quiz = Quiz::GetQuizFromHTML($inputHTML);
+        $this->assertEquals(1, count($quiz->Items));
+        $this->assertEquals('State starting with an A', $quiz->Items[0]->Options['Alabama']);
+        $this->assertEquals('<p>Match the following:</p><ol><li>Subquestion 1</li><li>Subquestion 2</li></ol>', $quiz->Items[0]->Text);
+    }
+
+    
+    public function testGetQuizFromHTMLEssayItemSimple()
+    {
+        $inputHTML = <<<HTML_QUIZ
+        <h2>Number 1</h2>
+        <p>Write about your summer.</p>
+        <br />
+HTML_QUIZ;
+        
+        $quiz = Quiz::GetQuizFromHTML($inputHTML);
+        $this->assertEquals(1, count($quiz->Items));
+        $this->assertEquals('<p>Write about your summer.</p>', $quiz->Items[0]->Text);
+    }
+
+    public function testGetQuizFromHTMLEssayItemComplex()
+    {
+        $inputHTML = <<<HTML_QUIZ
+        <h2>Number 1</h2>
+        <p>Write about your summer.</p>
+        <ol>
+            <li>Subquestion 1</li>
+            <li>Subquestion 2</li>
+        </ol>
+        <br />
+HTML_QUIZ;
+        
+        $quiz = Quiz::GetQuizFromHTML($inputHTML);
+        $this->assertEquals(1, count($quiz->Items));
+        $this->assertEquals('<p>Write about your summer.</p><ol><li>Subquestion 1</li><li>Subquestion 2</li></ol>', $quiz->Items[0]->Text);
+    }
+
+  
     public function testGetQuizFromHTMLMultipleItems()
     {
         $inputHTML = <<<HTML_QUIZ
