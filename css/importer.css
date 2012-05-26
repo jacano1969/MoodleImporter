@@ -22,8 +22,13 @@
  
 /* Customize your modal window here, you can add background image too */
 #boxes #dialog {
-  width:375px; 
-  height:203px;
+  width:450px; 
+  height:300px;
   padding:10px;
   background-color:#ffffff;
+
+}
+#question {
+ overflow:scroll;
+ height:280px;
 }

@@ -124,7 +124,12 @@
 								</div>
 		<div class="info-box-body">
 			<div class="var-summary">
-																																								<div class="var-title">
+																																																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">string</span>
+					<a href="#$ID" title="details" class="var-name">$ID</a>
+				</div>
+																<div class="var-title">
 					<img src="../media/images/Variable.png" alt=" " />
 					<span class="var-type">string</span>
 					<a href="#$Name" title="details" class="var-name">$Name</a>
@@ -156,7 +161,13 @@
 		</div>
 		<div class="info-box-body">			
 			<div class="method-summary">
-																								<div class="method-definition">
+																																<div class="method-definition">
+					<img src="../media/images/AbstractMethod.png" alt=" "/>
+											<span class="method-result">string</span>
+										<a href="#ToHTML" title="details" class="method-name">ToHTML</a>
+										()
+									</div>
+																<div class="method-definition">
 					<img src="../media/images/AbstractMethod.png" alt=" "/>
 											<span class="method-result">\SimpleXMLElement</span>
 										<a href="#ToXMLElement" title="details" class="method-name">ToXMLElement</a>
@@ -181,6 +192,29 @@
 					</div>
 		<div class="info-box-body">
 			
+<a name="var$ID" id="$ID"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$ID</span>
+			 = <span class="var-default"> &quot;001&quot;</span>			(line <span class="line-number">21</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Unique ID value of this Item that is used to distinguish this item  from other items within the same quiz. This not exported in the Moodle XML.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
 <a name="var$Name" id="$Name"><!-- --></A>
 <div class="evenrow">
 
@@ -189,7 +223,7 @@
 		<span class="var-title">
 			<span class="var-type">string</span>
 			<span class="var-name">$Name</span>
-			 = <span class="var-default"> &quot;&quot;</span>			(line <span class="line-number">22</span>)
+			 = <span class="var-default"> &quot;&quot;</span>			(line <span class="line-number">29</span>)
 		</span>
 	</div>
 
@@ -212,7 +246,7 @@
 		<span class="var-title">
 			<span class="var-type">int</span>
 			<span class="var-name">$PointValue</span>
-			 = <span class="var-default"> 1</span>			(line <span class="line-number">37</span>)
+			 = <span class="var-default"> 1</span>			(line <span class="line-number">44</span>)
 		</span>
 	</div>
 
@@ -235,7 +269,7 @@
 		<span class="var-title">
 			<span class="var-type">string</span>
 			<span class="var-name">$Text</span>
-			 = <span class="var-default"> &quot;&quot;</span>			(line <span class="line-number">30</span>)
+			 = <span class="var-default"> &quot;&quot;</span>			(line <span class="line-number">37</span>)
 		</span>
 	</div>
 
@@ -266,12 +300,58 @@
 		</div>
 		<div class="info-box-body">
 			<A NAME='method_detail'></A>
-<a name="methodToXMLElement" id="ToXMLElement"><!-- --></a>
+<a name="methodToHTML" id="ToHTML"><!-- --></a>
 <div class="oddrow">
 	
 	<div class="method-header">
 		<img src="../media/images/AbstractMethod.png" />
-		<span class="method-title">ToXMLElement</span> (line <span class="line-number">45</span>)
+		<span class="method-title">ToHTML</span> (line <span class="line-number">59</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Converts the Item object to be displayed in HTML format.</p>
+	<ul class="tags">
+				<li><span class="field">abstract:</span> </li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			ToHTML
+		</span>
+				()
+			</div>
+	
+		
+			
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../MoodleXMLImporter/EssayItem.html#methodToHTML">EssayItem::ToHTML()</a>
+								: Converts the item represented by this object to a corresponding HTML  representation that can be used for display on a web page.
+							</li>
+					<li>
+				<a href="../MoodleXMLImporter/MatchingItem.html#methodToHTML">MatchingItem::ToHTML()</a>
+								: Converts the item represented by this object to a corresponding HTML  representation that can be used for display on a web page.
+							</li>
+					<li>
+				<a href="../MoodleXMLImporter/MultipleChoiceItem.html#methodToHTML">MultipleChoiceItem::ToHTML()</a>
+								: Converts the item represented by this object to a corresponding HTML  representation that can be used for display on a web page.
+							</li>
+					<li>
+				<a href="../MoodleXMLImporter/TrueFalseItem.html#methodToHTML">TrueFalseItem::ToHTML()</a>
+								: Converts the item represented by this object to a corresponding HTML  representation that can be used for display on a web page.
+							</li>
+				</ul>
+	</div>
+<a name="methodToXMLElement" id="ToXMLElement"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/AbstractMethod.png" />
+		<span class="method-title">ToXMLElement</span> (line <span class="line-number">52</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -318,7 +398,7 @@
 
 	
 	<p class="notes" id="credit">
-		Documentation generated on Mon, 21 May 2012 13:57:46 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
+		Documentation generated on Fri, 25 May 2012 20:02:13 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
 	</p>
 	</div></body>
 </html>

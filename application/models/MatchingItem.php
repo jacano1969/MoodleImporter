@@ -64,7 +64,15 @@ MATCHING_XML;
      */
     public function ToHTML()
     {
+        $htmlValue = "<p>Name: $this->Name</p><p>Question Text: $this->Text</p><dl>";
+        foreach ($this->Options as $term => $definition)
+        {
+            $htmlValue .= "<dt>$term</dt><dd>$definition</dd>";
+        }
+        $htmlValue .= '</dl>';
         
+        return $htmlValue;
+
     }
 }
 

@@ -205,7 +205,7 @@ HTML_QUIZ;
         $this->assertEquals(0, $quiz->Items[0]->Options[3]->Value);
     }
 
-        public function testGetQuizFromHTMLComplexMCNA()
+    public function testGetQuizFromHTMLComplexMCNA()
     {
         $inputHTML = <<<HTML_QUIZ
         <h2>N/A</h2>
@@ -234,6 +234,26 @@ HTML_QUIZ;
         $this->assertEquals(0, $quiz->Items[0]->Options[3]->Value);
     }
 
+    public function testGetQuizFromHTMLMatchingItem()
+    {
+        $inputHTML = <<<HTML_QUIZ
+        <h2>made up</h2>
+        <p>Match the following:</p>
+        <dl>
+            <dt>Alabama</dt><dd>State starting with an A</dd>
+            <dt>Colorado</dt><dd>State starting with a C</dd>
+            <dt>Michigan</dt><dd>State starting with a M</dd>
+            <dt>Ohio</dt><dd>State starting with an O</dd>
+            <dt>New York</dt><dd>State starting with a N</dd>
+            <dt>Wisconsin</dt><dd>State starting with a W</dd>
+        </dl>
+HTML_QUIZ;
+        
+        $quiz = Quiz::GetQuizFromHTML($inputHTML);
+        $this->assertEquals(1, count($quiz->Items));
+        $this->assertEquals('State starting with an A', $quiz->Items[0]->Options['Alabama']);
+    }
+    
     public function testGetQuizFromHTMLMultipleItems()
     {
         $inputHTML = <<<HTML_QUIZ

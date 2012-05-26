@@ -91,11 +91,17 @@
 		</div>
 		<div class="info-box-body">			
 			<div class="method-summary">
-																																<div class="method-definition">
+																																								<div class="method-definition">
 					<img src="../media/images/Method.png" alt=" "/>
 											<span class="method-result">void</span>
 										<a href="#ApplyTBLTemplate" title="details" class="method-name">ApplyTBLTemplate</a>
 											(<span class="var-type">bool</span>&nbsp;<span class="var-name">$IsEnabled</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">string</span>
+										<a href="#ToHTML" title="details" class="method-name">ToHTML</a>
+										()
 									</div>
 																<div class="method-definition">
 					<img src="../media/images/Method.png" alt=" "/>
@@ -129,7 +135,7 @@
 		<span class="var-title">
 			<span class="var-type">string</span>
 			<span class="var-name">$AnswerNumbering</span>
-			 = <span class="var-default"> &quot;abc&quot;</span>			(line <span class="line-number">35</span>)
+			 = <span class="var-default"> &quot;ABCD&quot;</span>			(line <span class="line-number">35</span>)
 		</span>
 	</div>
 
@@ -222,6 +228,10 @@
 					<blockquote>
 													<img src="../media/images/Variable.png" />
 							<span class="var-title">
+								<span class="var-name"><a href="../MoodleXMLImporter/Item.html#var$ID">Item::$ID</a></span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="var-title">
 								<span class="var-name"><a href="../MoodleXMLImporter/Item.html#var$Name">Item::$Name</a></span><br>
 							</span>
 													<img src="../media/images/Variable.png" />
@@ -253,7 +263,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">ApplyTBLTemplate</span> (line <span class="line-number">91</span>)
+		<span class="method-title">ApplyTBLTemplate</span> (line <span class="line-number">92</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -279,8 +289,40 @@
 		
 			
 	</div>
-<a name="methodToXMLElement" id="ToXMLElement"><!-- --></a>
+<a name="methodToHTML" id="ToHTML"><!-- --></a>
 <div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">ToHTML</span> (line <span class="line-number">120</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Converts the item represented by this object to a corresponding HTML  representation that can be used for display on a web page.</p>
+	<ul class="tags">
+				<li><span class="field">todo:</span> Implement ToHTML()</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			ToHTML
+		</span>
+				()
+			</div>
+	
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../MoodleXMLImporter/Item.html#methodToHTML">Item::ToHTML()</a></dt>
+						<dd>Converts the Item object to be displayed in HTML format.</dd>
+					</dl>
+			
+	</div>
+<a name="methodToXMLElement" id="ToXMLElement"><!-- --></a>
+<div class="oddrow">
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
@@ -316,6 +358,8 @@
 					<p>Inherited From <span class="classname"><a href="../MoodleXMLImporter/Item.html">Item</a></span></p>
 					<blockquote>
 													<img src="../media/images/AbstractMethod.png" alt=" "/>
+							<span class="method-name"><a href="../MoodleXMLImporter/Item.html#methodToHTML">Item::ToHTML()</a></span><br>
+													<img src="../media/images/AbstractMethod.png" alt=" "/>
 							<span class="method-name"><a href="../MoodleXMLImporter/Item.html#methodToXMLElement">Item::ToXMLElement()</a></span><br>
 											</blockquote>
 										
@@ -324,7 +368,7 @@
 
 	
 	<p class="notes" id="credit">
-		Documentation generated on Mon, 21 May 2012 13:57:46 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
+		Documentation generated on Fri, 25 May 2012 20:02:13 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
 	</p>
 	</div></body>
 </html>

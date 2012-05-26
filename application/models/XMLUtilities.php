@@ -154,7 +154,14 @@ function html_is_equal($to, $from)
 {
     $to1 = preg_replace('~\s*(<([^>]*)>[^<]*</\2>|<[^>]*>)\s*~','$1',$to );
     $from1 = preg_replace('~\s*(<([^>]*)>[^<]*</\2>|<[^>]*>)\s*~','$1',$from);
-    return $to1 == $from1;
+    if ($to1 != $from1)
+    {
+        return $to1 . 'does not equal' . $from1;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 ?>

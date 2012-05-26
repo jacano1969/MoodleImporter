@@ -54,6 +54,26 @@ MATCHING_XML;
         $expected = new \SimpleXMLElement($expected);
         $this->assertTrue(xml_is_equal($expected, $matchingItem->ToXMLElement(),false)); 
     }
+    
+    public function testToHTML() {
+        $matchingItem = new MatchingItem;
+        $matchingItem->Name = "MT 001 - What is";
+        $matchingItem->PointValue = 2;
+        $matchingItem->Text = 'What is';
+        $matchingItem->Options = array('Option 1' => 'Definition 1', 'Option 2' => 'Definition 2', 'Option 3' => 'Definition 3');
+       
+        $expected = <<<'MATCHING_HTML'
+        <p>Name: MT 001 - What is</p>
+        <p>Question Text: What is</p>
+        <dl>
+            <dt>Option 1</dt><dd>Definition 1</dd>
+            <dt>Option 2</dt><dd>Definition 2</dd>
+            <dt>Option 3</dt><dd>Definition 3</dd>
+        </dl>
+MATCHING_HTML;
+        
+        $this->assertTrue(html_is_equal($expected, $matchingItem->ToHTML())); 
+    }
 }
 
 ?>

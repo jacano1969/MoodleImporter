@@ -10,6 +10,11 @@ include_once 'Item.php';
  */
 class TrueFalseItem extends Item {
     
+    /**
+     * Represents the correct answer for this true/false item. Value should be
+     * either true or false.
+     * @var bool
+     */
     public $CorrectAnswer = false;
     
     /**

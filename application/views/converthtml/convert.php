@@ -1,7 +1,3 @@
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,7 +5,7 @@ and open the template in the editor.
         <title></title>
     </head>
     <body>
-        <textarea rows="40" cols="80"><?php echo $quiz->ToXMLString() ?></textarea>
-       
+        <h1>Moodle XML Importer</h1>
+        <p>Click <a href="<?php echo site_url();?>/converthtml/download">here</a> to download your converted quiz in Moodle XML format.</p>
     </body>
 </html>
