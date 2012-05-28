@@ -1,3 +1,8 @@
+<?php
+/**
+ * @package MoodleXMLImporter 
+ */
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -52,7 +57,7 @@
         <h2>The test file you provided contained the questions below:</h2>
         <?php echo form_open('converthtml/convert'); ?>
         Please enter a category for import: <?php echo form_input('category', $quiz->Category) ?><br />
-        <?php echo form_checkbox() ?>Apply Team-Based Learning Scoring Template to all Multiple Choice Questions<br />
+        <?php echo form_checkbox('applyTBL', 'applyTBL', $quiz->ApplyTBLTemplate) ?>Apply Team-Based Learning Scoring Template to all Multiple Choice Questions<br />
         <table border="1" cellpadding="0" cellspacing="0">
             <thead>
                 <tr>
@@ -72,7 +77,6 @@
                     echo '<td>' . $item->Text . '</td>';
                     if (property_exists($item, 'ShuffleAnswers'))
                     {
-                        // @todo Enable the Mark All and Unmark All links to set/reset shuffle checkboxes
                         $shuffle = $item->ShuffleAnswers;
                     }
                     else

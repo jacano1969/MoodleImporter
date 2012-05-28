@@ -11,6 +11,8 @@ include_once 'Item.php';
 class TrueFalseItem extends Item {
     
     /**
+     * CorrectAnswer
+     * 
      * Represents the correct answer for this true/false item. Value should be
      * either true or false.
      * @var bool
@@ -18,6 +20,19 @@ class TrueFalseItem extends Item {
     public $CorrectAnswer = false;
     
     /**
+     * GetPrefix
+     * 
+     * Returns the two-letter prefix for this item type.
+     * @return string 
+     */
+    public function GetPrefix()
+    {
+        return "TF";
+    }
+    
+    /**
+     * ToXMLElement
+     * 
      * Converts this True/False item into a SimpleXMLElement object corresponding 
      * to the "question" tag in the Moodle XML export file.
      * @return \SimpleXMLElement 
@@ -50,11 +65,12 @@ ESSAY_XML;
         return new \SimpleXMLElement($xmlValue);
     }
     
-        /**
+    /**
+     * ToHTML
+     * 
      * Converts the item represented by this object to a corresponding HTML
      * representation that can be used for display on a web page.
      * @return string 
-     * @todo Implement ToHTML()
      */
     public function ToHTML()
     {
@@ -67,7 +83,34 @@ TF_HTML;
         
         return $htmlValue;
     }
+    
+    /**
+     * ImportBB6XML
+     * 
+     * Converts the given <item> element that is retrieved from a Blackboard 6
+     * export file, and retrieves the properties associated with this class. 
+     * This method should be overridden in child classes, but should be called
+     * first in the child's implementation with parent::ImportBB6XML($bb6XML).
+     * The $itemID parameter specifies which number this item is within the quiz
+     * array of items.
+     * 
+     * @param \SimpleXMLElement $bb6XML
+     * @param string $itemID 
+     * @return void
+     */
+    public function ImportBB6XML(\SimpleXMLElement $bb6XML, $itemID)
+    {
+        parent::ImportBB6XML($bb6XML, $itemID);
+        $correctOption = $bb6XML->xpath('resprocessing//respcondition[@title=\'correct\']//varequal');
+        $this->CorrectAnswer = strtolower((string)$correctOption[0]) == 'true' ? true : false;
+    }
 
+    // @todo implement FromHTML method
+    public static function FromHTML($htmlString)
+    {
+        
+    }
+    
 }
 
 ?>

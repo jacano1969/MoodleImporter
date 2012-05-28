@@ -20,6 +20,8 @@ require_once APPPATH . '/models/XMLUtilities.php';
 class Quiz  {
     
     /**
+     * Category
+     * 
      * The category of the quiz, as it should appear in Moodle under the course
      * in which the quiz is imported.
      * @var string
@@ -27,12 +29,16 @@ class Quiz  {
     public $Category;  
     
     /**
+     * ApplyTBLTemplate
+     * 
      * Specifies whether or not to apply the Team-Based Learning template.
      * @var bool
      */
     public $ApplyTBLTemplate;
     
     /**
+     * Items
+     * 
      * Collection of Item objects associated with this quiz.
      * @uses Item
      * @var array
@@ -41,6 +47,8 @@ class Quiz  {
     
     
     /**
+     * GetQuizFromHTML
+     * 
      * This is a factory method used to create a Quiz object based on the contents
      * of the $htmlQuiz parameter. The $htmlQuiz parameter should conform to the 
      * import specifications located here:
@@ -96,13 +104,12 @@ class Quiz  {
                 // first five words of the question's text
                 $questionName[1] = implode(" ", array_splice(preg_split( "/\s+/", preg_replace('/<[\/]?[^>]+>/i', " ", $questionText[1])), 0, 5));
             }
-            // @todo get N/A working for essay question names
             
             if ($essayQuestion)
             {
                 $item = new EssayItem();
                 $item->ID = sprintf("%03d", $itemNumber + 1);
-                $item->Name = 'ES ' . $item->ID . ' - ' . $questionName[1];
+                $item->Name = $item->GetPrefix() . ' ' . $item->ID . ' - ' . $questionName[1];
                 $item->Text = $questionText[1];
                 $item->PointValue = 1;
                 $quiz->Items[] = $item;
@@ -129,7 +136,7 @@ class Quiz  {
                     preg_match_all($regexp, $questionAnswer[1], $options);
                     $item = new MatchingItem();
                     $item->ID = sprintf("%03d", $itemNumber + 1);
-                    $item->Name = 'MT ' . $item->ID . ' - ' . $questionName[1];
+                    $item->Name = $item->GetPrefix() . ' ' . $item->ID . ' - ' . $questionName[1];
                     $item->Text = $questionText[1];
                     $item->PointValue = 1;
 
@@ -156,7 +163,7 @@ class Quiz  {
                             $item = new TrueFalseItem();
                             $item->ID = sprintf("%03d", $itemNumber + 1);
                             $item->CorrectAnswer = !stristr($options[0], 'f');
-                            $item->Name = 'TF ' . $item->ID . ' - ' . $questionName[1];
+                            $item->Name = $item->GetPrefix() . ' ' . $item->ID . ' - ' . $questionName[1];
                             //$item->Name = sprintf("TF %03d - %s", $itemNumber + 1, $questionName[1]); 
                             $item->Text = $questionText[1];
                             $item->PointValue = 1;
@@ -167,7 +174,7 @@ class Quiz  {
                     {
                         $item = new MultipleChoiceItem;
                         $item->ID = sprintf("%03d", $itemNumber + 1);
-                        $item->Name = 'MC ' . $item->ID . ' - ' . $questionName[1];
+                        $item->Name = $item->GetPrefix() . ' ' . $item->ID . ' - ' . $questionName[1];
                         $item->Text = $questionText[1];
                         $item->PointValue = 1;
 
@@ -208,20 +215,77 @@ class Quiz  {
                 }
             }
         }
-        
-        //var_dump($quiz);
-
-        /** 
-         * @todo What if Essay question contains a bulleted or numbered list?
-         * 
-         */
-                
-        
-        
         return $quiz;
     }
     
     /**
+     * GetQuizFromBB6XML
+     * 
+     * This is a factory method designed to create a new quiz object based on
+     * the contents of the supplied Blackboard 6.0+ XML file.
+     * @param string $bb6XML
+     * @return \MoodleImporter\Quiz 
+     */
+    public static function GetQuizFromBB6XML($bb6XML)
+    {
+        $quizElement = new \SimpleXMLElement($bb6XML);
+        $quiz = new Quiz();
+        
+        // Get the quiz category -- same as the question pool in BB6
+        $categoryElement = $quizElement->xpath('/questestinterop/assessment');
+        $quiz->Category = (string)$categoryElement[0]['title'];
+
+        // Get array of items in the quiz
+        $items = $quizElement->xpath('//item');
+        
+        // Now process all the items in the quiz
+        for ($index = 0; $index < count($items); $index++)
+        {
+            // First, get the question type of this item
+            $questionType = $items[$index]->xpath('itemmetadata/bbmd_questiontype');
+            $questionType = (string)$questionType[0];
+
+            $item = null;
+            switch($questionType)
+            {
+                case "Matching" : // @todo implement matching question import
+                    $item = new MatchingItem();
+                    break;
+                case "Multiple Choice" :                 
+                    $item = new MultipleChoiceItem();
+                    break; 
+                case "Essay" : // @todo implement Essay question import
+                    $item = new EssayItem();
+                    break;
+                case "Multiple Answer" : // @todo implement multiple answer question import
+                    $item = new MultipleChoiceItem();
+                    break;
+                case "True/False" : 
+                    $item = new TrueFalseItem();
+                    break;
+                case "Fill in the Blank" : // @todo implement fill in question import
+                    $item = new EssayItem();
+                    break;
+                case "Short Response" : // @todo implement short response question import
+                    $item = new EssayItem();
+                    break;
+                default:  // ERROR: Could not find a valid question type, so break and fall through to next item.
+                    break;
+            }
+            if ($item != null) 
+            {
+                // Delegate the processing of each quiz item to the respective
+                // child class.
+                $item->ImportBB6XML($items[$index], sprintf("%03d", $index + 1));
+                $quiz->Items[] = $item;
+            }
+        }
+        return $quiz;
+    }
+    
+    /**
+     * ToXMLString
+     * 
      * Generates the Moodle XML code that can be exported.
      * @return string 
      */
@@ -243,6 +307,10 @@ QUIZ_XML;
         // Iterate through child items and add their elements as children of the quiz element.
         foreach ($this->Items as $item)
         {
+            // Apply (or turn off) the team-based learning template for each 
+            // item, based on whether the global ApplyTBLTemplate flag has been
+            // set.
+            $item->ApplyTBLTemplate($this->ApplyTBLTemplate);
             sxml_append($returnValue, $item->ToXMLElement());
         }  
         

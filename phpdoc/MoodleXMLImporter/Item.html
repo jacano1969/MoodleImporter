@@ -161,7 +161,25 @@
 		</div>
 		<div class="info-box-body">			
 			<div class="method-summary">
-																																<div class="method-definition">
+																																																								<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">bool</span>
+										<a href="#ApplyTBLTemplate" title="details" class="method-name">ApplyTBLTemplate</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$IsEnabled</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/AbstractMethod.png" alt=" "/>
+											<span class="method-result">string</span>
+										<a href="#GetPrefix" title="details" class="method-name">GetPrefix</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#ImportBB6XML" title="details" class="method-name">ImportBB6XML</a>
+											(<span class="var-type">SimpleXMLElement</span>&nbsp;<span class="var-name">\$bb6XML</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$itemID</span>, <span class="var-type">\SimpleXMLElement</span>&nbsp;<span class="var-name">$bb6XML</span>)
+									</div>
+																<div class="method-definition">
 					<img src="../media/images/AbstractMethod.png" alt=" "/>
 											<span class="method-result">string</span>
 										<a href="#ToHTML" title="details" class="method-name">ToHTML</a>
@@ -200,12 +218,13 @@
 		<span class="var-title">
 			<span class="var-type">string</span>
 			<span class="var-name">$ID</span>
-			 = <span class="var-default"> &quot;001&quot;</span>			(line <span class="line-number">21</span>)
+			 = <span class="var-default"> &quot;001&quot;</span>			(line <span class="line-number">24</span>)
 		</span>
 	</div>
 
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Unique ID value of this Item that is used to distinguish this item  from other items within the same quiz. This not exported in the Moodle XML.</p>
+<p class="short-description">ID</p>
+<p class="description"><p>Unique ID value of this Item that is used to distinguish this item  from other items within the same quiz. This not exported in the Moodle XML.</p></p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
@@ -223,12 +242,13 @@
 		<span class="var-title">
 			<span class="var-type">string</span>
 			<span class="var-name">$Name</span>
-			 = <span class="var-default"> &quot;&quot;</span>			(line <span class="line-number">29</span>)
+			 = <span class="var-default"> &quot;&quot;</span>			(line <span class="line-number">34</span>)
 		</span>
 	</div>
 
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Specifies the name of the item, which is shown in the list of Questions  in Moodle, when viewing the question bank. This is not the same as the  question text, and it is typically NOT shown to the student.</p>
+<p class="short-description">Name</p>
+<p class="description"><p>Specifies the name of the item, which is shown in the list of Questions  in Moodle, when viewing the question bank. This is not the same as the  question text, and it is typically NOT shown to the student.</p></p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
@@ -246,12 +266,13 @@
 		<span class="var-title">
 			<span class="var-type">int</span>
 			<span class="var-name">$PointValue</span>
-			 = <span class="var-default"> 1</span>			(line <span class="line-number">44</span>)
+			 = <span class="var-default"> 1</span>			(line <span class="line-number">54</span>)
 		</span>
 	</div>
 
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Specifies the default value to assign to this item. Note that this value  may be overriden by the Quiz object.</p>
+<p class="short-description">PointValue</p>
+<p class="description"><p>Specifies the default value to assign to this item. Note that this value  may be overriden by the Quiz object.</p></p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
@@ -269,12 +290,13 @@
 		<span class="var-title">
 			<span class="var-type">string</span>
 			<span class="var-name">$Text</span>
-			 = <span class="var-default"> &quot;&quot;</span>			(line <span class="line-number">37</span>)
+			 = <span class="var-default"> &quot;&quot;</span>			(line <span class="line-number">45</span>)
 		</span>
 	</div>
 
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Specifies the actual text of the question that should be displayed to  the student. This property is wrapped in a CDATA tag to allow the use  of HTML code.</p>
+<p class="short-description">Text</p>
+<p class="description"><p>Specifies the actual text of the question that should be displayed to  the student. This property is wrapped in a CDATA tag to allow the use  of HTML code.</p></p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
@@ -300,16 +322,156 @@
 		</div>
 		<div class="info-box-body">
 			<A NAME='method_detail'></A>
-<a name="methodToHTML" id="ToHTML"><!-- --></a>
+<a name="methodApplyTBLTemplate" id="ApplyTBLTemplate"><!-- --></a>
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../media/images/AbstractMethod.png" />
-		<span class="method-title">ToHTML</span> (line <span class="line-number">59</span>)
+		<img src="../media/images/Method.png" />
+		<span class="method-title">ApplyTBLTemplate</span> (line <span class="line-number">76</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Converts the Item object to be displayed in HTML format.</p>
+<p class="short-description">ApplyTBLTemplate</p>
+<p class="description"><p>Overridden in the child class, if it supports the Team-Based Learning  template.</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">bool</span>
+		<span class="method-name">
+			ApplyTBLTemplate
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$IsEnabled</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$IsEnabled</span>			</li>
+				</ul>
+		
+			
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../MoodleXMLImporter/MultipleChoiceItem.html#methodApplyTBLTemplate">MultipleChoiceItem::ApplyTBLTemplate()</a>
+								: ApplyTBLTemplate
+							</li>
+				</ul>
+	</div>
+<a name="methodGetPrefix" id="GetPrefix"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/AbstractMethod.png" />
+		<span class="method-title">GetPrefix</span> (line <span class="line-number">66</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">GetPrefix</p>
+<p class="description"><p>Returns the two-letter prefix used for naming this item.</p></p>
+	<ul class="tags">
+				<li><span class="field">abstract:</span> </li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			GetPrefix
+		</span>
+				()
+			</div>
+	
+		
+			
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../MoodleXMLImporter/EssayItem.html#methodGetPrefix">EssayItem::GetPrefix()</a>
+								: GetPrefix
+							</li>
+					<li>
+				<a href="../MoodleXMLImporter/MatchingItem.html#methodGetPrefix">MatchingItem::GetPrefix()</a>
+								: GetPrefix
+							</li>
+					<li>
+				<a href="../MoodleXMLImporter/MultipleChoiceItem.html#methodGetPrefix">MultipleChoiceItem::GetPrefix()</a>
+								: GetPrefix
+							</li>
+					<li>
+				<a href="../MoodleXMLImporter/TrueFalseItem.html#methodGetPrefix">TrueFalseItem::GetPrefix()</a>
+								: GetPrefix
+							</li>
+				</ul>
+	</div>
+<a name="methodImportBB6XML" id="ImportBB6XML"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">ImportBB6XML</span> (line <span class="line-number">114</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">ImportBB6XML</p>
+<p class="description"><p>Converts the given &lt;item&gt; element that is retrieved from a Blackboard 6  export file, and retrieves the properties associated with this class.  This method should be overridden in child classes, but should be called  first in the child's implementation with parent::ImportBB6XML($bb6XML).  The $itemID parameter specifies which number this item is within the quiz  array of items.</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			ImportBB6XML
+		</span>
+					(<span class="var-type">SimpleXMLElement</span>&nbsp;<span class="var-name">\$bb6XML</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$itemID</span>, <span class="var-type">\SimpleXMLElement</span>&nbsp;<span class="var-name">$bb6XML</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">\SimpleXMLElement</span>
+				<span class="var-name">$bb6XML</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$itemID</span>			</li>
+					<li>
+				<span class="var-type">SimpleXMLElement</span>
+				<span class="var-name">\$bb6XML</span>			</li>
+				</ul>
+		
+			
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../MoodleXMLImporter/MatchingItem.html#methodImportBB6XML">MatchingItem::ImportBB6XML()</a>
+								: ImportBB6XML
+							</li>
+					<li>
+				<a href="../MoodleXMLImporter/MultipleChoiceItem.html#methodImportBB6XML">MultipleChoiceItem::ImportBB6XML()</a>
+								: ImportBB6XML
+							</li>
+					<li>
+				<a href="../MoodleXMLImporter/TrueFalseItem.html#methodImportBB6XML">TrueFalseItem::ImportBB6XML()</a>
+								: ImportBB6XML
+							</li>
+				</ul>
+	</div>
+<a name="methodToHTML" id="ToHTML"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/AbstractMethod.png" />
+		<span class="method-title">ToHTML</span> (line <span class="line-number">97</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">ToHTML</p>
+<p class="description"><p>Converts the Item object to be displayed in HTML format.</p></p>
 	<ul class="tags">
 				<li><span class="field">abstract:</span> </li>
 				<li><span class="field">access:</span> public</li>
@@ -330,32 +492,33 @@
 		<ul class="redefinitions">
 					<li>
 				<a href="../MoodleXMLImporter/EssayItem.html#methodToHTML">EssayItem::ToHTML()</a>
-								: Converts the item represented by this object to a corresponding HTML  representation that can be used for display on a web page.
+								: ToHTML
 							</li>
 					<li>
 				<a href="../MoodleXMLImporter/MatchingItem.html#methodToHTML">MatchingItem::ToHTML()</a>
-								: Converts the item represented by this object to a corresponding HTML  representation that can be used for display on a web page.
+								: ToHTML
 							</li>
 					<li>
 				<a href="../MoodleXMLImporter/MultipleChoiceItem.html#methodToHTML">MultipleChoiceItem::ToHTML()</a>
-								: Converts the item represented by this object to a corresponding HTML  representation that can be used for display on a web page.
+								: ToHTML
 							</li>
 					<li>
 				<a href="../MoodleXMLImporter/TrueFalseItem.html#methodToHTML">TrueFalseItem::ToHTML()</a>
-								: Converts the item represented by this object to a corresponding HTML  representation that can be used for display on a web page.
+								: ToHTML
 							</li>
 				</ul>
 	</div>
 <a name="methodToXMLElement" id="ToXMLElement"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
 		<img src="../media/images/AbstractMethod.png" />
-		<span class="method-title">ToXMLElement</span> (line <span class="line-number">52</span>)
+		<span class="method-title">ToXMLElement</span> (line <span class="line-number">88</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Converts the Item object to a SimpleXMLElement object.</p>
+<p class="short-description">ToXMLElement</p>
+<p class="description"><p>Converts the Item object to a SimpleXMLElement object.</p></p>
 	<ul class="tags">
 				<li><span class="field">abstract:</span> </li>
 				<li><span class="field">access:</span> public</li>
@@ -376,19 +539,19 @@
 		<ul class="redefinitions">
 					<li>
 				<a href="../MoodleXMLImporter/EssayItem.html#methodToXMLElement">EssayItem::ToXMLElement()</a>
-								: Converts this Essay item into a SimpleXMLElement object corresponding  to the &quot;question&quot; tag in the Moodle XML export file.
+								: ToXMLElement
 							</li>
 					<li>
 				<a href="../MoodleXMLImporter/MatchingItem.html#methodToXMLElement">MatchingItem::ToXMLElement()</a>
-								: Converts the Matching item represented by this object to the corresponding  XML element that can be used for export to Moodle.
+								: ToXMLElement
 							</li>
 					<li>
 				<a href="../MoodleXMLImporter/MultipleChoiceItem.html#methodToXMLElement">MultipleChoiceItem::ToXMLElement()</a>
-								: Converts this Multiple Choice item into a SimpleXMLElement object corresponding  to the &quot;question&quot; tag in the Moodle XML export file.
+								: ToXMLElement
 							</li>
 					<li>
 				<a href="../MoodleXMLImporter/TrueFalseItem.html#methodToXMLElement">TrueFalseItem::ToXMLElement()</a>
-								: Converts this True/False item into a SimpleXMLElement object corresponding  to the &quot;question&quot; tag in the Moodle XML export file.
+								: ToXMLElement
 							</li>
 				</ul>
 	</div>
@@ -398,7 +561,7 @@
 
 	
 	<p class="notes" id="credit">
-		Documentation generated on Fri, 25 May 2012 20:02:13 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
+		Documentation generated on Mon, 28 May 2012 11:53:19 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
 	</p>
 	</div></body>
 </html>

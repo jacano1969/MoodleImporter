@@ -5,11 +5,14 @@ require_once APPPATH . '/models/Quiz.php';
 /**
  * Description of converthtml
  *
+ * @package MoodleXMLImporter
  * @author John D. Delano
  */
-class converthtml extends CI_Controller {
+class converthtml extends CI_Controller 
+{
 
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         session_start();
         $this->load->helper('url');
@@ -89,7 +92,14 @@ class converthtml extends CI_Controller {
     public function convert()
     {
         $quiz = $_SESSION['quiz'];
-        // @todo Get Team-Based learning scoring from form applied.
+        if ($this->input->post('applyTBL'))
+        {
+            $quiz->ApplyTBLTemplate = true;
+        }
+        else
+        {
+            $quiz->ApplyTBLTemplate = false;
+        }
         $quiz->Category = $this->input->post('category');
         for ($i = 0; $i < count($quiz->Items); $i++)
         {

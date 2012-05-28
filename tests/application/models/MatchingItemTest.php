@@ -7,6 +7,7 @@ if (!defined('APPPATH'))
 }
 
 require_once APPPATH . '/models/Quiz.php';
+require_once 'bb6xml.php';
 
 /**
  * Test class for MatchingItem.
@@ -74,6 +75,22 @@ MATCHING_HTML;
         
         $this->assertTrue(html_is_equal($expected, $matchingItem->ToHTML())); 
     }
+    
+    public function testFromBB6()
+    {
+        //$itemData = \BB6XML::GetBB6MTItemData();
+        // First get rid of all unneeded whitespace not inside any tags
+        $quizString = preg_replace('~\s*(<([^>]*)>[^<]*</\2>|<[^>]*>)\s*~','$1',\BB6XML::GetBB6MTItemData());
+        $itemData = str_replace('\r\n', "", $quizString);
+        $itemElement = new \SimpleXMLElement($itemData);
+        $mtItem = new MatchingItem();
+        $mtItem->ImportBB6XML($itemElement, "001");
+        $this->assertEquals('MT 001 - This is the question title', $mtItem->Name);
+        $this->assertEquals('001', $mtItem->ID);
+        $this->assertEquals('This is the question text.', $mtItem->Text);
+        $this->assertEquals(4, count($mtItem->Options));
+    }
+
 }
 
 ?>

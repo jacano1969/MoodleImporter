@@ -7,6 +7,7 @@ if (!defined('APPPATH'))
 }
 
 require_once APPPATH . '/models/Quiz.php';
+require_once 'bb6xml.php';
 
 /**
  * Test class for MultipleChoiceItem.
@@ -273,6 +274,22 @@ MC_HTML;
 
     }
 
+    public function testFromBB6()
+    {
+        $itemData = \BB6XML::GetBB6MCItemData();
+        $itemElement = new \SimpleXMLElement($itemData);
+        $mcItem = new MultipleChoiceItem();
+        $mcItem->ImportBB6XML($itemElement, "001");
+        $this->assertEquals('MC 001 - Which of the following is', $mcItem->Name);
+        $this->assertEquals('001', $mcItem->ID);
+        $this->assertEquals('Which of the following is not a key element of an E-R model?', $mcItem->Text);
+        $this->assertEquals(5, count($mcItem->Options));
+        $this->assertEquals(100, $mcItem->Options[3]->Value);
+        $this->assertEquals(0, $mcItem->Options[0]->Value);
+        $this->assertEquals(0, $mcItem->Options[1]->Value);
+        $this->assertEquals(0, $mcItem->Options[2]->Value);
+        $this->assertEquals(0, $mcItem->Options[4]->Value);        
+    }
 }
 
 ?>

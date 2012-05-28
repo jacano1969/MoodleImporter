@@ -11,6 +11,8 @@ include_once 'Item.php';
 class MultipleChoiceItem extends Item
 {
     /**
+     * ShuffleAnswers
+     * 
      * Determines whether or not the possible answer choices should be allowed
      * to shuffle, when Moodle presents the quiz to the student.
      * @var bool
@@ -18,6 +20,8 @@ class MultipleChoiceItem extends Item
     public $ShuffleAnswers = false;
     
     /**
+     * SingleSelection
+     * 
      * Identifies whether or not this item allows students to select more than 
      * one answer. When set to true, Moodle will use radio buttons, but when set
      * to false, Moodle will use checkboxes. Normally, this option is set to 
@@ -28,6 +32,8 @@ class MultipleChoiceItem extends Item
     public $SingleSelection = true;
     
     /**
+     * AnswerNumbering
+     * 
      * Determines the numbering scheme used to display the options for this item.
      * Allowed values are: "none", "abc", "ABCD", or "123"
      * @var string 
@@ -35,24 +41,49 @@ class MultipleChoiceItem extends Item
     public $AnswerNumbering = "ABCD";
     
     /**
+     * Options
+     * 
      * Contains an array of MultipleChoiceOption objects.
      * @uses MultipleChoiceOption
      * @var array(MultipleChoiceOption)
      */
     public $Options = array();
     
+    
     /**
+     * GetPrefix
+     *   
+     * Returns the two-letter prefix for this item type.
+     * @return string 
+
+     * @return string 
+     */
+    public function GetPrefix()
+    {
+        return "MC";
+    }
+
+    
+    /**
+     * ToXMLElement
+     * 
      * Converts this Multiple Choice item into a SimpleXMLElement object corresponding 
      * to the "question" tag in the Moodle XML export file.
      * @return \SimpleXMLElement 
      */
     public function ToXMLElement()
     {
+        // Moodle XML format expects the shuffle answers element to contain 0
+        // for false and 1 for true.
         $shuffleAnswersValue = ($this->ShuffleAnswers == false || $this->ShuffleAnswers == 0) ? 0 : 1;
+        
+        // Moodle XML format expects the single selection element to contain
+        // "true" for true and "false" for false.
         $singleValue = $this->SingleSelection ? "true" : "false";
         
+        // Setup the XML header
         $xmlValue = <<<MC_XML
-            <question type="multichoice">
+        <question type="multichoice">
             <name>
                 <text>$this->Name</text>
             </name>
@@ -68,6 +99,7 @@ MC_XML;
         
         $xmlElement = new \SimpleXMLElement($xmlValue);
         
+        // Add option elements as child nodes
         foreach ($this->Options as $option)
         {
             sxml_append($xmlElement, $option->ToXMLElement());
@@ -77,6 +109,8 @@ MC_XML;
     }
     
     /**
+     * ApplyTBLTemplate
+     * 
      * If the $IsEnabled parameter is set to true, this method applies the Team
      * based learning scoring rubric to this object. Specifically, single 
      * selection is disabled, and all incorrect answer choices are set to negative
@@ -109,13 +143,15 @@ MC_XML;
                 $option->Value = 0;
             }
         }
+        return true;
     }
     
-        /**
+    /**
+     * ToHTML
+     * 
      * Converts the item represented by this object to a corresponding HTML
      * representation that can be used for display on a web page.
      * @return string 
-     * @todo Implement ToHTML()
      */
     public function ToHTML()
     {
@@ -130,6 +166,44 @@ MC_XML;
         return $htmlValue;
     }
 
+
+    /**
+     * ImportBB6XML
+     * 
+     * Converts the given <item> element that is retrieved from a Blackboard 6
+     * export file, and retrieves the properties associated with this class. 
+     * This method should be overridden in child classes, but should be called
+     * first in the child's implementation with parent::ImportBB6XML($bb6XML).
+     * The $itemID parameter specifies which number this item is within the quiz
+     * array of items.
+     * 
+     * @param \SimpleXMLElement $bb6XML
+     * @param string $itemID 
+     * @return void
+     */
+    public function ImportBB6XML(\SimpleXMLElement $bb6XML, $itemID)
+    {
+        parent::ImportBB6XML($bb6XML, $itemID);
+
+        // Options are located under the response_label node under the 
+        // RESPONSE_BLOCK flow node
+        $optionList = $bb6XML->xpath('presentation//flow[@class=\'RESPONSE_BLOCK\']//response_label');
+
+        $correctOption = $bb6XML->xpath('resprocessing//respcondition[@title=\'correct\']//varequal');
+        $correctOption = (string)$correctOption[0];
+        $optionArray = array();
+        foreach ($optionList as $optionElement)
+        {
+            $option = new MultipleChoiceOption();
+            $optionID = (string)$optionElement['ident'];
+            $optionText = $optionElement->xpath('flow_mat//child::*[mattext or mat_formattedtext]/*');
+            $option->Text = (string)$optionText[0];
+            $option->Value = ($optionID == $correctOption) ? 100 : 0;
+            $this->Options[] = $option;
+        }
+
+    }
+    
 }
 
 ?>

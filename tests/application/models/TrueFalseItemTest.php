@@ -7,6 +7,7 @@ if (!defined('APPPATH'))
 }
 
 require_once APPPATH . '/models/Quiz.php';
+require_once 'bb6xml.php';
 
 
 /**
@@ -105,6 +106,20 @@ TF_HTML;
 
     }
 
+    
+    public function testFromBB6()
+    {
+        $itemData = \BB6XML::GetBB6TFItemData();
+        $itemElement = new \SimpleXMLElement($itemData);
+        $tfItem = new TrueFalseItem();
+        $tfItem->ImportBB6XML($itemElement, "001");
+        $this->assertEquals('TF 001 - A data model is a', $tfItem->Name);
+        $this->assertEquals('001', $tfItem->ID);
+        $this->assertEquals('A data model is a plan for a database design.', $tfItem->Text);
+        $this->assertTrue($tfItem->CorrectAnswer);
+
+        
+    }
 }
 
 ?>

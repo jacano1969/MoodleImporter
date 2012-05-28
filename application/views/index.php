@@ -1,3 +1,8 @@
+<?php
+/**
+ * @package MoodleXMLImporter 
+ */
+?>
 <!DOCTYPE html>
 <html>
     <head>

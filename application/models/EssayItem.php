@@ -11,14 +11,28 @@ include_once 'Item.php';
 class EssayItem extends Item
 {
     /**
+     * GetPrefix
+     * 
+     * Returns the two-letter prefix for this item type.
+     * @return string 
+     */
+    public function GetPrefix()
+    {
+        return "ES";
+    }
+
+    
+    /**
+     * ToXMLElement
+     * 
      * Converts this Essay item into a SimpleXMLElement object corresponding 
-     * to the "question" tag in the Moodle XML export file.
+     * to the "question" tag in the Moodle XML export file. Overrides the same
+     * method name in the Item class.
      * @return \SimpleXMLElement 
      */
     public function ToXMLElement()
     {
        // Essay questions do not have answers that get output to Moodle XML
-        
        $xmlValue = <<<ESSAY_XML
        <question type="essay">
             <name>
@@ -34,10 +48,12 @@ ESSAY_XML;
     }
     
     /**
+     * ToHTML
+     * 
      * Converts the item represented by this object to a corresponding HTML
-     * representation that can be used for display on a web page.
+     * representation that can be used for display on a web page. Overrides the 
+     * same method name in the Item class.
      * @return string 
-     * @todo Implement ToHTML()
      */
     public function ToHTML()
     {
@@ -48,6 +64,8 @@ ESSAY_HTML;
         return $htmlValue;
     }
 
+
+    
 }
 
 ?>
