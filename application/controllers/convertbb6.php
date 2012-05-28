@@ -30,10 +30,52 @@ class convertbb6 extends CI_Controller
     
     public function review()
     {
-        if (is_uploaded_file($_FILES['uploadFile']['tmp_name']))
+        $quiz = null;
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') 
         {
-            $fileData = file_get_contents($_FILES['uploadFile']['tmp_name']);
-            $quiz = MoodleImporter\Quiz::GetQuizFromBB6XML($fileData);
+            if (isset($_FILES['uploadFile'])) 
+            {
+                if ($_FILES['uploadFile']['error'] === UPLOAD_ERR_OK) 
+                {
+                    // See if the user uploaded the entire zip file...
+                    if (finfo_file(finfo_open(FILEINFO_MIME_TYPE), $_FILES['uploadFile']['tmp_name']) == "application/zip")
+                    {
+                        $zipFiles = $this->LoadZipIntoArray(zip_open($_FILES['uploadFile']['tmp_name']));
+                        $quizFiles = $this->GetBB6QuizFiles($zipFiles['imsmanifest.xml']);
+                        foreach ($quizFiles as $quizFile)
+                        {
+                            $quizData = preg_replace('~\s*(<([^>]*)>[^<]*</\2>|<[^>]*>)\s*~','$1', $zipFiles[(string)$quizFile['identifier'].'.dat']);
+                            $quizData = str_replace('\r\n', "", $quizData);
+                            $quiz = MoodleImporter\Quiz::GetQuizFromBB6XML($quizData);
+                            
+                        }
+                    }
+                    else // ... or if the user uploaded just the dat file.
+                    {
+                        $fileData = file_get_contents($_FILES['uploadFile']['tmp_name']);
+                        $quiz = MoodleImporter\Quiz::GetQuizFromBB6XML($fileData);
+                    }
+                } 
+                else 
+                {
+                    //... file upload failed, output error message, etc...
+                    $this->index();
+                }
+            }
+            else 
+            {
+                //... no upload at all, not even an attempt
+                $this->index();
+            } 
+        }
+        else 
+        {
+            //.... not in a POST environment, so can't possibly have a file upload ...
+            $this->index();
+        }
+
+        if ($quiz != null)
+        {
             $_SESSION['quiz'] = $quiz;
             $Data = array();
             $Data['quiz'] = $quiz;
@@ -41,8 +83,37 @@ class convertbb6 extends CI_Controller
         }
         else
         {
-            $this->index();
+            echo "Error processing file";
         }
+    }
+    
+    private function LoadZipIntoArray($zip)
+    {
+        $zipFiles = array();
+        if ($zip)
+        {
+            while ($zip_entry = zip_read($zip))
+            {
+                if (zip_entry_open($zip, $zip_entry, "r"))
+                {
+                    $name = zip_entry_name($zip_entry);
+                    $buf = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
+                    $zipFiles[$name] = $buf;
+                }
+            }
+            zip_close($zip);
+        }
+        return $zipFiles;
+    }
+    
+    private function GetBB6QuizFiles($manifestXML)
+    {
+        $manifestElement = new SimpleXMLElement($manifestXML);
+        if ($manifestElement)
+        {
+            $quizFiles = $manifestElement->xpath('/manifest//resource[@type=\'assessment/x-bb-qti-test\' or @type=\'assessment/x-bb-qti-pool\']');
+        }
+        return $quizFiles;
     }
 }
 
