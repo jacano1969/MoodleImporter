@@ -261,8 +261,8 @@ MC_XML;
         $mcItem->Options = array($option1, $option2, $option3);
         
         $expected = <<<'MC_HTML'
-        <p>MC 001 - What is</p>
-        <p>What is the answer to this question?</p>
+        <p>Name: MC 001 - What is</p>
+        <p>Question Text: What is the answer to this question?</p>
         <ol type="A">
             <li><strong>The correct answer</strong></li>
             <li>A distractor</li>

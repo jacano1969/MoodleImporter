@@ -17,6 +17,8 @@ class convertbb6 extends CI_Controller
         $this->load->library('form_validation');
     }
     
+    private $SupportedImageTypes = array('png', 'jpg', 'gif');
+    
     /**
      * Index page for this controller 
      * 
@@ -31,46 +33,46 @@ class convertbb6 extends CI_Controller
     public function review()
     {
         $quiz = null;
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+        if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_FILES['uploadFile'])) && ($_FILES['uploadFile']['error'] === UPLOAD_ERR_OK))
         {
-            if (isset($_FILES['uploadFile'])) 
+            // See if the user uploaded a zip file...
+            if (finfo_file(finfo_open(FILEINFO_MIME_TYPE), $_FILES['uploadFile']['tmp_name']) == "application/zip")
             {
-                if ($_FILES['uploadFile']['error'] === UPLOAD_ERR_OK) 
+                $zipFiles = $this->LoadZipIntoArray(zip_open($_FILES['uploadFile']['tmp_name']));
+                $quizFiles = $this->GetBB6QuizFiles(MoodleImporter\clean_xml($zipFiles['imsmanifest.xml']));
+                foreach ($quizFiles as $quizFile)
                 {
-                    // See if the user uploaded the entire zip file...
-                    if (finfo_file(finfo_open(FILEINFO_MIME_TYPE), $_FILES['uploadFile']['tmp_name']) == "application/zip")
+                    // Blackboard does weird things to the XML files, so we have
+                    // clean them up before we can import them.
+                    $quizData = MoodleImporter\clean_xml($zipFiles[(string)$quizFile['identifier'].'.dat']);
+                    $quiz = MoodleImporter\Quiz::GetQuizFromBB6XML($quizData);
+
+                    // Now we have the quiz, so we have to import the 
+                    // image data into where each file is referenced
+                    // Start by iterating through all the known image 
+                    // types png/gif/jpg that have been uploaded in the zip file
+                    foreach ($zipFiles as $zipName => $zipFile)
                     {
-                        $zipFiles = $this->LoadZipIntoArray(zip_open($_FILES['uploadFile']['tmp_name']));
-                        $quizFiles = $this->GetBB6QuizFiles($zipFiles['imsmanifest.xml']);
-                        foreach ($quizFiles as $quizFile)
+                        if (in_array(substr($zipName, -3), $this->SupportedImageTypes))
                         {
-                            $quizData = preg_replace('~\s*(<([^>]*)>[^<]*</\2>|<[^>]*>)\s*~','$1', $zipFiles[(string)$quizFile['identifier'].'.dat']);
-                            $quizData = str_replace('\r\n', "", $quizData);
-                            $quiz = MoodleImporter\Quiz::GetQuizFromBB6XML($quizData);
-                            
+                            $quiz->ReplaceTextInQuiz($zipName, $this->CreateImageSrc($zipFile, substr($zipName, -3)));
                         }
                     }
-                    else // ... or if the user uploaded just the dat file.
-                    {
-                        $fileData = file_get_contents($_FILES['uploadFile']['tmp_name']);
-                        $quiz = MoodleImporter\Quiz::GetQuizFromBB6XML($fileData);
-                    }
-                } 
-                else 
-                {
-                    //... file upload failed, output error message, etc...
-                    $this->index();
+                    
+                    /**
+                     * @todo need to support multiple quiz files within a single zip upload -- merge the quizzes together? 
+                     */
                 }
             }
-            else 
+            else // ... or if the user uploaded just the dat file.
             {
-                //... no upload at all, not even an attempt
-                $this->index();
-            } 
+                $fileData = file_get_contents($_FILES['uploadFile']['tmp_name']);
+                $quiz = MoodleImporter\Quiz::GetQuizFromBB6XML($fileData);
+            }
         }
         else 
         {
-            //.... not in a POST environment, so can't possibly have a file upload ...
+            //.... not in a POST environment, or file didn't upload
             $this->index();
         }
 
@@ -83,7 +85,8 @@ class convertbb6 extends CI_Controller
         }
         else
         {
-            echo "Error processing file";
+            // @todo Need to add error checking and validation to quiz conversion process
+            $this->index();
         }
     }
     
@@ -98,7 +101,10 @@ class convertbb6 extends CI_Controller
                 {
                     $name = zip_entry_name($zip_entry);
                     $buf = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
-                    $zipFiles[$name] = $buf;
+                    if (substr($name, 0, 8) != "__MACOSX")
+                    {
+                        $zipFiles[$name] = $buf;
+                    }
                 }
             }
             zip_close($zip);
@@ -114,6 +120,13 @@ class convertbb6 extends CI_Controller
             $quizFiles = $manifestElement->xpath('/manifest//resource[@type=\'assessment/x-bb-qti-test\' or @type=\'assessment/x-bb-qti-pool\']');
         }
         return $quizFiles;
+    }
+    
+    private function CreateImageSrc($imageFile, $type)
+    {
+        $imageData = base64_encode($imageFile);
+        $tag = "data:image/$type;base64,$imageData";
+        return $tag;
     }
 }
 

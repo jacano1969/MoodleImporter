@@ -21,7 +21,14 @@ class QuizBB6Test extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(2, count($quiz->Items));
         $this->assertEquals('testcategory', $quiz->Category);
     }
-    
+  
+    public function testReplaceTextInQuiz()
+    {
+        $quiz = Quiz::GetQuizFromBB6XML(\BB6XML::GetBB6TFMCDat());
+        $quiz->ReplaceTextInQuiz('Which of the following is not a key element', 'Which of the following is a key element');
+        $this->assertEquals('Which of the following is a key element of an E-R model?', $quiz->Items[1]->Text);
+    }
+
 }
 
 ?>

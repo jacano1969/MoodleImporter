@@ -1,6 +1,7 @@
 <?php
 namespace MoodleImporter;
-include_once 'Item.php';
+require_once 'Item.php';
+require_once 'ISupportTBL.php';
 
 /**
  * This class represents a Multiple Choice item that can be associated with a Quiz
@@ -8,7 +9,7 @@ include_once 'Item.php';
  * @package MoodleXMLImporter
  * @author John D. Delano
  */
-class MultipleChoiceItem extends Item
+class MultipleChoiceItem extends Item implements ISupportTBL
 {
     /**
      * ShuffleAnswers
@@ -81,23 +82,11 @@ class MultipleChoiceItem extends Item
         // "true" for true and "false" for false.
         $singleValue = $this->SingleSelection ? "true" : "false";
         
-        // Setup the XML header
-        $xmlValue = <<<MC_XML
-        <question type="multichoice">
-            <name>
-                <text>$this->Name</text>
-            </name>
-            <questiontext format="html">
-                <text><![CDATA[$this->Text]]></text>
-            </questiontext>
-            <shuffleanswers>$shuffleAnswersValue</shuffleanswers>
-            <single>$singleValue</single>
-            <answernumbering>$this->AnswerNumbering</answernumbering>
-            <defaultgrade>$this->PointValue</defaultgrade>
-        </question>
-MC_XML;
-        
-        $xmlElement = new \SimpleXMLElement($xmlValue);
+        $xmlElement = parent::ToXMLElement();
+        $xmlElement->addAttribute("type", "multichoice");
+        $xmlElement->addChild("shuffleanswers", $shuffleAnswersValue);
+        $xmlElement->addChild("single", $singleValue);
+        $xmlElement->addChild("answernumbering", $this->AnswerNumbering);
         
         // Add option elements as child nodes
         foreach ($this->Options as $option)
@@ -155,7 +144,8 @@ MC_XML;
      */
     public function ToHTML()
     {
-        $htmlValue = "<p>$this->Name</p><p>$this->Text</p><ol type=\"A\">";
+        $htmlValue = parent::ToHTML(); //"<p>$this->Name</p><p>$this->Text</p>
+        $htmlValue .= "<ol type=\"A\">";
         
         foreach ($this->Options as $option)
         {

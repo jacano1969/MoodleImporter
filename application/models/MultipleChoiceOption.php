@@ -6,7 +6,7 @@ namespace MoodleImporter;
  * @package MoodleXMLImporter
  * @author John D. Delano
  */
-class MultipleChoiceOption  {
+class MultipleChoiceOption implements IExporter  {
     
     /**
      * Text

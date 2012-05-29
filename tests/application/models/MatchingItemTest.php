@@ -30,6 +30,9 @@ class MatchingItemTest extends \PHPUnit_Framework_TestCase {
         <name>
             <text>MT 001 - What is</text>
         </name> 
+        <questiontext format="html">
+            <text>What is</text>
+        </questiontext>
         <defaultgrade>
             2
         </defaultgrade>
@@ -49,7 +52,6 @@ class MatchingItemTest extends \PHPUnit_Framework_TestCase {
                 <![CDATA[Definition 2]]>
             </answer>
         </subquestion>
-
         </question>
 MATCHING_XML;
         $expected = new \SimpleXMLElement($expected);

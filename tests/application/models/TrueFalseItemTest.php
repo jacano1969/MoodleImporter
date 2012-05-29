@@ -26,7 +26,7 @@ class TrueFalseItemTest extends \PHPUnit_Framework_TestCase {
        $trueFalseItem->Text = 'What is';
        $trueFalseItem->CorrectAnswer = true;
        
-       $expected = <<<'ESSAY_XML'
+       $expected = <<<'TF_XML'
        <question type="truefalse">
         <name>
          <text><![CDATA[TF 001 - What is]]></text>
@@ -44,7 +44,7 @@ class TrueFalseItemTest extends \PHPUnit_Framework_TestCase {
             <text>false</text>
         </answer>
        </question>
-ESSAY_XML;
+TF_XML;
        $expected = new \SimpleXMLElement($expected);
        $this->assertTrue(xml_is_equal($expected, $trueFalseItem->ToXMLElement(),false));  
                

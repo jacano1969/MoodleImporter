@@ -10,6 +10,7 @@ require_once APPPATH . '/models/MultipleChoiceItem.php';
 require_once APPPATH . '/models/MultipleChoiceOption.php';
 require_once APPPATH . '/models/TrueFalseItem.php';
 require_once APPPATH . '/models/XMLUtilities.php';
+require_once APPPATH . '/models/ISupportTBL.php';
 
 /**
  * Represents a Moodle quiz
@@ -248,17 +249,18 @@ class Quiz  {
             $item = null;
             switch($questionType)
             {
-                case "Matching" : // @todo implement matching question import
+                case "Matching" : 
                     $item = new MatchingItem();
                     break;
                 case "Multiple Choice" :                 
                     $item = new MultipleChoiceItem();
                     break; 
-                case "Essay" : // @todo implement Essay question import
+                case "Essay" : 
                     $item = new EssayItem();
                     break;
-                case "Multiple Answer" : // @todo implement multiple answer question import
+                case "Multiple Answer" : 
                     $item = new MultipleChoiceItem();
+                    $item->SingleSelection = false;
                     break;
                 case "True/False" : 
                     $item = new TrueFalseItem();
@@ -308,13 +310,48 @@ QUIZ_XML;
         foreach ($this->Items as $item)
         {
             // Apply (or turn off) the team-based learning template for each 
-            // item, based on whether the global ApplyTBLTemplate flag has been
-            // set.
-            $item->ApplyTBLTemplate($this->ApplyTBLTemplate);
+            // item that supports TBL
+            if ($item instanceof ISupportTBL)
+            {
+                $item->ApplyTBLTemplate($this->ApplyTBLTemplate);
+            }
             sxml_append($returnValue, $item->ToXMLElement());
         }  
         
         return $returnValue->asXML();
+    }
+    
+    
+    /**
+     * ReplaceTextInQuiz
+     * 
+     * Locates the text in $findText and replaces it with $replaceText in all
+     * the question text and option text fields.
+     * 
+     * @param string $findText
+     * @param string $replaceText 
+     * @return void
+     */
+    public function ReplaceTextInQuiz($findText, $replaceText)
+    {
+        foreach ($this->Items as $item)
+        {
+            $item->Text = str_replace($findText, $replaceText, $item->Text);
+            if (property_exists($item, "Options"))
+            {
+                foreach ($item->Options as $option)
+                {
+                    if (!is_array($option) && property_exists($option, "Text"))
+                    {
+                        $option->Text = str_replace($findText, $replaceText, $option->Text);
+                    }
+                    else
+                    {
+                        //$option = str_replace($findText, $replaceText, $option);
+                    }
+                }
+            }
+        }
     }
 }
 

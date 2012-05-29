@@ -378,7 +378,8 @@ HTML_QUIZ;
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(3, count($quiz->Items));
 
-        }
+    }
+    
 }
 
 ?>

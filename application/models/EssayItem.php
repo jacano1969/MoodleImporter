@@ -32,19 +32,9 @@ class EssayItem extends Item
      */
     public function ToXMLElement()
     {
-       // Essay questions do not have answers that get output to Moodle XML
-       $xmlValue = <<<ESSAY_XML
-       <question type="essay">
-            <name>
-                <text>$this->Name</text>
-            </name>
-            <questiontext format="html">
-                <text><![CDATA[$this->Text]]></text>
-            </questiontext>
-            <defaultgrade>$this->PointValue</defaultgrade>
-       </question>
-ESSAY_XML;
-       return new \SimpleXMLElement($xmlValue);
+       $xmlElement = parent::ToXMLElement();
+       $xmlElement->addAttribute('type', "essay");
+       return $xmlElement;
     }
     
     /**
@@ -57,11 +47,7 @@ ESSAY_XML;
      */
     public function ToHTML()
     {
-        $htmlValue = <<<ESSAY_HTML
-        <p>Name: $this->Name</p>
-        <p>Question Text: $this->Text</p>
-ESSAY_HTML;
-        return $htmlValue;
+        return parent::ToHTML();
     }
 
 

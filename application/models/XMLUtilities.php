@@ -169,4 +169,13 @@ function html_is_equal($to, $from)
     }
 }
 
+
+function clean_xml($xmlFile)
+{
+    $quizData = preg_replace('~\s*(<([^>]*)>[^<]*</\2>|<[^>]*>)\s*~','$1', $xmlFile);
+    $quizData = str_replace('\r\n', "", $quizData);
+    return $quizData;
+}
+
+
 ?>

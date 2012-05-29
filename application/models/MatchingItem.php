@@ -38,21 +38,13 @@ class MatchingItem extends Item
      */
     public function ToXMLElement()
     {
-        // Setup the XML header
-        $xmlValue = <<<MATCHING_XML
-        <question type="matching">
-            <name>
-            <text>$this->Name</text>
-            </name> 
-            <defaultgrade>
-                $this->PointValue
-            </defaultgrade>
-MATCHING_XML;
+        $xmlElement = parent::ToXMLElement();
+        $xmlElement->addAttribute('type', "matching");
 
         // Now add each of the options
         foreach ($this->Options as $term => $definition)
         {
-            $xmlValue .= <<<MATCHING_XML
+            $optionXML = <<<OPTION_XML
             <subquestion>
                 <text>
                     <![CDATA[$term]]>
@@ -61,16 +53,11 @@ MATCHING_XML;
                     <![CDATA[$definition]]>
                 </answer>
             </subquestion>
-MATCHING_XML;
-
+OPTION_XML;
+            sxml_append($xmlElement, new \SimpleXMLElement($optionXML));
         }
-        
-        // Add the XML footer
-        $xmlValue .= <<<MATCHING_XML
-        </question>
-MATCHING_XML;
-        
-       return new \SimpleXMLElement($xmlValue); 
+
+        return $xmlElement; 
     }
     
     /**
@@ -82,7 +69,8 @@ MATCHING_XML;
      */
     public function ToHTML()
     {
-        $htmlValue = "<p>Name: $this->Name</p><p>Question Text: $this->Text</p><dl>";
+        $htmlValue = parent::ToHTML();
+        $htmlValue .= "<dl>";
         foreach ($this->Options as $term => $definition)
         {
             $htmlValue .= "<dt>$term</dt><dd>$definition</dd>";

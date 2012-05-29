@@ -1,7 +1,7 @@
 <?php
 
 namespace MoodleImporter;
-
+require_once 'IExporter.php';
 /**
  * The base class of all Item objects. This class is abstract, so it cannot be
  * instantiated. To add new question types, create a new, concrete class
@@ -10,7 +10,7 @@ namespace MoodleImporter;
  * @abstract
  * @author John D. Delano
  */
-abstract class Item {
+abstract class Item implements IExporter {
 
     // PROPERTIES
     
@@ -65,38 +65,6 @@ abstract class Item {
      */
     public abstract function GetPrefix();
 
-    
-    /**
-     * ApplyTBLTemplate
-     * 
-     * Overridden in the child class, if it supports the Team-Based Learning
-     * template.
-     * @return bool 
-     */
-    public function ApplyTBLTemplate($IsEnabled)
-    {
-        return FALSE;
-    }
-    
-    /**
-     * ToXMLElement
-     * 
-     * Converts the Item object to a SimpleXMLElement object.
-     * @return \SimpleXMLElement 
-     * @abstract
-     */
-    public abstract function ToXMLElement();
-    
-    /**
-     * ToHTML
-     * 
-     * Converts the Item object to be displayed in HTML format.
-     * @return string
-     * @abstract 
-     */
-    public abstract function ToHTML();
-    
-    
     /**
      * ImportBB6XML
      * 
@@ -136,6 +104,46 @@ abstract class Item {
         // Now build the question name
         $this->Name = $this->GetPrefix() . ' ' . $this->ID . ' - ' . $nameText;
     }
+    
+    /**
+     * ToXMLElement
+     * 
+     * Converts the Item object to a SimpleXMLElement object.
+     * @return \SimpleXMLElement 
+     */
+    public function ToXMLElement()
+    {
+        $xml = <<<ITEM_XML
+        <question>
+            <name>
+                <text>$this->Name</text>
+            </name>
+            <questiontext format="html">
+                <text><![CDATA[$this->Text]]></text>
+            </questiontext>
+            <defaultgrade>$this->PointValue</defaultgrade>
+        </question>
+ITEM_XML;
+       return new \SimpleXMLElement($xml);
+    }
+    
+    /**
+     * ToHTML
+     * 
+     * Converts the Item object to be displayed in HTML format.
+     * @return string
+     */
+    public function ToHTML()
+    {
+        $htmlValue = <<<HTML
+        <p>Name: $this->Name</p>
+        <p>Question Text: $this->Text</p>
+HTML;
+        
+        return $htmlValue;
+
+    }
+
     
     
     /**
