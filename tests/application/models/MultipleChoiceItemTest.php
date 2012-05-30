@@ -182,7 +182,7 @@ class MultipleChoiceItemTest extends \PHPUnit_Framework_TestCase {
     public function testToXMLElement() 
     {
         $mcItem = new MultipleChoiceItem;
-        $mcItem->Name = "MC 001 - What is";
+        $mcItem->Title = "What is";
         $mcItem->PointValue = 2;
         $mcItem->ShuffleAnswers = true;
         $mcItem->Text = "What is the answer to this question?";
@@ -239,7 +239,7 @@ MC_XML;
     public function testToHTML()
     {
         $mcItem = new MultipleChoiceItem;
-        $mcItem->Name = "MC 001 - What is";
+        $mcItem->Title = "What is";
         $mcItem->PointValue = 2;
         $mcItem->ShuffleAnswers = true;
         $mcItem->Text = "What is the answer to this question?";
@@ -280,7 +280,7 @@ MC_HTML;
         $itemElement = new \SimpleXMLElement($itemData);
         $mcItem = new MultipleChoiceItem();
         $mcItem->ImportBB6XML($itemElement, "001");
-        $this->assertEquals('MC 001 - Which of the following is', $mcItem->Name);
+        $this->assertEquals('MC 001 - Which of the following is', $mcItem->GetName());
         $this->assertEquals('001', $mcItem->ID);
         $this->assertEquals('Which of the following is not a key element of an E-R model?', $mcItem->Text);
         $this->assertEquals(5, count($mcItem->Options));

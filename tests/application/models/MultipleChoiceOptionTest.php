@@ -45,6 +45,14 @@ OPTION_XML;
         $this->assertXmlStringEqualsXmlString($expected, $multipleChoiceOption->ToHTML());
         
     }
+    
+    public function testConstruct()
+    {
+        $mtOption = new MultipleChoiceOption("Option", 100);
+        $this->assertEquals("Option", $mtOption->Text);
+        $this->assertEquals(100, $mtOption->Value);
+    }
+
 }
 
 ?>

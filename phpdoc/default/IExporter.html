@@ -3,16 +3,16 @@
   <html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
 			<!-- template designed by Marco Von Ballmoos -->
-			<title>Docs For Class home</title>
+			<title>Docs For Class IExporter</title>
 			<link rel="stylesheet" href="../media/stylesheet.css" />
 			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
 		</head>
 		<body>
 			<div class="page-body">			
-<h2 class="class-name"><img src="../media/images/Class_logo.png"
+<h2 class="class-name"><img src="../media/images/Interface_logo.png"
 														alt=" Class"
 														title=" Class"
-														style="vertical-align: middle"> home</h2>
+														style="vertical-align: middle">Interface IExporter</h2>
 
 <a name="sec-description"></a>
 <div class="info-box">
@@ -24,18 +24,15 @@
 					</div>
 	<div class="info-box-body">
         		<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Description of HomeController</p>
 	<ul class="tags">
 				<li><span class="field">author:</span> jdelano</li>
 			</ul>
 		<p class="notes">
-			Located in <a class="field" href="_application---controllers---home.php.html">/application/controllers/home.php</a> (line <span class="field">9</span>)
+			Located in <a class="field" href="_application---models---IExporter.php.html">/application/models/IExporter.php</a> (line <span class="field">8</span>)
 		</p>
 		
 				
-		<pre>CI_Controller
-   |
-   --home</pre>
+		<pre></pre>
 	
 			</div>
 </div>
@@ -52,10 +49,16 @@
 		</div>
 		<div class="info-box-body">			
 			<div class="method-summary">
-																								<div class="method-definition">
+																																<div class="method-definition">
 					<img src="../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
-										<a href="#index" title="details" class="method-name">index</a>
+											<span class="method-result">string</span>
+										<a href="#ToHTML" title="details" class="method-name">ToHTML</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">\SimpleXMLElement</span>
+										<a href="#ToXMLElement" title="details" class="method-name">ToXMLElement</a>
 										()
 									</div>
 											</div>
@@ -73,24 +76,51 @@
 		</div>
 		<div class="info-box-body">
 			<A NAME='method_detail'></A>
-<a name="methodindex" id="index"><!-- --></a>
-<div class="oddrow">
+<a name="methodToHTML" id="ToHTML"><!-- --></a>
+<div class="evenrow">
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">index</span> (line <span class="line-number">15</span>)
+		<span class="method-title">ToHTML</span> (line <span class="line-number">24</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Index Page for this controller.</p>
+<p class="short-description">ToHTML</p>
+<p class="description"><p>Converts the Item object to be displayed in HTML format.</p></p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">string</span>
 		<span class="method-name">
-			index
+			ToHTML
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodToXMLElement" id="ToXMLElement"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">ToXMLElement</span> (line <span class="line-number">16</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">ToXMLElement</p>
+<p class="description"><p>Converts the Item object to a SimpleXMLElement object.</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">\SimpleXMLElement</span>
+		<span class="method-name">
+			ToXMLElement
 		</span>
 				()
 			</div>

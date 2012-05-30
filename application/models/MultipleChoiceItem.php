@@ -4,8 +4,11 @@ require_once 'Item.php';
 require_once 'ISupportTBL.php';
 
 /**
+ * MultipleChoiceItem
+ * 
  * This class represents a Multiple Choice item that can be associated with a Quiz
  * object.
+ * 
  * @package MoodleXMLImporter
  * @author John D. Delano
  */
@@ -184,14 +187,11 @@ class MultipleChoiceItem extends Item implements ISupportTBL
         $optionArray = array();
         foreach ($optionList as $optionElement)
         {
-            $option = new MultipleChoiceOption();
             $optionID = (string)$optionElement['ident'];
             $optionText = $optionElement->xpath('flow_mat//child::*[mattext or mat_formattedtext]/*');
-            $option->Text = (string)$optionText[0];
-            $option->Value = ($optionID == $correctOption) ? 100 : 0;
+            $option = new MultipleChoiceOption((string)$optionText[0], ($optionID == $correctOption) ? 100 : 0);
             $this->Options[] = $option;
         }
-
     }
     
 }

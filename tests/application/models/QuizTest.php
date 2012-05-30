@@ -38,7 +38,7 @@ QUIZ_TEST;
      */
     public function testToXMLStringEssayItem() {
         $essayItem = new EssayItem;
-        $essayItem->Name = "ES 001 - What is";
+        $essayItem->Title = "What is";
         $essayItem->Text = "What is";
         $essayItem->PointValue = 2;
         $quiz = new Quiz;
@@ -68,7 +68,7 @@ QUIZ_TEST;
     
         public function testToXMLStringEssayItemComplex() {
         $essayItem = new EssayItem;
-        $essayItem->Name = "ES 001 - What is";
+        $essayItem->Title = "What is";
         $essayItem->Text = "What is<ou><li>Subquestion 1</li><li>Subquestion 2</li></ou>";
         $essayItem->PointValue = 2;
         $quiz = new Quiz;
@@ -110,7 +110,7 @@ HTML_QUIZ;
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
         $this->assertEquals(false, $quiz->Items[0]->CorrectAnswer);
-        $this->assertEquals("TF 001 - TF false Question", $quiz->Items[0]->Name);
+        $this->assertEquals("TF 001 - TF false Question", $quiz->Items[0]->GetName());
         $this->assertEquals("What is the answer to the following?", $quiz->Items[0]->Text);
     }
         
@@ -131,7 +131,7 @@ HTML_QUIZ;
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
         $this->assertEquals(true, $quiz->Items[0]->CorrectAnswer);
-        $this->assertEquals("TF 001 - TF w/list in text", $quiz->Items[0]->Name);
+        $this->assertEquals("TF 001 - TF w/list in text", $quiz->Items[0]->GetName());
         $this->assertEquals("What is the answer to the following sub-questions?<ul><li>Question 1</li><li>Question 2</li></ul>", $quiz->Items[0]->Text);
     }
     
@@ -152,7 +152,7 @@ HTML_QUIZ;
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
         $this->assertEquals(true, $quiz->Items[0]->CorrectAnswer);
-        $this->assertEquals("TF 001 - What is the answer to", $quiz->Items[0]->Name);
+        $this->assertEquals("TF 001 - What is the answer to", $quiz->Items[0]->GetName());
         $this->assertEquals("What is the answer to the following sub-questions?<ul><li>Question 1</li><li>Question 2</li></ul>", $quiz->Items[0]->Text);
     }
 
@@ -172,7 +172,7 @@ HTML_QUIZ;
         
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
-        $this->assertEquals("MC 001 - MC w/list in text", $quiz->Items[0]->Name);
+        $this->assertEquals("MC 001 - MC w/list in text", $quiz->Items[0]->GetName());
         $this->assertEquals("What is the answer to the following questions?", $quiz->Items[0]->Text);
         $this->assertEquals(4, count($quiz->Items[0]->Options));
         $this->assertEquals(0, $quiz->Items[0]->Options[0]->Value);
@@ -198,7 +198,7 @@ HTML_QUIZ;
         
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
-        $this->assertEquals("MC 001 - MC w/list in text", $quiz->Items[0]->Name);
+        $this->assertEquals("MC 001 - MC w/list in text", $quiz->Items[0]->GetName());
         $this->assertEquals("What is the answer to the following questions?", $quiz->Items[0]->Text);
         $this->assertEquals(4, count($quiz->Items[0]->Options));
         $this->assertEquals(0, $quiz->Items[0]->Options[0]->Value);
@@ -228,7 +228,7 @@ HTML_QUIZ;
         
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
-        $this->assertEquals("MC 001 - MC w/list in text", $quiz->Items[0]->Name);
+        $this->assertEquals("MC 001 - MC w/list in text", $quiz->Items[0]->GetName());
         $this->assertEquals("What is the answer to the following questions?<ul><li>question 1</li><li>question 2</li></ul>", $quiz->Items[0]->Text);
         $this->assertEquals(4, count($quiz->Items[0]->Options));
         $this->assertEquals(0, $quiz->Items[0]->Options[0]->Value);
@@ -257,7 +257,7 @@ HTML_QUIZ;
         
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
-        $this->assertEquals("MC 001 - What is? question 1 question", $quiz->Items[0]->Name);
+        $this->assertEquals("MC 001 - What is? question 1 question", $quiz->Items[0]->GetName());
         $this->assertEquals("What is?<ul><li>question 1</li><li>question 2</li></ul>", $quiz->Items[0]->Text);
         $this->assertEquals(4, count($quiz->Items[0]->Options));
         $this->assertEquals(0, $quiz->Items[0]->Options[0]->Value);

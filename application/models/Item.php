@@ -1,11 +1,14 @@
 <?php
-
 namespace MoodleImporter;
 require_once 'IExporter.php';
+
 /**
+ * Item
+ * 
  * The base class of all Item objects. This class is abstract, so it cannot be
  * instantiated. To add new question types, create a new, concrete class
  * based on this Item class, and implement the ToXMLElement method.
+ * 
  * @package MoodleXMLImporter
  * @abstract
  * @author John D. Delano
@@ -19,19 +22,48 @@ abstract class Item implements IExporter {
      * 
      * Unique ID value of this Item that is used to distinguish this item
      * from other items within the same quiz. This not exported in the Moodle XML.
-     * @var string 
+     * @var int 
      */
-    public $ID = "001";
+    public $ID = 1;
     
     /**
-     * Name
+     * Title
+     * 
+     * The title assigned to this item, which shows up as part of the Item's name.
+     * @var string 
+     */
+    public $Title = "";
+    
+    /**
+     * GetName
      * 
      * Specifies the name of the item, which is shown in the list of Questions 
      * in Moodle, when viewing the question bank. This is not the same as the
      * question text, and it is typically NOT shown to the student. 
+     * 
+     * Format of the name is: "TF 001 - First five words of item"
+     * 
      * @var string 
      */
-    public $Name = "";
+    public function GetName()
+    {
+        // The name of the item depends on whether the title contains the text
+        // "N/A" or is blank. If either of those are the case, then the Name
+        // should include the first five words of the item's text; otherwise
+        // the Title of the item is used as part of the name.
+        if (!$this->Title || $this->Title == "N/A" || $this->Title == "")
+        {
+            // Get the first five words of the question's text to use later for the
+            // question's name.
+            $text = implode(" ", array_splice(preg_split( "/\s+/", preg_replace('/<[\/]?[^>]+>/i', " ", $this->Text)), 0, 5));
+        }
+        else
+        {
+            $text = $this->Title;
+        }
+        // Format of the name is: "TF 001 - First five words of item"
+        return $this->GetPrefix() . ' ' . sprintf("%03d", $this->ID) . ' - ' . $text;
+    }
     
     
     /**
@@ -76,7 +108,7 @@ abstract class Item implements IExporter {
      * array of items.
      * 
      * @param \SimpleXMLElement $bb6XML 
-     * @param string $itemID
+     * @param int $itemID
      * @return void
      */
     public function ImportBB6XML(\SimpleXMLElement $bb6XML, $itemID)
@@ -88,21 +120,8 @@ abstract class Item implements IExporter {
         // LINK_BLOCK flow nodes, but that is under the QUESTION_BLOCK flow node.
         $text = $bb6XML->xpath('presentation//flow[@class=\'QUESTION_BLOCK\']//material[not(ancestor::flow[@class=\'FILE_BLOCK\'] or ancestor::flow[@class=\'LINK_BLOCK\'])]//*[mattext or mat_formattedtext]/*');
         $this->Text = (string)$text[0];
-        
-        
-        if (!(string)$bb6XML['title'])
-        {
-            // Get the first five words of the question's text to use later for the
-            // question's name.
-            $nameText = implode(" ", array_splice(preg_split( "/\s+/", preg_replace('/<[\/]?[^>]+>/i', " ", $this->Text)), 0, 5));
-        }
-        else
-        {
-            $nameText = (string)$bb6XML['title'];
-        }
-        
-        // Now build the question name
-        $this->Name = $this->GetPrefix() . ' ' . $this->ID . ' - ' . $nameText;
+        $title = $bb6XML->xpath('item');
+        $this->Title = (string)$bb6XML['title'];
     }
     
     /**
@@ -116,7 +135,7 @@ abstract class Item implements IExporter {
         $xml = <<<ITEM_XML
         <question>
             <name>
-                <text>$this->Name</text>
+                <text>{$this->GetName()}</text>
             </name>
             <questiontext format="html">
                 <text><![CDATA[$this->Text]]></text>
@@ -136,7 +155,7 @@ ITEM_XML;
     public function ToHTML()
     {
         $htmlValue = <<<HTML
-        <p>Name: $this->Name</p>
+        <p>Name: {$this->GetName()}</p>
         <p>Question Text: $this->Text</p>
 HTML;
         
@@ -147,7 +166,6 @@ HTML;
     
     
     /**
-     * @todo Still need to handle images in quiz questions or answers
      * @todo need to add support for item feedback from blackboard
      */
 }

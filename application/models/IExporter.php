@@ -2,8 +2,13 @@
 namespace MoodleImporter;
 
 /**
- *
- * @author jdelano
+ * IExporter
+ * 
+ * Interface that defines the methods supported by objects that can export
+ * their contents to a SimpleXMLElement and to HTML.
+ * 
+ * @author John D. Delano
+ * @package MoodleXMLImporter
  */
 interface IExporter 
 {

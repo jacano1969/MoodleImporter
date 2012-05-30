@@ -3,8 +3,11 @@ namespace MoodleImporter;
 include_once 'Item.php';
 
 /**
+ * MatchingItem
+ * 
  * This class represents a Matching item that can be associated with a Quiz
  * object.
+ * 
  * @package MoodleXMLImporter
  * @author John D. Delano
  */
@@ -104,13 +107,16 @@ OPTION_XML;
         // Options are located under the response_label node under the 
         // RESPONSE_BLOCK flow node
         $optionList = $bb6XML->xpath('presentation//flow[@class=\'RESPONSE_BLOCK\']//material[not(ancestor::flow[@class=\'FILE_BLOCK\'] or ancestor::flow[@class=\'LINK_BLOCK\'])]//child::*[mattext or mat_formattedtext]/*');
+
+        // Answers for each option are under the RIGHT_MATCH_BLOCK flow node,
+        // listed in the same order as the corresponding option.
         $answerList = $bb6XML->xpath('presentation//flow[@class=\'RIGHT_MATCH_BLOCK\']//material[not(ancestor::flow[@class=\'FILE_BLOCK\'] or ancestor::flow[@class=\'LINK_BLOCK\'])]//child::*[mattext or mat_formattedtext]/*');
         $optionArray = array();
         for ($index = 0; $index < count($optionList); $index++)
         {
             $optionText = (string)$optionList[$index];
             $answerText = (string)$answerList[$index];
-            $this->Options[] = array($optionText => $answerText);
+            $this->Options[] = new MatchingOption($optionText, $answerText);
         }
     }
 

@@ -20,7 +20,7 @@ class MatchingItemTest extends \PHPUnit_Framework_TestCase {
      */
     public function testToXMLElement() {
         $matchingItem = new MatchingItem;
-        $matchingItem->Name = "MT 001 - What is";
+        $matchingItem->Title = "What is";
         $matchingItem->PointValue = 2;
         $matchingItem->Text = 'What is';
         $matchingItem->Options = array('Option 1' => 'Definition 1', 'Option 2' => 'Definition 2');
@@ -60,7 +60,7 @@ MATCHING_XML;
     
     public function testToHTML() {
         $matchingItem = new MatchingItem;
-        $matchingItem->Name = "MT 001 - What is";
+        $matchingItem->Title = "What is";
         $matchingItem->PointValue = 2;
         $matchingItem->Text = 'What is';
         $op1 = new MatchingOption('Option 1', 'Definition 1');
@@ -92,7 +92,7 @@ MATCHING_HTML;
         $itemElement = new \SimpleXMLElement($itemData);
         $mtItem = new MatchingItem();
         $mtItem->ImportBB6XML($itemElement, "001");
-        $this->assertEquals('MT 001 - This is the question title', $mtItem->Name);
+        $this->assertEquals('MT 001 - This is the question title', $mtItem->GetName());
         $this->assertEquals('001', $mtItem->ID);
         $this->assertEquals('This is the question text.', $mtItem->Text);
         $this->assertEquals(4, count($mtItem->Options));

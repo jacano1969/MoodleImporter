@@ -3,8 +3,11 @@ namespace MoodleImporter;
 include_once 'Item.php';
 
 /**
+ * TrueFalseItem
+ * 
  * This class represents a True/False item that can be associated with a Quiz
  * object.
+ * 
  * @package MoodleXMLImporter
  * @author John D. Delano
  */
@@ -58,6 +61,7 @@ class TrueFalseItem extends Item {
      * 
      * Converts the item represented by this object to a corresponding HTML
      * representation that can be used for display on a web page.
+     * 
      * @return string 
      */
     public function ToHTML()
@@ -89,13 +93,6 @@ class TrueFalseItem extends Item {
         $correctOption = $bb6XML->xpath('resprocessing//respcondition[@title=\'correct\']//varequal');
         $this->CorrectAnswer = strtolower((string)$correctOption[0]) == 'true' ? true : false;
     }
-
-    // @todo implement FromHTML method
-    public static function FromHTML($htmlString)
-    {
-        
-    }
-    
 }
 
 ?>

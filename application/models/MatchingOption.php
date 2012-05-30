@@ -30,6 +30,16 @@ class MatchingOption implements IExporter  {
     public $Value = "";
     
 
+    /**
+     * __construct
+     * 
+     * Constructor for the MatchingOption class that allows the specification
+     * of the text and value during instantiation. If no values are provided,
+     * for either, then an empty string is assigned to the respective property.
+     * 
+     * @param string $text
+     * @param string $value 
+     */
     public function __construct($text = "", $value = "")
     {
         $this->Text = $text;

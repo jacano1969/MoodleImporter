@@ -3,14 +3,22 @@ require_once APPPATH . '/models/Quiz.php';
 
 
 /**
- * Description of converthtml
+ * converthtml
+ * 
+ * Controller class that provides the actions necessary to automate Use Case #2 -
+ * the importing of HTML files (or HTML text) and conversion to Moodle XML format.
  *
  * @package MoodleXMLImporter
  * @author John D. Delano
  */
 class converthtml extends CI_Controller 
 {
-
+    /**
+     * __construct
+     * 
+     * Constructor that loads some default libraries that are used by the actions
+     * in this controller. 
+     */
     public function __construct() 
     {
         parent::__construct();
@@ -21,7 +29,7 @@ class converthtml extends CI_Controller
     }
     
     /**
-     * Index page for this controller 
+     * index
      * 
      * Displays the initial view, where the user can upload an HTML formatted
      * file or copy/paste some HTML text.
@@ -32,17 +40,31 @@ class converthtml extends CI_Controller
     }
 
     /**
-     * Review page for this controller
+     * review
      * 
      * If the user uploads a file or copies/pastes the HTML in the textbox,
      * this action processes the file or textbox contents and converts it to a 
      * quiz object, which is then stored in the session. The view then displays
      * the quiz information along with options to adjust some of the quiz/item
      * settings.
+     * 
+     * Displays the item review screen that shows the list of questions that are 
+     * to be imported (showing the question title, the question 
+     * text, an option for whether or not the answers for the question should be 
+     * shuffled, and a point value for each question), a single prompt for which 
+     * category all of the questions should use, an option to override the point 
+     * value of all questions and a prompt for entering the new point value, and 
+     * an option to apply a team-based learning scoring system (If feasible within 
+     * quoted time frame). Note that the option to shuffle the answers is not 
+     * applicable to some question types. Question titles are also selectable by 
+     * the user. The view also provides an option to mark and unmark all the 
+     * “Shuffle answer” options. 
      */
     public function review()
     {
-        if (is_uploaded_file($_FILES['uploadFile']['tmp_name']))
+        
+        // See if we got a file and if it uploaded okay.
+        if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_FILES['uploadFile'])) && ($_FILES['uploadFile']['error'] === UPLOAD_ERR_OK))
         {
             $fileData = file_get_contents($_FILES['uploadFile']['tmp_name']);
             $quiz = MoodleImporter\Quiz::GetQuizFromHTML($fileData);
@@ -55,14 +77,13 @@ class converthtml extends CI_Controller
         $Data = array();
         $Data['quiz'] = $quiz;
         $this->load->view('converthtml/review', $Data);
-
     }
     
     /**
-     * Review item window HTML contents
+     * reviewitem
      * 
-     * This action echos the HTML code necessary for displaying a selected
-     * item.
+     * Review item window HTML contents. This action echos the HTML code 
+     * necessary for displaying a selected item.
      */
     public function reviewitem()
     {
@@ -84,7 +105,7 @@ class converthtml extends CI_Controller
     }
     
     /**
-     * Convert page for this controller
+     * convert
      * 
      * This action processes the changes made on the review screen, and displays
      * a view with a link to the converted file.
@@ -92,6 +113,7 @@ class converthtml extends CI_Controller
     public function convert()
     {
         $quiz = $_SESSION['quiz'];
+        // See if the user checked the Team-Based Learning checkbox
         if ($this->input->post('applyTBL'))
         {
             $quiz->ApplyTBLTemplate = true;
@@ -100,7 +122,11 @@ class converthtml extends CI_Controller
         {
             $quiz->ApplyTBLTemplate = false;
         }
+        
+        // Set the quiz category
         $quiz->Category = $this->input->post('category');
+        
+        // Update the items, based on shuffle and point value changes.
         for ($i = 0; $i < count($quiz->Items); $i++)
         {
             if (property_exists($quiz->Items[$i], 'ShuffleAnswers'))
@@ -114,6 +140,8 @@ class converthtml extends CI_Controller
                 $quiz->Items[$i]->PointValue = $pointValue;
             }
         }
+        
+        // Keep the updated quiz in the session and send it on for retrieval.
         $_SESSION['quiz'] = $quiz;
         $Data = array();
         $Data['quiz'] = $_SESSION['quiz'];
@@ -121,10 +149,10 @@ class converthtml extends CI_Controller
     }
     
     /**
-     * File download link target
+     * download
      * 
-     * This action creates and streams the Moodle XML file to the user, based
-     * on the Quiz object in Session state. 
+     * File download link target. This action creates and streams the Moodle XML 
+     * file to the user, based on the Quiz object in Session state. 
      */
     public function download()
     {

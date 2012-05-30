@@ -12,5 +12,6 @@
     <body>
         <h1>Moodle XML Importer</h1>
         <p>Click <a href="<?php echo site_url();?>/converthtml/download">here</a> to download your converted quiz in Moodle XML format.</p>
+        <p><a href="<?php echo site_url();?>/">Convert another quiz?</a></p>
     </body>
 </html>

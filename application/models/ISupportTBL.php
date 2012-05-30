@@ -1,10 +1,14 @@
 <?php
-
 namespace MoodleImporter;
 
 /**
- *
- * @author jdelano
+ * ISupportTBL
+ * 
+ * Interface defines whether or not an object (usually an Item) supports a 
+ * team-based learning scoring methodology.
+ * 
+ * @package MoodleXMLImporter
+ * @author John D. Delano
  */
 interface ISupportTBL {
     

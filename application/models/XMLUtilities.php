@@ -155,6 +155,15 @@ function sxml_append(\SimpleXMLElement $to, \SimpleXMLElement $from) {
 }
 
 
+/**
+ * html_is_equal
+ * 
+ * Determines whether or not two given html strings are equal, by first
+ * cleaning both of them and comparing them as strings.
+ * @param string $to
+ * @param string $from
+ * @return boolean
+ */
 function html_is_equal($to, $from)
 {
     $to1 = preg_replace('~\s*(<([^>]*)>[^<]*</\2>|<[^>]*>)\s*~','$1',$to );
@@ -169,12 +178,20 @@ function html_is_equal($to, $from)
     }
 }
 
-
+/**
+ * clean_xml
+ * 
+ * Function that strips out all the extra whitespace and line endings in an
+ * XML file to prepare it for processing.
+ * 
+ * @param string $xmlFile
+ * @return string 
+ */
 function clean_xml($xmlFile)
 {
-    $quizData = preg_replace('~\s*(<([^>]*)>[^<]*</\2>|<[^>]*>)\s*~','$1', $xmlFile);
-    $quizData = str_replace('\r\n', "", $quizData);
-    return $quizData;
+    $data = preg_replace('~\s*(<([^>]*)>[^<]*</\2>|<[^>]*>)\s*~','$1', $xmlFile);
+    $data = str_replace('\r\n', "", $data);
+    return $data;
 }
 
 

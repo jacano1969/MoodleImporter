@@ -1,8 +1,11 @@
 <?php
-
 namespace MoodleImporter;
+
 /**
+ * MultipleChoiceOption
+ * 
  * This class represents one option for a MultipleChoiceItem.
+ * 
  * @package MoodleXMLImporter
  * @author John D. Delano
  */
@@ -28,6 +31,23 @@ class MultipleChoiceOption implements IExporter  {
     public $Value = 0;
     
 
+    /**
+     * __construct
+     * 
+     * Constructor for the MultipleChoiceOption class that allows the specification
+     * of the text and value during instantiation. If no values are provided,
+     * for either, then an empty string (or 0.0) is assigned to the respective property.
+     * 
+     * @param string $text
+     * @param float $value 
+     */
+    public function __construct($text = "", $value = 0.0)
+    {
+        $this->Text = $text;
+        $this->Value = $value;
+    }
+
+    
     /**
      * ToXMLElement
      * 

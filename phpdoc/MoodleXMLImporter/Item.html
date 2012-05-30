@@ -25,6 +25,11 @@
 						
 					</div>
 	<div class="info-box-body">
+                <p class="implements">
+            Implements interfaces:
+            <ul>
+                <li><a href="../default/IExporter.html">IExporter</a></li>            </ul>
+        </p>
         		<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">The base class of all Item objects. This class is abstract, so it cannot be  instantiated. To add new question types, create a new, concrete class  based on this Item class, and implement the ToXMLElement method.</p>
 	<ul class="tags">
@@ -126,13 +131,8 @@
 			<div class="var-summary">
 																																																<div class="var-title">
 					<img src="../media/images/Variable.png" alt=" " />
-					<span class="var-type">string</span>
+					<span class="var-type">int</span>
 					<a href="#$ID" title="details" class="var-name">$ID</a>
-				</div>
-																<div class="var-title">
-					<img src="../media/images/Variable.png" alt=" " />
-					<span class="var-type">string</span>
-					<a href="#$Name" title="details" class="var-name">$Name</a>
 				</div>
 																<div class="var-title">
 					<img src="../media/images/Variable.png" alt=" " />
@@ -143,6 +143,11 @@
 					<img src="../media/images/Variable.png" alt=" " />
 					<span class="var-type">string</span>
 					<a href="#$Text" title="details" class="var-name">$Text</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">string</span>
+					<a href="#$Title" title="details" class="var-name">$Title</a>
 				</div>
 											</div>
 		</div>
@@ -163,9 +168,9 @@
 			<div class="method-summary">
 																																																								<div class="method-definition">
 					<img src="../media/images/Method.png" alt=" "/>
-											<span class="method-result">bool</span>
-										<a href="#ApplyTBLTemplate" title="details" class="method-name">ApplyTBLTemplate</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$IsEnabled</span>)
+											<span class="method-result">void</span>
+										<a href="#GetName" title="details" class="method-name">GetName</a>
+										()
 									</div>
 																<div class="method-definition">
 					<img src="../media/images/AbstractMethod.png" alt=" "/>
@@ -177,16 +182,16 @@
 					<img src="../media/images/Method.png" alt=" "/>
 											<span class="method-result">void</span>
 										<a href="#ImportBB6XML" title="details" class="method-name">ImportBB6XML</a>
-											(<span class="var-type">SimpleXMLElement</span>&nbsp;<span class="var-name">\$bb6XML</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$itemID</span>, <span class="var-type">\SimpleXMLElement</span>&nbsp;<span class="var-name">$bb6XML</span>)
+											(<span class="var-type">SimpleXMLElement</span>&nbsp;<span class="var-name">\$bb6XML</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$itemID</span>, <span class="var-type">\SimpleXMLElement</span>&nbsp;<span class="var-name">$bb6XML</span>)
 									</div>
 																<div class="method-definition">
-					<img src="../media/images/AbstractMethod.png" alt=" "/>
+					<img src="../media/images/Method.png" alt=" "/>
 											<span class="method-result">string</span>
 										<a href="#ToHTML" title="details" class="method-name">ToHTML</a>
 										()
 									</div>
 																<div class="method-definition">
-					<img src="../media/images/AbstractMethod.png" alt=" "/>
+					<img src="../media/images/Method.png" alt=" "/>
 											<span class="method-result">\SimpleXMLElement</span>
 										<a href="#ToXMLElement" title="details" class="method-name">ToXMLElement</a>
 										()
@@ -216,9 +221,9 @@
 	<div class="var-header">
 		<img src="../media/images/Variable.png" />
 		<span class="var-title">
-			<span class="var-type">string</span>
+			<span class="var-type">int</span>
 			<span class="var-name">$ID</span>
-			 = <span class="var-default"> &quot;001&quot;</span>			(line <span class="line-number">24</span>)
+			 = <span class="var-default"> 1</span>			(line <span class="line-number">24</span>)
 		</span>
 	</div>
 
@@ -234,39 +239,15 @@
 		
 
 </div>
-<a name="var$Name" id="$Name"><!-- --></A>
-<div class="evenrow">
-
-	<div class="var-header">
-		<img src="../media/images/Variable.png" />
-		<span class="var-title">
-			<span class="var-type">string</span>
-			<span class="var-name">$Name</span>
-			 = <span class="var-default"> &quot;&quot;</span>			(line <span class="line-number">34</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Name</p>
-<p class="description"><p>Specifies the name of the item, which is shown in the list of Questions  in Moodle, when viewing the question bank. This is not the same as the  question text, and it is typically NOT shown to the student.</p></p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	
-		
-		
-
-</div>
 <a name="var$PointValue" id="$PointValue"><!-- --></A>
-<div class="oddrow">
+<div class="evenrow">
 
 	<div class="var-header">
 		<img src="../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">int</span>
 			<span class="var-name">$PointValue</span>
-			 = <span class="var-default"> 1</span>			(line <span class="line-number">54</span>)
+			 = <span class="var-default"> 1</span>			(line <span class="line-number">79</span>)
 		</span>
 	</div>
 
@@ -283,20 +264,44 @@
 
 </div>
 <a name="var$Text" id="$Text"><!-- --></A>
-<div class="evenrow">
+<div class="oddrow">
 
 	<div class="var-header">
 		<img src="../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">string</span>
 			<span class="var-name">$Text</span>
-			 = <span class="var-default"> &quot;&quot;</span>			(line <span class="line-number">45</span>)
+			 = <span class="var-default"> &quot;&quot;</span>			(line <span class="line-number">70</span>)
 		</span>
 	</div>
 
 	<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">Text</p>
 <p class="description"><p>Specifies the actual text of the question that should be displayed to  the student. This property is wrapped in a CDATA tag to allow the use  of HTML code.</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$Title" id="$Title"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$Title</span>
+			 = <span class="var-default"> &quot;&quot;</span>			(line <span class="line-number">32</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Title</p>
+<p class="description"><p>The title assigned to this item, which shows up as part of the Item's name.</p></p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
@@ -322,51 +327,38 @@
 		</div>
 		<div class="info-box-body">
 			<A NAME='method_detail'></A>
-<a name="methodApplyTBLTemplate" id="ApplyTBLTemplate"><!-- --></a>
+<a name="methodGetName" id="GetName"><!-- --></a>
 <div class="oddrow">
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">ApplyTBLTemplate</span> (line <span class="line-number">76</span>)
+		<span class="method-title">GetName</span> (line <span class="line-number">45</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">ApplyTBLTemplate</p>
-<p class="description"><p>Overridden in the child class, if it supports the Team-Based Learning  template.</p></p>
+<p class="short-description">GetName</p>
+<p class="description"><p>Specifies the name of the item, which is shown in the list of Questions  in Moodle, when viewing the question bank. This is not the same as the  question text, and it is typically NOT shown to the student.</p><p>Format of the name is: &quot;TF 001 - First five words of item&quot;</p></p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">bool</span>
+		<span class="method-result">void</span>
 		<span class="method-name">
-			ApplyTBLTemplate
+			GetName
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$IsEnabled</span>)
+				()
 			</div>
 	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$IsEnabled</span>			</li>
-				</ul>
 		
 			
-			<hr class="separator" />
-		<div class="notes">Redefined in descendants as:</div>
-		<ul class="redefinitions">
-					<li>
-				<a href="../MoodleXMLImporter/MultipleChoiceItem.html#methodApplyTBLTemplate">MultipleChoiceItem::ApplyTBLTemplate()</a>
-								: ApplyTBLTemplate
-							</li>
-				</ul>
 	</div>
 <a name="methodGetPrefix" id="GetPrefix"><!-- --></a>
 <div class="evenrow">
 	
 	<div class="method-header">
 		<img src="../media/images/AbstractMethod.png" />
-		<span class="method-title">GetPrefix</span> (line <span class="line-number">66</span>)
+		<span class="method-title">GetPrefix</span> (line <span class="line-number">91</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -413,7 +405,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">ImportBB6XML</span> (line <span class="line-number">114</span>)
+		<span class="method-title">ImportBB6XML</span> (line <span class="line-number">107</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -428,7 +420,7 @@
 		<span class="method-name">
 			ImportBB6XML
 		</span>
-					(<span class="var-type">SimpleXMLElement</span>&nbsp;<span class="var-name">\$bb6XML</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$itemID</span>, <span class="var-type">\SimpleXMLElement</span>&nbsp;<span class="var-name">$bb6XML</span>)
+					(<span class="var-type">SimpleXMLElement</span>&nbsp;<span class="var-name">\$bb6XML</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$itemID</span>, <span class="var-type">\SimpleXMLElement</span>&nbsp;<span class="var-name">$bb6XML</span>)
 			</div>
 	
 			<ul class="parameters">
@@ -436,7 +428,7 @@
 				<span class="var-type">\SimpleXMLElement</span>
 				<span class="var-name">$bb6XML</span>			</li>
 					<li>
-				<span class="var-type">string</span>
+				<span class="var-type">int</span>
 				<span class="var-name">$itemID</span>			</li>
 					<li>
 				<span class="var-type">SimpleXMLElement</span>
@@ -465,15 +457,14 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../media/images/AbstractMethod.png" />
-		<span class="method-title">ToHTML</span> (line <span class="line-number">97</span>)
+		<img src="../media/images/Method.png" />
+		<span class="method-title">ToHTML</span> (line <span class="line-number">158</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">ToHTML</p>
 <p class="description"><p>Converts the Item object to be displayed in HTML format.</p></p>
 	<ul class="tags">
-				<li><span class="field">abstract:</span> </li>
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
@@ -512,15 +503,14 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../media/images/AbstractMethod.png" />
-		<span class="method-title">ToXMLElement</span> (line <span class="line-number">88</span>)
+		<img src="../media/images/Method.png" />
+		<span class="method-title">ToXMLElement</span> (line <span class="line-number">136</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">ToXMLElement</p>
 <p class="description"><p>Converts the Item object to a SimpleXMLElement object.</p></p>
 	<ul class="tags">
-				<li><span class="field">abstract:</span> </li>
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
@@ -561,7 +551,7 @@
 
 	
 	<p class="notes" id="credit">
-		Documentation generated on Mon, 28 May 2012 11:53:19 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
+		Documentation generated on Tue, 29 May 2012 23:54:30 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
 	</p>
 	</div></body>
 </html>

@@ -73,7 +73,7 @@
                 foreach ($quiz->Items as $item)
                 {
                     echo '<tr>';
-                    echo '<td><a name="modal" href="#dialog" title="' . $item->ID . '">' . $item->Name . '</a></td>';
+                    echo '<td><a name="modal" href="#dialog" title="' . $item->ID . '">' . $item->GetName() . '</a></td>';
                     echo '<td>' . $item->Text . '</td>';
                     if (property_exists($item, 'ShuffleAnswers'))
                     {

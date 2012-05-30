@@ -23,17 +23,17 @@ class EssayItemTest extends \PHPUnit_Framework_TestCase {
     public function testToXMLElement() 
     {
         $essayItem = new EssayItem;
-        $essayItem->Name = "ES 001 - What is";
+        $essayItem->Title = "What is";
         $essayItem->PointValue = 2;
         $essayItem->Text = 'What is';
 
         $expected = <<<'ESSAY_XML'
         <question type="essay">
             <name>
-            <text><![CDATA[ES 001 - What is]]></text>
+                <text><![CDATA[ES 001 - What is]]></text>
             </name> 
             <questiontext format="html">
-            <text><![CDATA[What is]]></text>
+                <text><![CDATA[What is]]></text>
             </questiontext>
             <defaultgrade>2</defaultgrade>
         </question>
@@ -50,7 +50,7 @@ ESSAY_XML;
     public function testToHTML()
     {
         $essayItem = new EssayItem;
-        $essayItem->Name = "ES 001 - What is";
+        $essayItem->Title = "What is";
         $essayItem->PointValue = 2;
         $essayItem->Text = 'What is';
         $expected = <<<'ESSAY_HTML'
@@ -70,7 +70,7 @@ ESSAY_HTML;
         $itemElement = new \SimpleXMLElement($itemData);
         $mtItem = new EssayItem();
         $mtItem->ImportBB6XML($itemElement, "001");
-        $this->assertEquals('ES 001 - Essay question title', $mtItem->Name);
+        $this->assertEquals('ES 001 - Essay question title', $mtItem->GetName());
         $this->assertEquals('001', $mtItem->ID);
         $this->assertEquals('Describe the following things that happened one day.<div><ul><li>Went to bed</li><li>Woke up</li><li>Went to work</li></ul></div>', $mtItem->Text);
     }

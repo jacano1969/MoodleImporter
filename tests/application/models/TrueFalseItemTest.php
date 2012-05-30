@@ -21,7 +21,7 @@ class TrueFalseItemTest extends \PHPUnit_Framework_TestCase {
      */
     public function testToXMLElementTrue() {
        $trueFalseItem = new TrueFalseItem;
-       $trueFalseItem->Name = "TF 001 - What is";
+       $trueFalseItem->Title = "What is";
        $trueFalseItem->PointValue = 2;
        $trueFalseItem->Text = 'What is';
        $trueFalseItem->CorrectAnswer = true;
@@ -56,7 +56,7 @@ TF_XML;
     public function testToXMLElementFalse()
     {
         $trueFalseItem = new TrueFalseItem;
-        $trueFalseItem->Name = "TF 001 - What is";
+        $trueFalseItem->Title = "What is";
         $trueFalseItem->PointValue = 2;
         $trueFalseItem->Text = 'What is';
         $trueFalseItem->CorrectAnswer = false;
@@ -92,7 +92,7 @@ ESSAY_XML;
     public function testToHTML()
     {
         $tfItem = new TrueFalseItem;
-        $tfItem->Name = "TF 001 - What is";
+        $tfItem->Title = "What is";
         $tfItem->PointValue = 2;
         $tfItem->Text = 'What is';
         $tfItem->CorrectAnswer = false;
@@ -113,7 +113,7 @@ TF_HTML;
         $itemElement = new \SimpleXMLElement($itemData);
         $tfItem = new TrueFalseItem();
         $tfItem->ImportBB6XML($itemElement, "001");
-        $this->assertEquals('TF 001 - A data model is a', $tfItem->Name);
+        $this->assertEquals('TF 001 - A data model is a', $tfItem->GetName());
         $this->assertEquals('001', $tfItem->ID);
         $this->assertEquals('A data model is a plan for a database design.', $tfItem->Text);
         $this->assertTrue($tfItem->CorrectAnswer);
