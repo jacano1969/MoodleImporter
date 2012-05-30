@@ -283,7 +283,21 @@ HTML_QUIZ;
         
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
-        $this->assertEquals('State starting with an A', $quiz->Items[0]->Options['Alabama']);
+        $this->assertEquals(6, count($quiz->Items[0]->Options));
+        $this->assertEquals('State starting with an A', $quiz->Items[0]->Options[0]->Value);
+        $this->assertEquals('State starting with a C', $quiz->Items[0]->Options[1]->Value);
+        $this->assertEquals('State starting with a M', $quiz->Items[0]->Options[2]->Value);
+        $this->assertEquals('State starting with an O', $quiz->Items[0]->Options[3]->Value);
+        $this->assertEquals('State starting with a N', $quiz->Items[0]->Options[4]->Value);
+        $this->assertEquals('State starting with a W', $quiz->Items[0]->Options[5]->Value);
+        $this->assertEquals('Alabama', $quiz->Items[0]->Options[0]->Text);
+        $this->assertEquals('Colorado', $quiz->Items[0]->Options[1]->Text);
+        $this->assertEquals('Michigan', $quiz->Items[0]->Options[2]->Text);
+        $this->assertEquals('Ohio', $quiz->Items[0]->Options[3]->Text);
+        $this->assertEquals('New York', $quiz->Items[0]->Options[4]->Text);
+        $this->assertEquals('Wisconsin', $quiz->Items[0]->Options[5]->Text);
+        
+
     }
     
     public function testGetQuizFromHTMLMatchingItemComplex()
@@ -307,8 +321,9 @@ HTML_QUIZ;
         
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
-        $this->assertEquals('State starting with an A', $quiz->Items[0]->Options['Alabama']);
         $this->assertEquals('<p>Match the following:</p><ol><li>Subquestion 1</li><li>Subquestion 2</li></ol>', $quiz->Items[0]->Text);
+        $this->assertEquals(6, count($quiz->Items[0]->Options));
+        $this->assertEquals('State starting with an A', $quiz->Items[0]->Options[0]->Value);
     }
 
     
@@ -380,6 +395,43 @@ HTML_QUIZ;
 
     }
     
+    public function testQuizMerge()
+    {
+        $inputHTML = <<<HTML_QUIZ
+        <h2>TF w/list in text</h2>
+        What is the answer to the following sub-questions?
+        <ul>
+            <li>Question 1</li>
+            <li>Question 2</li>
+        </ul>
+        <ul>
+            <li>truth</li>
+        </ul>
+        <h2>TF false Question</h2>
+        What is the answer to the following sub-questions?
+        <ul>
+            <li>false</li>
+        </ul>
+        <h2>MC w/list in text</h2>
+        What is the answer to the following sub-questions?
+        <ol>
+            <li>question 1</li>
+            <li>question 2</li>
+        </ol>
+        <ol>
+            <li>option 1</li>
+            <li><strong>option 2</strong></li>
+            <li>option 3</li>
+            <li>option 4</li>
+        </ol>
+HTML_QUIZ;
+        
+        $quiz1 = Quiz::GetQuizFromHTML($inputHTML);
+        $quiz2 = Quiz::GetQuizFromHTML($inputHTML);
+        $quiz1->Merge($quiz2);
+        $this->assertEquals(6, count($quiz1->Items));
+
+    }
 }
 
 ?>

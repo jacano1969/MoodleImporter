@@ -63,7 +63,12 @@ MATCHING_XML;
         $matchingItem->Name = "MT 001 - What is";
         $matchingItem->PointValue = 2;
         $matchingItem->Text = 'What is';
-        $matchingItem->Options = array('Option 1' => 'Definition 1', 'Option 2' => 'Definition 2', 'Option 3' => 'Definition 3');
+        $op1 = new MatchingOption('Option 1', 'Definition 1');
+        $op2 = new MatchingOption('Option 2', 'Definition 2');
+        $op3 = new MatchingOption('Option 3', 'Definition 3');
+        $matchingItem->Options[] = $op1;
+        $matchingItem->Options[] = $op2;
+        $matchingItem->Options[] = $op3;
        
         $expected = <<<'MATCHING_HTML'
         <p>Name: MT 001 - What is</p>

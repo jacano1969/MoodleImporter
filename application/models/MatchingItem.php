@@ -11,9 +11,11 @@ include_once 'Item.php';
 class MatchingItem extends Item
 {
     /**
-     * Contains a list of options for the matching set. This is an associative
-     * array that contains each term as the key and the term's associated
-     * definition as the key's value.
+     * Options
+     * 
+     * Contains a list of options for the matching set. This is an array of
+     * MatchingOption objects.
+     * 
      * @var array
      */
     public $Options = array();
@@ -71,9 +73,9 @@ OPTION_XML;
     {
         $htmlValue = parent::ToHTML();
         $htmlValue .= "<dl>";
-        foreach ($this->Options as $term => $definition)
+        foreach ($this->Options as $option)
         {
-            $htmlValue .= "<dt>$term</dt><dd>$definition</dd>";
+            $htmlValue .= $option->ToHTML();
         }
         $htmlValue .= '</dl>';
         

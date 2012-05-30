@@ -6,6 +6,7 @@ namespace MoodleImporter;
 require_once APPPATH . '/models/Item.php';
 require_once APPPATH . '/models/EssayItem.php';
 require_once APPPATH . '/models/MatchingItem.php';
+require_once APPPATH . '/models/MatchingOption.php';
 require_once APPPATH . '/models/MultipleChoiceItem.php';
 require_once APPPATH . '/models/MultipleChoiceOption.php';
 require_once APPPATH . '/models/TrueFalseItem.php';
@@ -143,7 +144,7 @@ class Quiz  {
 
                     for ($j = 0; $j < count($options[1]); $j++)
                     {
-                        $item->Options[$options[1][$j]] = $options[2][$j];
+                        $item->Options[] = new MatchingOption($options[1][$j], $options[2][$j]);
                     }
 
                     $quiz->Items[] = $item;
@@ -155,8 +156,7 @@ class Quiz  {
                     // an array of matched options in index 1. Since we don't care about
                     // the globally matched string, we delete it.
                     $options = $options[1];
-                    // If there is only one answer, it could be a true/false or essay 
-                    // item.
+                    // If there is only one answer, it could be a true/false item
                     if (count($options) == 1)
                     {
                         if (stristr($options[0], 't') || stristr($options[0], 'f'))
@@ -352,6 +352,25 @@ QUIZ_XML;
                 }
             }
         }
+    }
+    
+    
+    /**
+     * Merge
+     * 
+     * Merges the items from the specified quiz into $this quiz and returns 
+     * $this quiz that contains the merged items.
+     * 
+     * @param \MoodleImporter\Quiz $quiz
+     * @return \MoodleImporter\Quiz 
+     */
+    public function Merge(Quiz $quiz)
+    {
+        foreach ($quiz->Items as $item)
+        {
+            $this->Items[] = $item;
+        }
+        return $this;
     }
 }
 

@@ -45,7 +45,18 @@ class convertbb6 extends CI_Controller
                     // Blackboard does weird things to the XML files, so we have
                     // clean them up before we can import them.
                     $quizData = MoodleImporter\clean_xml($zipFiles[(string)$quizFile['identifier'].'.dat']);
-                    $quiz = MoodleImporter\Quiz::GetQuizFromBB6XML($quizData);
+                    
+                    // Since blackboard import files can have multiple xml files 
+                    // in them containing tests, we need to merge in the second
+                    // and following quizzes.
+                    if ($quiz == null)
+                    {
+                        $quiz = MoodleImporter\Quiz::GetQuizFromBB6XML($quizData);
+                    }
+                    else
+                    {
+                        $quiz->Merge(MoodleImporter\Quiz::GetQuizFromBB6XML($quizData));
+                    }
 
                     // Now we have the quiz, so we have to import the 
                     // image data into where each file is referenced
@@ -58,10 +69,6 @@ class convertbb6 extends CI_Controller
                             $quiz->ReplaceTextInQuiz($zipName, $this->CreateImageSrc($zipFile, substr($zipName, -3)));
                         }
                     }
-                    
-                    /**
-                     * @todo need to support multiple quiz files within a single zip upload -- merge the quizzes together? 
-                     */
                 }
             }
             else // ... or if the user uploaded just the dat file.
