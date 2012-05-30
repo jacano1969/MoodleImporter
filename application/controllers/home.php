@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Description of HomeController
+ * home
+ * 
+ * Home controller that displays the initial landing page.
  *
  * @package MoodleXMLImporter
  * @author jdelano
@@ -9,8 +11,9 @@
 class home extends CI_Controller {
 
     /**
-    * Index Page for this controller.
-    *
+     * index
+     * 
+     * Index Page for this controller.
     */
     public function index()
     {

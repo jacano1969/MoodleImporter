@@ -23,7 +23,7 @@
     <listitem>Questions will be given a name that is consistent with the following naming convention:
         TTnnn – [question name]
     Where, TT is the question type (MC = Multiple choice, TF = true/false, ES = Essay, MT = Matching), nnn is the question number formatted to three digits (e.g., 001 for question #1), and [question name] is the contents of the h2 tag OR the first five words of question text, if the h2 tag contains “N/A”.</listitem>
-    <listitem>4.	Questions will be numbered sequentially from the beginning of the file to the end, in the order in which the questions are submitted.</listitem>
+    <listitem>Questions will be numbered sequentially from the beginning of the file to the end, in the order in which the questions are submitted.</listitem>
     </orderedlist> 
 </para>
  </refsect1>
