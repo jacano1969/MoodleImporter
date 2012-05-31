@@ -94,13 +94,26 @@ class MultipleChoiceItem extends Item implements ISupportTBL
         // Add feedback elements if there's feedback text available.
         if ($this->CorrectFeedback != "")
         {
-            $feedbackElement = $xmlElement->addChild("correctfeedback");
-            simplexml_add_CDATA($feedbackElement, $this->CorrectFeedback);
+            $feedbackElement = <<<FEEDBACK
+            <correctfeedback format="html">
+                <text>
+                    <![CDATA[$this->CorrectFeedback]]>
+                </text>
+            </correctfeedback>
+FEEDBACK;
+            sxml_append($xmlElement, new \SimpleXMLElement($feedbackElement));
         }
+
         if ($this->IncorrectFeedback != "")
         { 
-            $feedbackElement = $xmlElement->addChild("incorrectfeedback");
-            simplexml_add_CDATA($feedbackElement, $this->IncorrectFeedback);
+            $feedbackElement = <<<FEEDBACK
+            <incorrectfeedback format="html">
+                <text>
+                    <![CDATA[$this->IncorrectFeedback]]>
+                </text>
+            </incorrectfeedback>
+FEEDBACK;
+            sxml_append($xmlElement, new \SimpleXMLElement($feedbackElement));
 
         }
         // Add option elements as child nodes

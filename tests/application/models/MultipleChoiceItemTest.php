@@ -213,21 +213,25 @@ class MultipleChoiceItemTest extends \PHPUnit_Framework_TestCase {
             <questiontext format="html">
                 <text><![CDATA[What is the answer to this question?]]></text>
             </questiontext>
-            <answer fraction="100">
+            <answer fraction="100" format="html">
                <text>The correct answer</text>
             </answer>
-            <answer fraction="0">
+            <answer fraction="0" format="html">
                 <text>A distractor</text>
             </answer>
-            <answer fraction="0">
+            <answer fraction="0" format="html">
                 <text>Another distractor</text>
             </answer>
             <shuffleanswers>1</shuffleanswers>
             <single>true</single>
             <answernumbering>abc</answernumbering>
             <defaultgrade>2</defaultgrade>
-            <correctfeedback><![CDATA[This is correct feedback]]></correctfeedback>
-            <incorrectfeedback><![CDATA[This is incorrect feedback]]></incorrectfeedback>
+            <correctfeedback format="html">
+                <text><![CDATA[This is correct feedback]]></text>
+            </correctfeedback>
+            <incorrectfeedback format="html">
+                <text><![CDATA[This is incorrect feedback]]></text>
+            </incorrectfeedback>
         </question>
 MC_XML;
         

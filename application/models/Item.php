@@ -139,7 +139,7 @@ abstract class Item implements IExporter {
         // or mat_formattedtext child nodes that are not under the FILE_BLOCK or
         // LINK_BLOCK flow nodes, but that is under the QUESTION_BLOCK flow node.
         $text = $bb6XML->xpath('presentation//flow[@class=\'QUESTION_BLOCK\']//material[not(ancestor::flow[@class=\'FILE_BLOCK\'] or ancestor::flow[@class=\'LINK_BLOCK\'])]//*[mattext or mat_formattedtext]/*');
-        $this->Text = (string)$text[0];
+        $this->Text = trim((string)$text[0]);
         $title = $bb6XML->xpath('item');
         $this->Title = (string)$bb6XML['title'];
         

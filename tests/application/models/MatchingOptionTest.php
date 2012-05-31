@@ -24,12 +24,12 @@ class MatchingOptionTest extends \PHPUnit_Framework_TestCase {
         $option->Text = "Alabama";
         $option->Value = "State starting with an A";
         $expected = <<<OPTION_XML
-        <subquestion>
+        <subquestion format="html">
             <text>
                 <![CDATA[Alabama]]>
             </text>
             <answer>
-                <![CDATA[State starting with an A]]>
+                <text><![CDATA[State starting with an A]]></text>
             </answer>
         </subquestion>
 OPTION_XML;

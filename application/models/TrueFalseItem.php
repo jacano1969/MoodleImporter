@@ -55,11 +55,11 @@ class TrueFalseItem extends Item {
         // because Moodle only allows you to specify feedback for the true and
         // the false options. That means that we have to figure out which option
         // to apply which feedback. 
-        $true = new \SimpleXMLElement("<answer fraction=\"$trueFraction\"><text>true</text></answer>");
+        $true = new \SimpleXMLElement("<answer fraction=\"$trueFraction\" format=\"html\"><text>true</text></answer>");
         if ($trueFeedback != "")
         {
             $trueFeedbackText = <<<FEEDBACK
-            <feedback>
+            <feedback format="html">
                 <text>
                     <![CDATA[$trueFeedback]]>
                 </text>
@@ -69,12 +69,11 @@ FEEDBACK;
             sxml_append($true, $trueFeedbackElement);
         }
         
-        
-        $false = new \SimpleXMLElement("<answer fraction=\"$falseFraction\"><text>false</text></answer>");
+        $false = new \SimpleXMLElement("<answer fraction=\"$falseFraction\" format=\"html\"><text>false</text></answer>");
         if ($falseFeedback != "")
         {
             $falseFeedbackText = <<<FEEDBACK
-            <feedback>
+            <feedback format="html">
                 <text>
                     <![CDATA[$falseFeedback]]>
                 </text>

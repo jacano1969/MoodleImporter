@@ -194,7 +194,17 @@ function clean_xml($xmlFile)
     return $data;
 }
 
-
+/**
+ * simplexml_add_CDATA
+ * 
+ * Function that encloses the $contents parameter inside a CDATA tag and appends
+ * it as a child of the $enclosingElement parameter. Appending a CDATA element
+ * with SimpleXML's appendChild method throws the CDATA tag away, but we need it
+ * when exporting to Moodle XML.
+ * 
+ * @param \SimpleXMLElement $enclosingElement
+ * @param string $contents 
+ */
 function simplexml_add_CDATA(\SimpleXMLElement $enclosingElement, $contents)
 {
     $dom = dom_import_simplexml($enclosingElement);

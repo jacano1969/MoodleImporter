@@ -43,30 +43,34 @@ class MatchingItemTest extends \PHPUnit_Framework_TestCase {
             <defaultgrade>
                 2
             </defaultgrade>
-            <correctfeedback><![CDATA[Your answer is correct!]]></correctfeedback>
-            <incorrectfeedback><![CDATA[Your answer is INCORRECT!]]></incorrectfeedback>
-            <subquestion>
+            <correctfeedback format="html">
+                <text><![CDATA[Your answer is correct!]]></text>
+            </correctfeedback>
+            <incorrectfeedback format="html">
+                <text><![CDATA[Your answer is INCORRECT!]]></text>
+            </incorrectfeedback>
+            <subquestion format="html">
                 <text>
                     <![CDATA[Option 1]]>
                 </text>
                 <answer>
-                    <![CDATA[Definition 1]]>
+                    <text><![CDATA[Definition 1]]></text>
                 </answer>
             </subquestion>
-            <subquestion>
+            <subquestion format="html">
                 <text>
                     <![CDATA[Option 2]]>
                 </text>
                 <answer>
-                    <![CDATA[Definition 2]]>
+                    <text><![CDATA[Definition 2]]></text>
                 </answer>
             </subquestion>
-            <subquestion>
+            <subquestion format="html">
                 <text>
                     <![CDATA[Option 3]]>
                 </text>
                 <answer>
-                    <![CDATA[Definition 3]]>
+                    <text><![CDATA[Definition 3]]></text>
                 </answer>
             </subquestion>
         </question>

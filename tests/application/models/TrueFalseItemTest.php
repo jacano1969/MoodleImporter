@@ -39,13 +39,13 @@ class TrueFalseItemTest extends \PHPUnit_Framework_TestCase {
         <defaultgrade>
             2
         </defaultgrade>
-        <answer fraction="100">
+        <answer fraction="100" format="html">
             <text>true</text>
-            <feedback><text><![CDATA[Your answer is correct!]]></text></feedback>
+            <feedback format="html"><text><![CDATA[Your answer is correct!]]></text></feedback>
         </answer>
-        <answer fraction="0">
+        <answer fraction="0" format="html">
             <text>false</text>
-            <feedback><text><![CDATA[Your answer is INCORRECT!]]></text></feedback>
+            <feedback format="html"><text><![CDATA[Your answer is INCORRECT!]]></text></feedback>
         </answer>
        </question>
 TF_XML;
@@ -78,13 +78,13 @@ TF_XML;
         <defaultgrade>
             2
         </defaultgrade>
-        <answer fraction="0">
+        <answer fraction="0" format="html">
             <text>true</text>
-            <feedback><text><![CDATA[Your answer is INCORRECT!]]></text></feedback>
+            <feedback format="html"><text><![CDATA[Your answer is INCORRECT!]]></text></feedback>
         </answer>
-        <answer fraction="100">
+        <answer fraction="100" format="html">
             <text>false</text>
-            <feedback><text><![CDATA[Your answer is correct!]]></text></feedback>
+            <feedback format="html"><text><![CDATA[Your answer is correct!]]></text></feedback>
         </answer>
         </question>
 ESSAY_XML;

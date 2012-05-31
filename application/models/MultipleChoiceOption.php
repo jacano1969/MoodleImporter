@@ -58,7 +58,7 @@ class MultipleChoiceOption implements IExporter  {
     public function ToXMLElement()
     {
         $xmlValue = <<<OPTION_XML
-        <answer fraction="$this->Value">
+        <answer fraction="$this->Value" format="html">
             <text><![CDATA[$this->Text]]></text>
         </answer>
 OPTION_XML;

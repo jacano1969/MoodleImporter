@@ -24,7 +24,7 @@ class MultipleChoiceOptionTest extends \PHPUnit_Framework_TestCase {
         $multipleChoiceOption->Text = "Alabama";
         $multipleChoiceOption->Value = 100;
         $expected = <<<OPTION_XML
-        <answer fraction="100">
+        <answer fraction="100" format="html">
             <text><![CDATA[Alabama]]></text>
         </answer>
 OPTION_XML;
