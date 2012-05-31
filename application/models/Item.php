@@ -35,6 +35,48 @@ abstract class Item implements IExporter {
     public $Title = "";
     
     /**
+     * Text
+     * 
+     * Specifies the actual text of the question that should be displayed to 
+     * the student. This property is wrapped in a CDATA tag to allow the use
+     * of HTML code.
+     * @var string 
+     */
+    public $Text = "";
+    
+    /**
+     * PointValue
+     * 
+     * Specifies the default value to assign to this item. Note that this value
+     * may be overriden by the Quiz object.
+     * @var int 
+     */
+    public $PointValue = 1;
+    
+    /**
+     * CorrectFeedback 
+     * 
+     * Specifies the text to display to the student, after they get this item
+     * correct.
+     * 
+     * @var string
+     */
+    public $CorrectFeedback = "";
+    
+    /**
+     * IncorrectFeedback
+     * 
+     * Specifies the text to display to the student, after they get this item
+     * incorrect.
+     * 
+     * @var string 
+     */
+    public $IncorrectFeedback = "";
+    
+    
+    // METHODS
+
+    /**
      * GetName
      * 
      * Specifies the name of the item, which is shown in the list of Questions 
@@ -65,28 +107,6 @@ abstract class Item implements IExporter {
         return $this->GetPrefix() . ' ' . sprintf("%03d", $this->ID) . ' - ' . $text;
     }
     
-    
-    /**
-     * Text
-     * 
-     * Specifies the actual text of the question that should be displayed to 
-     * the student. This property is wrapped in a CDATA tag to allow the use
-     * of HTML code.
-     * @var string 
-     */
-    public $Text = "";
-    
-    /**
-     * PointValue
-     * 
-     * Specifies the default value to assign to this item. Note that this value
-     * may be overriden by the Quiz object.
-     * @var int 
-     */
-    public $PointValue = 1;
-    
-    
-    // METHODS
 
     /**
      * GetPrefix
@@ -122,6 +142,13 @@ abstract class Item implements IExporter {
         $this->Text = (string)$text[0];
         $title = $bb6XML->xpath('item');
         $this->Title = (string)$bb6XML['title'];
+        
+        // Now get the feedback under the itemfeedback tag where attribute ident
+        // equals either correct or incorrect.
+        $correctFeedback = $bb6XML->xpath('itemfeedback[@ident=\'correct\']//material[not(ancestor::flow[@class=\'FILE_BLOCK\'] or ancestor::flow[@class=\'LINK_BLOCK\'])]//*[mattext or mat_formattedtext]/*');
+        $this->CorrectFeedback = (string)$correctFeedback[0];
+        $incorrectFeedback = $bb6XML->xpath('itemfeedback[@ident=\'incorrect\']//material[not(ancestor::flow[@class=\'FILE_BLOCK\'] or ancestor::flow[@class=\'LINK_BLOCK\'])]//*[mattext or mat_formattedtext]/*');
+        $this->IncorrectFeedback = (string)$incorrectFeedback[0];
     }
     
     /**
@@ -162,12 +189,6 @@ HTML;
         return $htmlValue;
 
     }
-
-    
-    
-    /**
-     * @todo need to add support for item feedback from blackboard
-     */
 }
 
 ?>

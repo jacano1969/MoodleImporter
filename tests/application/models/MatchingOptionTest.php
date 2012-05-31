@@ -18,33 +18,38 @@ class MatchingOptionTest extends \PHPUnit_Framework_TestCase {
     /**
      * @covers MoodleImporter\MultipleChoiceOption::ToXMLElement
      */
-//    public function testToXMLElement() 
-//    {
-//        $multipleChoiceOption = new MatchingOption;
-//        $multipleChoiceOption->Text = "Alabama";
-//        $multipleChoiceOption->Value = 100;
-//        $expected = <<<OPTION_XML
-//        <answer fraction="100">
-//            <text><![CDATA[Alabama]]></text>
-//        </answer>
-//OPTION_XML;
-//        $this->assertTrue(xml_is_equal($multipleChoiceOption->ToXMLElement(), new \SimpleXMLElement($expected), true));
-//    }
+    public function testToXMLElement() 
+    {
+        $option = new MatchingOption;
+        $option->Text = "Alabama";
+        $option->Value = "State starting with an A";
+        $expected = <<<OPTION_XML
+        <subquestion>
+            <text>
+                <![CDATA[Alabama]]>
+            </text>
+            <answer>
+                <![CDATA[State starting with an A]]>
+            </answer>
+        </subquestion>
+OPTION_XML;
+        $this->assertTrue(xml_is_equal($option->ToXMLElement(), new \SimpleXMLElement($expected)));
+    }
 
     /**
      * @covers MoodleImporter\MultipleChoiceOption::ToHTML() 
      */
-//    public function testToHTML()
-//    {
-//        $multipleChoiceOption = new MatchingOption;
-//        $multipleChoiceOption->Text = "Alabama";
-//        $multipleChoiceOption->Value = "State starting with an A";
-//        $expected = <<<OPTION_XML
-//            <dt>Alabama</dt><dd>State starting with an A</dd>
-//OPTION_XML;
-//        $this->assertXmlStringEqualsXmlString($expected, $multipleChoiceOption->ToHTML());
-//        
-//    }
+    public function testToHTML()
+    {
+        $option = new MatchingOption;
+        $option->Text = "Alabama";
+        $option->Value = "State starting with an A";
+        $expected = <<<OPTION_XML
+            <dt>Alabama</dt><dd>State starting with an A</dd>
+OPTION_XML;
+        $this->assertTrue(html_is_equal($expected, $option->ToHTML()));
+        
+    }
     
     public function testConstruct()
     {

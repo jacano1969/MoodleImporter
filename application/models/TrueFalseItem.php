@@ -45,12 +45,45 @@ class TrueFalseItem extends Item {
         // Setup correct percentage values, depending on the correct answer
         $trueFraction = $this->CorrectAnswer ? 100 : 0;
         $falseFraction = $this->CorrectAnswer ? 0 : 100;
+        $trueFeedback = $this->CorrectAnswer ? $this->CorrectFeedback : $this->IncorrectFeedback;
+        $falseFeedback = $this->CorrectAnswer ? $this->IncorrectFeedback : $this->CorrectFeedback;
         
         $xmlElement = parent::ToXMLElement();
         $xmlElement->addAttribute("type", "truefalse");
         
+        // Adding feedback elements to True/False questions is a bit more complicated
+        // because Moodle only allows you to specify feedback for the true and
+        // the false options. That means that we have to figure out which option
+        // to apply which feedback. 
         $true = new \SimpleXMLElement("<answer fraction=\"$trueFraction\"><text>true</text></answer>");
+        if ($trueFeedback != "")
+        {
+            $trueFeedbackText = <<<FEEDBACK
+            <feedback>
+                <text>
+                    <![CDATA[$trueFeedback]]>
+                </text>
+            </feedback>
+FEEDBACK;
+            $trueFeedbackElement = new \SimpleXMLElement($trueFeedbackText);
+            sxml_append($true, $trueFeedbackElement);
+        }
+        
+        
         $false = new \SimpleXMLElement("<answer fraction=\"$falseFraction\"><text>false</text></answer>");
+        if ($falseFeedback != "")
+        {
+            $falseFeedbackText = <<<FEEDBACK
+            <feedback>
+                <text>
+                    <![CDATA[$falseFeedback]]>
+                </text>
+            </feedback>
+FEEDBACK;
+            $falseFeedbackElement = new \SimpleXMLElement($falseFeedbackText);
+            sxml_append($false, $falseFeedbackElement);
+        }
+
         sxml_append($xmlElement, $true);
         sxml_append($xmlElement, $false);
         return $xmlElement;

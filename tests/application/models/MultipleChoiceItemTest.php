@@ -188,6 +188,8 @@ class MultipleChoiceItemTest extends \PHPUnit_Framework_TestCase {
         $mcItem->Text = "What is the answer to this question?";
         $mcItem->SingleSelection = true;
         $mcItem->AnswerNumbering = "abc";
+        $mcItem->CorrectFeedback = "This is correct feedback";
+        $mcItem->IncorrectFeedback = "This is incorrect feedback";
         
         $option1 = new MultipleChoiceOption;
         $option1->Text = "The correct answer";
@@ -224,6 +226,8 @@ class MultipleChoiceItemTest extends \PHPUnit_Framework_TestCase {
             <single>true</single>
             <answernumbering>abc</answernumbering>
             <defaultgrade>2</defaultgrade>
+            <correctfeedback><![CDATA[This is correct feedback]]></correctfeedback>
+            <incorrectfeedback><![CDATA[This is incorrect feedback]]></incorrectfeedback>
         </question>
 MC_XML;
         
@@ -288,7 +292,9 @@ MC_HTML;
         $this->assertEquals(0, $mcItem->Options[0]->Value);
         $this->assertEquals(0, $mcItem->Options[1]->Value);
         $this->assertEquals(0, $mcItem->Options[2]->Value);
-        $this->assertEquals(0, $mcItem->Options[4]->Value);        
+        $this->assertEquals(0, $mcItem->Options[4]->Value); 
+        $this->assertEquals("Incorrect Feedback", $mcItem->IncorrectFeedback);
+        $this->assertEquals("Correct Feedback", $mcItem->CorrectFeedback);
     }
 }
 

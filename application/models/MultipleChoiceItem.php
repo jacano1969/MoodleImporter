@@ -90,7 +90,19 @@ class MultipleChoiceItem extends Item implements ISupportTBL
         $xmlElement->addChild("shuffleanswers", $shuffleAnswersValue);
         $xmlElement->addChild("single", $singleValue);
         $xmlElement->addChild("answernumbering", $this->AnswerNumbering);
-        
+
+        // Add feedback elements if there's feedback text available.
+        if ($this->CorrectFeedback != "")
+        {
+            $feedbackElement = $xmlElement->addChild("correctfeedback");
+            simplexml_add_CDATA($feedbackElement, $this->CorrectFeedback);
+        }
+        if ($this->IncorrectFeedback != "")
+        { 
+            $feedbackElement = $xmlElement->addChild("incorrectfeedback");
+            simplexml_add_CDATA($feedbackElement, $this->IncorrectFeedback);
+
+        }
         // Add option elements as child nodes
         foreach ($this->Options as $option)
         {

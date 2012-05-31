@@ -308,10 +308,10 @@ class Quiz
                 case "True/False" : 
                     $item = new TrueFalseItem();
                     break;
-                case "Fill in the Blank" : // @todo implement fill in question import
+                case "Fill in the Blank" : 
                     $item = new EssayItem();
                     break;
-                case "Short Response" : // @todo implement short response question import
+                case "Short Response" : 
                     $item = new EssayItem();
                     break;
                 default:  // ERROR: Could not find a valid question type, so break and fall through to next item.

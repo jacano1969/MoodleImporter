@@ -106,7 +106,7 @@ class BB6XML {
                         <flow_mat class="FORMATTED_TEXT_BLOCK">
                                 <material>
                                         <mat_extension>
-                                                <mat_formattedtext type="HTML"></mat_formattedtext>
+                                                <mat_formattedtext type="HTML">You have chosen wisely.</mat_formattedtext>
                                         </mat_extension>
                                 </material>
                         </flow_mat>
@@ -125,7 +125,7 @@ class BB6XML {
                         <flow_mat class="FORMATTED_TEXT_BLOCK">
                                 <material>
                                         <mat_extension>
-                                                <mat_formattedtext type="HTML"></mat_formattedtext>
+                                                <mat_formattedtext type="HTML">NOPE, try again.</mat_formattedtext>
                                         </mat_extension>
                                 </material>
                         </flow_mat>
@@ -317,7 +317,7 @@ ITEM_DATA;
                                 <flow_mat class="FORMATTED_TEXT_BLOCK">
                                         <material>
                                                 <mat_extension>
-                                                        <mat_formattedtext type="HTML"></mat_formattedtext>
+                                                        <mat_formattedtext type="HTML">Correct Feedback</mat_formattedtext>
                                                 </mat_extension>
                                         </material>
                                 </flow_mat>
@@ -336,7 +336,7 @@ ITEM_DATA;
                                 <flow_mat class="FORMATTED_TEXT_BLOCK">
                                         <material>
                                                 <mat_extension>
-                                                        <mat_formattedtext type="HTML"></mat_formattedtext>
+                                                        <mat_formattedtext type="HTML">Incorrect Feedback</mat_formattedtext>
                                                 </mat_extension>
                                         </material>
                                 </flow_mat>

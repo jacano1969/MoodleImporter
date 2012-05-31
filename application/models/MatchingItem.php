@@ -45,21 +45,24 @@ class MatchingItem extends Item
     {
         $xmlElement = parent::ToXMLElement();
         $xmlElement->addAttribute('type', "matching");
+        
+        // Add feedback elements if there's feedback text available.
+        if ($this->CorrectFeedback != "")
+        {
+            $feedbackElement = $xmlElement->addChild("correctfeedback");
+            simplexml_add_CDATA($feedbackElement, $this->CorrectFeedback);
+        }
+        if ($this->IncorrectFeedback != "")
+        { 
+            $feedbackElement = $xmlElement->addChild("incorrectfeedback");
+            simplexml_add_CDATA($feedbackElement, $this->IncorrectFeedback);
+
+        }
 
         // Now add each of the options
-        foreach ($this->Options as $term => $definition)
+        foreach ($this->Options as $option)
         {
-            $optionXML = <<<OPTION_XML
-            <subquestion>
-                <text>
-                    <![CDATA[$term]]>
-                </text>
-                <answer>
-                    <![CDATA[$definition]]>
-                </answer>
-            </subquestion>
-OPTION_XML;
-            sxml_append($xmlElement, new \SimpleXMLElement($optionXML));
+            sxml_append($xmlElement, $option->ToXMLElement());
         }
 
         return $xmlElement; 

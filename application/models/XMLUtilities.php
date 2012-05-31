@@ -195,4 +195,11 @@ function clean_xml($xmlFile)
 }
 
 
+function simplexml_add_CDATA(\SimpleXMLElement $enclosingElement, $contents)
+{
+    $dom = dom_import_simplexml($enclosingElement);
+    $data = $dom->ownerDocument->createCDATASection($contents);
+    $dom->appendChild($data);
+}
+
 ?>

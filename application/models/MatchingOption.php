@@ -57,9 +57,15 @@ class MatchingOption implements IExporter  {
     public function ToXMLElement()
     {
         $xmlValue = <<<OPTION_XML
-        <answer fraction="$this->Value">
-            <text><![CDATA[$this->Text]]></text>
-        </answer>
+        <subquestion>
+            <text>
+                <![CDATA[$this->Text]]>
+            </text>
+            <answer>
+                <![CDATA[$this->Value]]>
+            </answer>
+        </subquestion>
+
 OPTION_XML;
         return new \SimpleXMLElement($xmlValue);
     }

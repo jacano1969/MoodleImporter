@@ -23,35 +23,52 @@ class MatchingItemTest extends \PHPUnit_Framework_TestCase {
         $matchingItem->Title = "What is";
         $matchingItem->PointValue = 2;
         $matchingItem->Text = 'What is';
-        $matchingItem->Options = array('Option 1' => 'Definition 1', 'Option 2' => 'Definition 2');
-       
+        $op1 = new MatchingOption('Option 1', 'Definition 1');
+        $op2 = new MatchingOption('Option 2', 'Definition 2');
+        $op3 = new MatchingOption('Option 3', 'Definition 3');
+        $matchingItem->Options[] = $op1;
+        $matchingItem->Options[] = $op2;
+        $matchingItem->Options[] = $op3;
+        $matchingItem->CorrectFeedback = "Your answer is correct!";
+        $matchingItem->IncorrectFeedback = "Your answer is INCORRECT!";
+
         $expected = <<<'MATCHING_XML'
         <question type="matching">
-        <name>
-            <text>MT 001 - What is</text>
-        </name> 
-        <questiontext format="html">
-            <text>What is</text>
-        </questiontext>
-        <defaultgrade>
-            2
-        </defaultgrade>
-        <subquestion>
-            <text>
-                <![CDATA[Option 1]]>
-            </text>
-            <answer>
-                <![CDATA[Definition 1]]>
-            </answer>
-        </subquestion>
-        <subquestion>
-            <text>
-                <![CDATA[Option 2]]>
-            </text>
-            <answer>
-                <![CDATA[Definition 2]]>
-            </answer>
-        </subquestion>
+            <name>
+                <text>MT 001 - What is</text>
+            </name> 
+            <questiontext format="html">
+                <text>What is</text>
+            </questiontext>
+            <defaultgrade>
+                2
+            </defaultgrade>
+            <correctfeedback><![CDATA[Your answer is correct!]]></correctfeedback>
+            <incorrectfeedback><![CDATA[Your answer is INCORRECT!]]></incorrectfeedback>
+            <subquestion>
+                <text>
+                    <![CDATA[Option 1]]>
+                </text>
+                <answer>
+                    <![CDATA[Definition 1]]>
+                </answer>
+            </subquestion>
+            <subquestion>
+                <text>
+                    <![CDATA[Option 2]]>
+                </text>
+                <answer>
+                    <![CDATA[Definition 2]]>
+                </answer>
+            </subquestion>
+            <subquestion>
+                <text>
+                    <![CDATA[Option 3]]>
+                </text>
+                <answer>
+                    <![CDATA[Definition 3]]>
+                </answer>
+            </subquestion>
         </question>
 MATCHING_XML;
         $expected = new \SimpleXMLElement($expected);
@@ -96,6 +113,8 @@ MATCHING_HTML;
         $this->assertEquals('001', $mtItem->ID);
         $this->assertEquals('This is the question text.', $mtItem->Text);
         $this->assertEquals(4, count($mtItem->Options));
+        $this->assertEquals("  Bad JOB", $mtItem->IncorrectFeedback);
+        $this->assertEquals("  Good JOB", $mtItem->CorrectFeedback);
     }
 
 }

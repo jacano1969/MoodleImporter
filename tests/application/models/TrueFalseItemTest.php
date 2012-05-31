@@ -25,6 +25,8 @@ class TrueFalseItemTest extends \PHPUnit_Framework_TestCase {
        $trueFalseItem->PointValue = 2;
        $trueFalseItem->Text = 'What is';
        $trueFalseItem->CorrectAnswer = true;
+       $trueFalseItem->CorrectFeedback = "Your answer is correct!";
+       $trueFalseItem->IncorrectFeedback = "Your answer is INCORRECT!";
        
        $expected = <<<'TF_XML'
        <question type="truefalse">
@@ -39,9 +41,11 @@ class TrueFalseItemTest extends \PHPUnit_Framework_TestCase {
         </defaultgrade>
         <answer fraction="100">
             <text>true</text>
+            <feedback><text><![CDATA[Your answer is correct!]]></text></feedback>
         </answer>
         <answer fraction="0">
             <text>false</text>
+            <feedback><text><![CDATA[Your answer is INCORRECT!]]></text></feedback>
         </answer>
        </question>
 TF_XML;
@@ -60,7 +64,9 @@ TF_XML;
         $trueFalseItem->PointValue = 2;
         $trueFalseItem->Text = 'What is';
         $trueFalseItem->CorrectAnswer = false;
-       
+        $trueFalseItem->CorrectFeedback = "Your answer is correct!";
+        $trueFalseItem->IncorrectFeedback = "Your answer is INCORRECT!";
+
         $expected = <<<'ESSAY_XML'
         <question type="truefalse">
         <name>
@@ -74,9 +80,11 @@ TF_XML;
         </defaultgrade>
         <answer fraction="0">
             <text>true</text>
+            <feedback><text><![CDATA[Your answer is INCORRECT!]]></text></feedback>
         </answer>
         <answer fraction="100">
             <text>false</text>
+            <feedback><text><![CDATA[Your answer is correct!]]></text></feedback>
         </answer>
         </question>
 ESSAY_XML;
@@ -117,8 +125,8 @@ TF_HTML;
         $this->assertEquals('001', $tfItem->ID);
         $this->assertEquals('A data model is a plan for a database design.', $tfItem->Text);
         $this->assertTrue($tfItem->CorrectAnswer);
-
-        
+        $this->assertEquals("You have chosen wisely.", $tfItem->CorrectFeedback);
+        $this->assertEquals("NOPE, try again.", $tfItem->IncorrectFeedback);
     }
 }
 
