@@ -63,16 +63,16 @@ class Quiz
      */
     public static function GetQuizFromHTML($htmlQuiz)
     {
-        $essayQuestion = false;
+        //$essayQuestion = false;
         
         try
         {
             // First get rid of all unneeded whitespace not inside any tags
-            $quizString = clean_xml($htmlQuiz);
+            //$quizString = clean_xml($htmlQuiz);
 
             // Then split the incoming string based on the <h2> tags that flag the 
             // start of a question
-            $quizArray = explode('<h2>', $quizString);
+            $quizArray = explode('<h2>', $htmlQuiz);
 
             // Explode has the side effect of creating a 0 entry for the initial 
             // <h2> tag itself, so we delete it from the array and re-normalize the 
@@ -89,7 +89,7 @@ class Quiz
                 {
                     // Explode removes the <h2> tag from each item, so we find the 
                     // content between the start of the string '^' and </h2>
-                    $regexp = '/^([.\S\s]*)<\/h2>/Ui'; 
+                    $regexp = '/^(.*)<\/h2>/Uis'; 
                     $questionName = null;
                     preg_match($regexp, $quizArray[$itemNumber], $questionName);
 
@@ -105,7 +105,7 @@ class Quiz
                     // </h2> tag and the last <ol>, <ul>, or <dl> tag -- UNLESS
                     // this item is an essay question. In that case, it will end
                     // with a <br /> tag.
-                    $regexp = '/<\/h2>([.\S\s]*)<[oud]l>[.\S\s]*(?<!(<br \/>))$/i';
+                    $regexp = '/<\/h2>(.*)<[oud]l>.*(?<!(<br \/>))[\n\s]*$/is';
                     $questionText = null;
                     preg_match($regexp, $quizArray[$itemNumber], $questionText);
 
@@ -116,7 +116,7 @@ class Quiz
                     // empty to see if we have an essay question.
                     if (sizeof($questionText) == 0) 
                     {
-                        $regexp = '/<\/h2>([.\S\s]*)<br[\s]?\/>/Ui';
+                        $regexp = '/<\/h2>(.*)<br[\s]?\/>/Uis';
                         $questionText = null;
                         preg_match($regexp, $quizArray[$itemNumber], $questionText);
                         if ($questionText == null || $questionText[1] == "")
@@ -125,8 +125,8 @@ class Quiz
                         }
                         $item = new EssayItem();
                         $item->ID = $itemNumber + 1;
-                        $item->Title = $questionName[1];
-                        $item->Text = $questionText[1];
+                        $item->Title = trim($questionName[1]);
+                        $item->Text = trim($questionText[1]);
                         $item->PointValue = 1;
                         $quiz->Items[] = $item;
                     }
@@ -136,7 +136,9 @@ class Quiz
                         // Get the answer options, which should be contained in <dl>,
                         // <ol> or <ul> tags, but we have to get the last set of 
                         // tags, because the question text itself could contain them.
-                        $regexp = '/[.\S\s]*((<[oud]l>)[.\S\s]*)<\/[oud]l>$/i';
+                        // BUGFIX: Had to accommodate the possibility that a closing
+                        // </html> tag would exist at the end of the document.
+                        $regexp = '/.*((<[oud]l>).*)((<\/[oud]l>)|(<\/html>))[\n\s]*$/is';
                         $questionAnswer = null;
                         preg_match($regexp, $quizArray[$itemNumber], $questionAnswer);
 
@@ -150,12 +152,12 @@ class Quiz
 
                         // Now separate out all the answer options, which will appear between
                         // <li> and </li> tags, if this is a multiple choice item
-                        $regexp = '/<li>([.\S\s]*)<\/li>/Ui';
+                        $regexp = '/<li>(.*)<\/li>/Uis';
                         $options = null;
                         preg_match_all($regexp, $questionAnswer[1], $options);
                         if (count($options[1]) == 0)
                         {
-                            $regexp = '/<dt>([.\S\s]*)<\/dt><dd>([.\S\s]*)<\/dd>/Ui';
+                            $regexp = '/<dt>(.*)<\/dt><dd>(.*)<\/dd>/Uis';
                             $options = null;
                             preg_match_all($regexp, $questionAnswer[1], $options);
                             if ($options == null || sizeof($options[1]) == 0)
@@ -164,8 +166,8 @@ class Quiz
                             }
                             $item = new MatchingItem();
                             $item->ID = $itemNumber + 1;
-                            $item->Title = $questionName[1];
-                            $item->Text = $questionText[1];
+                            $item->Title = trim($questionName[1]);
+                            $item->Text = trim($questionText[1]);
                             $item->PointValue = 1;
 
                             for ($j = 0; $j < count($options[1]); $j++)
@@ -190,8 +192,8 @@ class Quiz
                                     $item = new TrueFalseItem();
                                     $item->ID = $itemNumber + 1;
                                     $item->CorrectAnswer = !stristr($options[0], 'f');
-                                    $item->Title = $questionName[1];
-                                    $item->Text = $questionText[1];
+                                    $item->Title = trim($questionName[1]);
+                                    $item->Text = trim($questionText[1]);
                                     $item->PointValue = 1;
                                     $quiz->Items[] = $item;
                                 }
@@ -205,8 +207,8 @@ class Quiz
                             {
                                 $item = new MultipleChoiceItem;
                                 $item->ID = $itemNumber + 1;
-                                $item->Title = $questionName[1];
-                                $item->Text = $questionText[1];
+                                $item->Title = trim($questionName[1]);
+                                $item->Text = trim($questionText[1]);
                                 $item->PointValue = 1;
 
                                 // If the questionAnswer options contain an <ol> (ordered list),
@@ -221,7 +223,7 @@ class Quiz
 
                                     // See if this option is the correct one. Correct answers
                                     // should appear between <strong> and </strong>.
-                                    $regexp = '/<strong>([.\S\s]*)<\/strong>/Ui'; 
+                                    $regexp = '/<strong>(.*)<\/strong>/Uis'; 
                                     $numberFound = preg_match($regexp, $option, $filteredAnswer);
 
                                     // See if we found a correct answer:
@@ -229,13 +231,13 @@ class Quiz
                                     {
                                         // Option is correct, so grab the filtered option
                                         // retrieved from preg_match
-                                        $mcOption->Text = $filteredAnswer[1];
+                                        $mcOption->Text = trim($filteredAnswer[1]);
                                         $mcOption->Value = 100;
                                     }
                                     else
                                     {
                                         // Option is incorrect, so grab the unfiltered option
-                                        $mcOption->Text = $option;
+                                        $mcOption->Text = trim($option);
                                         $mcOption->Value = 0;
                                     }
                                     $item->Options[] = $mcOption;

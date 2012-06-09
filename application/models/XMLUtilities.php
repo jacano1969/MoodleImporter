@@ -189,7 +189,8 @@ function html_is_equal($to, $from)
  */
 function clean_xml($xmlFile)
 {
-    $data = preg_replace('~\s*(<([^>]*)>[^<]*</\2>|<[^>]*>)\s*~','$1', $xmlFile);
+    //$data = preg_replace('~\s\s+~', ' ', $xmlFile);
+    $data = preg_replace('~(\s)*(<([^>]*)>[^<]*</\2>|<[^>]*>)(\s)*~','$1$2$4', $xmlFile);
     $data = str_replace('\r\n', "", $data);
     return $data;
 }

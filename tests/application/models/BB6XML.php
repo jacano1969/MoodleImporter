@@ -10,6 +10,8 @@
  *
  * @author jdelano
  */
+if (!class_exists('BB6XML'))
+{
 class BB6XML {
 
     public static function GetBB6TFItemData()
@@ -1645,5 +1647,5 @@ BB6_XML;
     
     
 }
-
+}
 ?>

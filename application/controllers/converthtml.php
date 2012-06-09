@@ -129,7 +129,9 @@ class converthtml extends CI_Controller
         // Update the items, based on shuffle and point value changes.
         for ($i = 0; $i < count($quiz->Items); $i++)
         {
-            if (property_exists($quiz->Items[$i], 'ShuffleAnswers'))
+            // Only items that support Team-based learning should apply the TBL
+            // scoring option.
+            if ($quiz->Items[$i] instanceof MoodleImporter\ISupportTBL)
             {
                 $quiz->Items[$i]->ShuffleAnswers = $this->input->post($quiz->Items[$i]->ID . 'shuffle') == 'shuffle' ? 1 : 0;
             }

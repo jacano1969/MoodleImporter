@@ -7,6 +7,7 @@ if (!defined('APPPATH'))
 }
 
 require_once APPPATH . '/models/Quiz.php';
+include_once 'BB6XML.php';
 
 /**
  * Test class for Quiz.
@@ -14,6 +15,13 @@ require_once APPPATH . '/models/Quiz.php';
  */
 class QuizTest extends \PHPUnit_Framework_TestCase {
 
+    
+    public function __autoload()
+    {
+        include('BB6XML.php');
+    }
+    
+    
     /**
      * @covers MoodleImporter\Quiz::ToXMLString
      */
@@ -118,14 +126,7 @@ HTML_QUIZ;
     {
         $inputHTML = <<<HTML_QUIZ
         <h2>TF w/list in text</h2>
-        What is the answer to the following sub-questions?
-        <ul>
-            <li>Question 1</li>
-            <li>Question 2</li>
-        </ul>
-        <ul>
-            <li>truth</li>
-        </ul>
+        What is the answer to the following sub-questions?<ul><li>Question 1</li><li>Question 2</li></ul><ul><li>truth</li></ul>
 HTML_QUIZ;
         
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
@@ -153,7 +154,7 @@ HTML_QUIZ;
         $this->assertEquals(1, count($quiz->Items));
         $this->assertEquals(true, $quiz->Items[0]->CorrectAnswer);
         $this->assertEquals("TF 001 - What is the answer to", $quiz->Items[0]->GetName());
-        $this->assertEquals("What is the answer to the following sub-questions?<ul><li>Question 1</li><li>Question 2</li></ul>", $quiz->Items[0]->Text);
+        $this->assertEquals("What is the answer to the following sub-questions?\n        <ul>\n            <li>Question 1</li>\n            <li>Question 2</li>\n        </ul>", $quiz->Items[0]->Text);
     }
 
     public function testGetQuizFromHTMLSimpleMC()
@@ -229,7 +230,7 @@ HTML_QUIZ;
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
         $this->assertEquals("MC 001 - MC w/list in text", $quiz->Items[0]->GetName());
-        $this->assertEquals("What is the answer to the following questions?<ul><li>question 1</li><li>question 2</li></ul>", $quiz->Items[0]->Text);
+        $this->assertEquals("What is the answer to the following questions?\n        <ul>\n            <li>question 1</li>\n            <li>question 2</li>\n        </ul>", $quiz->Items[0]->Text);
         $this->assertEquals(4, count($quiz->Items[0]->Options));
         $this->assertEquals(0, $quiz->Items[0]->Options[0]->Value);
         $this->assertEquals(100, $quiz->Items[0]->Options[1]->Value);
@@ -258,7 +259,7 @@ HTML_QUIZ;
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
         $this->assertEquals("MC 001 - What is? question 1 question", $quiz->Items[0]->GetName());
-        $this->assertEquals("What is?<ul><li>question 1</li><li>question 2</li></ul>", $quiz->Items[0]->Text);
+        $this->assertEquals("What is?\n        <ul>\n            <li>question 1</li>\n            <li>question 2</li>\n        </ul>", $quiz->Items[0]->Text);
         $this->assertEquals(4, count($quiz->Items[0]->Options));
         $this->assertEquals(0, $quiz->Items[0]->Options[0]->Value);
         $this->assertEquals(100, $quiz->Items[0]->Options[1]->Value);
@@ -321,7 +322,7 @@ HTML_QUIZ;
         
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
-        $this->assertEquals('<p>Match the following:</p><ol><li>Subquestion 1</li><li>Subquestion 2</li></ol>', $quiz->Items[0]->Text);
+        $this->assertEquals("<p>Match the following:</p>\n        <ol>\n            <li>Subquestion 1</li>\n            <li>Subquestion 2</li>\n        </ol>", $quiz->Items[0]->Text);
         $this->assertEquals(6, count($quiz->Items[0]->Options));
         $this->assertEquals('State starting with an A', $quiz->Items[0]->Options[0]->Value);
     }
@@ -354,7 +355,7 @@ HTML_QUIZ;
         
         $quiz = Quiz::GetQuizFromHTML($inputHTML);
         $this->assertEquals(1, count($quiz->Items));
-        $this->assertEquals('<p>Write about your summer.</p><ol><li>Subquestion 1</li><li>Subquestion 2</li></ol>', $quiz->Items[0]->Text);
+        $this->assertEquals("<p>Write about your summer.</p>\n        <ol>\n            <li>Subquestion 1</li>\n            <li>Subquestion 2</li>\n        </ol>", $quiz->Items[0]->Text);
     }
 
   
@@ -448,6 +449,9 @@ HTML_QUIZ;
         $this->assertEquals('Which of the following is a key element of an E-R model?', $quiz->Items[1]->Text);
     }
 
+    
+ 
+    
 }
 
 ?>
