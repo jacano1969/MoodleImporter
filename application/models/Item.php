@@ -140,7 +140,7 @@ abstract class Item implements IExporter {
         // LINK_BLOCK flow nodes, but that is under the QUESTION_BLOCK flow node.
         $text = $bb6XML->xpath('presentation//flow[@class=\'QUESTION_BLOCK\']//material[not(ancestor::flow[@class=\'FILE_BLOCK\'] or ancestor::flow[@class=\'LINK_BLOCK\'])]//*[mattext or mat_formattedtext]/*');
         $this->Text = trim((string)$text[0]);
-        $title = $bb6XML->xpath('item');
+        //$title = $bb6XML->xpath('item');
         $this->Title = (string)$bb6XML['title'];
         
         // Now get the feedback under the itemfeedback tag where attribute ident
@@ -159,10 +159,11 @@ abstract class Item implements IExporter {
      */
     public function ToXMLElement()
     {
+        $name = htmlspecialchars($this->GetName());
         $xml = <<<ITEM_XML
         <question>
             <name>
-                <text>{$this->GetName()}</text>
+                <text>{$name}</text>
             </name>
             <questiontext format="html">
                 <text><![CDATA[$this->Text]]></text>
